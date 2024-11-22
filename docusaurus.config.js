@@ -5,19 +5,19 @@ const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'OER Course Title',
-  tagline: 'OER Tag/Keyword',
+  title: 'OSL745 - Administration of Open Source Systems',
+  tagline: 'OSL745',
   url: 'https://Seneca-ICTOER.github.io/',
-  baseUrl: '/OERTemplate/',
+  baseUrl: '/OSL745/',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'Seneca-ICTOER',
-  projectName: 'OERTemplate',
+  projectName: 'OSL745',
   themeConfig: {
     navbar: {
-      title: 'OER Course Title',
+      title: 'OSL745 - Administration of Open Source Systems',
       logo: {
         alt: 'Seneca College',
         src: 'img/logo.svg',
@@ -31,7 +31,7 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'OER Course Title',
+          title: 'OSL745 - Administration of Open Source Systems',
           items: [
             {
               label: 'Contents',
@@ -43,7 +43,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Seneca College.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Jason Carman.`,
     },
     prism: {
       theme: lightCodeTheme,
