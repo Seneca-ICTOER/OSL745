@@ -1,6 +1,6 @@
 ---
 id: lab4
-title: Lab 4
+title: Lab 4 - Virtual Networks
 sidebar_position: 4
 description: Lab 4
 ---
@@ -404,7 +404,7 @@ done < /etc/hosts'
 
 ## Submitting your Lab
 
-Follow the submission instructions for Llab 6 on Blackboard.
+Follow the submission instructions for Lab 6 on Blackboard.
 
 **Time for a new backup!**
 

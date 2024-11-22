@@ -1,6 +1,6 @@
 ---
 id: lab5
-title: Lab 5
+title: Lab 5 - Setup and Configure SSH
 sidebar_position: 5
 description: Lab 5
 ---

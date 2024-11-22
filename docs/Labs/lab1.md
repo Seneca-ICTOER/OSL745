@@ -1,6 +1,6 @@
 ---
 id: lab1
-title: Lab 1
+title: Lab 1 - Installing Ubuntu
 sidebar_position: 1
 description: Lab 1
 ---

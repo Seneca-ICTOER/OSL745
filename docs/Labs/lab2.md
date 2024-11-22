@@ -1,6 +1,6 @@
 ---
 id: lab2
-title: Lab 2
+title: Lab 2 - Creating and Using Virtual Machines
 sidebar_position: 2
 description: Lab 2
 ---

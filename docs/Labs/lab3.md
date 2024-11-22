@@ -1,6 +1,6 @@
 ---
 id: lab3
-title: Lab 3
+title: Lab 3 - Troubleshooting, Archiving and Packages
 sidebar_position: 3
 description: Lab 3
 ---
