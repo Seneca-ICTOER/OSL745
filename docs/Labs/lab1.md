@@ -352,8 +352,6 @@ Therefore, it makes sense to also have a record of the installed software and im
 2. Run each of these commands, taking the time to _understand_ what each command's output means.
 3. **Record the output** from these commands (except for the **ps -ef** output) in your lab logbook.
 
-The [Bash Shell Reference Guide](/C-ExtraResources/bash-shell-reference-guide.md) is available to refresh your memory of last semester's ULI101.
-
 **Linux/Unix System Information Utilities**
 
 | **Command(s)**                                                                        | **Purpose**                                                                                                                                                    |

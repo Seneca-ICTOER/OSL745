@@ -623,8 +623,6 @@ exit
 
 You will continue our use of Bash Shell scripting by first creating a Bash Shell script that will allow the Linux sysadmin to select their created VMs for backup. Afterwards you will download, view and run a couple of Bash Shell scripts that use the virsh command to start and stop your virtual machines.
 
-**Please check out these [Bash Shell Scripting Tips](/C-ExtraResources/bash-shell-scripting-tips.md) first before continuing with the following steps**
-
 **Perform the following steps:**
 
 1. Start the **deb1** virtual machine, and stop the **deb2** and **deb3** virtual machines.
