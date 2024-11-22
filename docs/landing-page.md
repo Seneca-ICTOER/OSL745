@@ -10,8 +10,8 @@ description: Landing Home Page for OSL740
 
 ## Quick Links
 
-| [Weekly Schedule](./weekly-schedule.md) | [Course Outline](https://apps.senecapolytechnic.ca/ssos/findOutline.do?isLoggedIn=&subjectOrAndTitle=%5BOSL740%5D+Administration+of+Open+Source+Systems&schoolCode=0s867160) | [Assignment 1](/B-Assignments/assignment1.md) | [Assignment 2](/B-Assignments/assignment2.md) |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| [Weekly Schedule](./weekly-schedule.md) | [Course Outline](https://apps.senecapolytechnic.ca/ssos/findOutline.do?isLoggedIn=&subjectOrAndTitle=%5BOSL740%5D+Administration+of+Open+Source+Systems&schoolCode=0s867160) | [Assignment 1](/Assignments/assignment1.md) | [Assignment 2](/Assignments/assignment2.md) |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
 
 ## What This Course is About
 
@@ -62,21 +62,6 @@ Most of the learning in this course occurs through the hands-on problem solving 
    - [Download Doc](/files/OSL740-Logbook-Online.docx)
    - **NOTE: If you've taken this class in a previous semester, you MAY NOT bring that version of the lab logbook to any testing.**
    - Your Professor will direct you on what they want you to do with the Lab Lag Book
-
-5. **Dos and Don'ts** (**PLEASE READ**)
-
-   - [Tips](/C-ExtraResources/tips.md)
-
-## Course Faculty
-
-**During the Winter 2024 semester, OSL740 is taught by:**
-
-![Ataur Rahman](/img/Ataur-RTN.jpg)
-**[Ataur Rahman](mailto:ataur.rahman@senecacollege.ca)** \| Sections **ZAA**, **ZBB**
-
-![Jason Carman](/img/JasonCarman.jpg)
-
-**[Jason Carman](mailto:jason.carman@senecacollege.ca)** \| Section **ZCC**
 
 ## Evaluation
 
