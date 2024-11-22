@@ -36,7 +36,7 @@ It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capac
 1. **Solid State Drive** Minimum Size: 240GB
 2. **SATA-to-USB Connector** to connect your SSD to the Seneca Lab computer
 3. **USB Flash drive** to install Debian 12 installation image
-4. **Lab Logbook** [(Click Here to Download)](/files/OPS245-Logbook-Online.doc)
+4. **Lab Logbook** [(Click Here to Download)](/files/OSL740-Logbook-Online.docx)
 
 ### Linux Command Reference
 
