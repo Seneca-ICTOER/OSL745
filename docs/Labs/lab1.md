@@ -196,35 +196,102 @@ You can now remove your bootable installation USB flash drive from the computer.
 
 ## Investigation 3: Common Post-Installation Tasks
 
-### Left off here.
+### Test your Internet connection
 
-- Install Chromium, Cinnamon
+One of the first things you do on a new system is install software and update the system. Your first step to installing software should always be to test your Internet connectivity, as without a working connection you cannot resolve anything. To do this we can use the tool **ping**, which is commonly used to troubleshoot network connectivity issues.
 
-### **Changing Locked Screen-saver Power Settings**
+Useful addresses to ping to verify network connectivity are the following:
+
+- www.google.com
+
+If that fails, you could try pinging:
+
+- 8.8.8.8, or 8.8.4.4
+- Your default gateway
+
+  8.8.8.8 and 8.8.4.4 are two publicly available DNS servers Google provides for free use. You can use these to test external network connectivity. For example, if pinging **www.google.com** fails, but pinging **8.8.8.8** succeeds it is likely you have an issue with DNS resolution.
+
+If pinging **8.8.8.8** also fails, the problem is likely on your local network. You could try pinging your default gateway to confirm whether it is reachable or not. Common issues are:
+
+- Wrong default gateway configured
+- Default gateway is down
+- Unplugged or broken network cable
+
+Since you are dealing with a virtual machine, unplugged or broken cables aren't an issue. The other two are still possible.
+
+Ping www.google.ca. Proceed to the next step only if it is successful.
+
+```bash
+ping www.google.ca
+```
+
+Next, verify your IP address configuration.
+
+```bash
+ip a
+```
+
+Notice you have two NICs (Network Interface Cards).
+
+- **lo** which is your **loopback**, and is assigned the IP address **127.0.0.1/8** by default
+- **ens??** where ?? represents two digits: ie ens33. This is the NIC connected to the virtual network, which allows communication between your VM and the Internet through your Host PC.
+
+Now, lets look at your routing table. Your routing table tells you what networks your VM knows about, as well as the default route. The default route is where packets are sent when they don't match any other entry in your routing table.
+
+```bash
+ip route
+```
+
+Viewing your IP address configuration and routing table can be useful tools for troubleshooting network connectivity issues. Ping and traceroute are useful tools for verifying a particular destination is reachable. Traceroute has the added benefit of showing you where the packets are failing.
+
+### Updating the system & Installing software
+
+Now that you have confirmed your Internet connection it's time to access elevated privileges to install software. In Linux you use the **sudo** command to execute any command with elevated (root) privileges), provided your user sudo access. Your user was given this access when you created it in the installation. It's time to use this new power wisely. Update the system using **apt**:
+
+```bash
+sudo apt -y update
+```
+
+Once that has completed, install the following packages with the command **sudo apt install** followed by the package names (separated by a space):
+
+- chromium
+- cinnamon
+
+```bash
+sudo apt -y install chromium cinnamon
+```
+
+### Configuring the Cinnamon desktop
+
+Logout of your graphical system. At the login screen:
+
+- Click on your **user**, but do not enter your password.
+- Click on the **gear** icon in the lower right corner.
+- Select **Cinnamon** from the list.
+- **Login** as your user.
+- From the **Menu** (bottom left hand corner):
+  - Browse to **Internet**
+  - Right click on **Chromium** and select **Add to panel**
+
+### Changing Locked Screen-saver Power Settings
 
 Your system automatically enables a screen-saver application which is a useful security tool to prevent unauthorized viewing of information on a terminal after a certain amount of inactivity. Turning-off the locked screen-saver for this course however is more useful.
 
 To Disable the Locked Screen-saver, Perform the following steps:
 
-- Click on the power button at the top right-hand corner of the window.
-- Click the Settings icon
-- Click on Privacy
-- Click on Screen and set "Blank Screen Delay" to Never
-- Turn off "Automatic Screen Lock"
+- Click on the **menu** button in the bottom left corner.
+- Navigate to **All applications**
+- Select **Screensaver**
+- Click the dropdown beside **Delay before starting screensaver** and select **Never**.
 
-### **Test your internet connection**
+### Perform a system update
 
-- Open "Firefox" in debhost and test your Internet connection.
-- Add Firefox bookmarks for the course web page and schedule.
-- Add bookmarks for Blackboard and Outlook as well.
+The primary source of software and programs that we can install in Linux is online **repositories**.
 
-### **Perform a system update**
+These repositories are online databases of different available software organized into **Packages**.
 
-The primary source of software and programs that we can install in Debian is the online "repositories".
+The repositories and packages are maintained by the distribution (in this case Ubuntu) and they are maintained separately for each release.
 
-These repositories are online databases of different available software organized into "Packages".
-
-The repositories and packages are maintained by Debian and they are maintained separately for each release.
 We should check for updated packages frequently (at the beginning of each lab) as they often contain security updates and bug fixes.
 
 To interact with the repositories and manage our software packages, we will use the `apt` command.
@@ -247,16 +314,18 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
 
 ### **Safe Shutdown and Restart, and safely removing the external SSD**
 
-> ![caution](/img/caution.png)**It is ABSOLUTELY ESSENTIAL that you do NOT remove your SSD drive during your Debian 12 session.**
+> ![caution](/img/caution.png)**It is ABSOLUTELY ESSENTIAL that you do NOT remove your SSD drive during your Ubuntu session.**
 >
-> You are required to correctly shutdown your Debian 12 host as you would with any operating system.
+> You are required to correctly shutdown your Ubuntu host as you would with any operating system.
 >
 > **FAILURE TO DO THIS MAY DAMAGE YOUR HOST AND NOT ALLOW IT TO BOOT PROPERLY (YOU HAVE BEEN WARNED).**
 >
 > - Click on the power icon in the top right corner of the display and then click on the power icon again
 > - Click on Restart or Shutdown
 
-### **What was installed?**
+### What was installed?
+
+### Left off here
 
 An installation log file called `/var/log/installer/status` has been created to record the installation of your debhost machine. This file is an ASCII text file which can be viewed with the `less` command.
 
