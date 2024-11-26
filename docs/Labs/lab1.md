@@ -256,9 +256,10 @@ Once that has completed, install the following packages with the command **sudo 
 
 - chromium
 - cinnamon
+- tldr
 
 ```bash
-sudo apt -y install chromium cinnamon
+sudo apt -y install chromium cinnamon tldr
 ```
 
 ### Configuring the Cinnamon desktop
@@ -325,26 +326,20 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
 
 ### What was installed?
 
-### Left off here
-
-- Replace with sudo apt list --installed | wc -l
-
-An installation log file called `/var/log/installer/installer-journal.txt ` has been created to record the installation of your debhost machine. This file is an ASCII text file which can be viewed with the `less` command.
-
-- Type the command `less /var/log/installer/installer-journal.txt ` and browse the list of packages installed
-- Type the command `man apt`
+- Type the command `man apt` or `tldr apt`
 - Read the man page for the apt utility and figure out a command to list only the installed packages.
-- How many packages were installed?
+- How many packages were installed? (Hint: pipe the output to `wc -l`)
 
 ### **Customizing your desktop/shell**
 
-- Explore the Appearance tab in the Settings app to personalize your desktop.
-- Search for an App called "Tweaks" and use it to customize your Gnome Desktop
+- Explore the **Themes** available under Applications. You can enable **dark mode** here (under **settings**) if you wish.
 - Read and edit your `~/.bashrc` file and add an alias called `update` that will run the command line `sudo apt update && sudo apt upgrade`
 - Both `nano` and `vi` are installed by default. You could/should also install `vim`
   - Type `sudo apt install vim`
 
 ### **Turning off AppArmor**
+
+### Maybe leave AppArmor? Need to explore effects
 
 > ![caution](/img/caution.png)**Never disable AppArmor in the real world!!**
 >
@@ -379,12 +374,12 @@ Therefore, it makes sense to also have a record of the installed software and im
 | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `uname -rv`, `hostname`, `ps -ef`                                                     | Basic Linux OS information such as **kernel** version, **host-name** of Linux server, and all **processes** that are running on the system after installation. |
 | `ip address show`, `ip route show`, `nslookup` (at prompt, enter command: **server**) | Obtain network connectivity confirmation including: **IP ADDRESS, Netmask, routing** (default gateway), and the default **Domain Name Server**.                |
-| `date +'%A %B %d, %Y (%I:%M %p)'`                                                     | Get the current date and time according to the system. (If the date or time do not match your timezone, fix this in system settings for debhost!)              |
+| `date +'%A %B %d, %Y (%I:%M %p)'`                                                     | Get the current date and time according to the system. (If the date or time do not match your timezone, fix this in system settings for ubuhost!)              |
 
 3. Note that when you are done, you should have recorded the following information in your Lab Logbook:
 
-   - Current Date (according to debhost)
-   - Hostname (ie. debhost)
+   - Current Date (according to ubuhost)
+   - Hostname (ie. ubuhost)
    - Kernel version
    - IPv4 address
    - Subnet mask
@@ -398,7 +393,9 @@ Therefore, it makes sense to also have a record of the installed software and im
 
 ## Investigation 5: Using BASH Scripting to Generate System Information Reports
 
-You may have learned about creating and running Bash Shell Scripts in your ULI101 course. Shell scripts help Linux users and system administrators to automate repetitive tasks to become more efficient and to help them save time. We can take what we have learned from the commands above and put them into a bash script to generate information reports for your newly-installed Linux host machine.
+You learned about creating and running Bash Shell Scripts in OSL645. Shell scripts help Linux users and system administrators to automate repetitive tasks to become more efficient and to help them save time. We can take what we have learned from the commands above and put them into a bash script to generate information reports for your newly-installed Linux host machine.
+
+### Create a GitHub Classroom assignment here
 
 1. Create a new directory called "bin" in your home directory (~/bin) and then create a new file in your **~/bin** directory called **myreport.bash**
 2. Populate the beginning of the file with sh-bang line and block comment describing what this script does:
@@ -415,7 +412,7 @@ You may have learned about creating and running Bash Shell Scripts in your ULI10
 3. Add a line that will print out the heading **System Report**
 
 ```
-echo 'System Report'
+echo "System Report"
 ```
 
 4. Save your script and run it. Does it work?
