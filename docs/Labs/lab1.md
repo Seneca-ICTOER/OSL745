@@ -5,7 +5,7 @@ sidebar_position: 1
 description: Lab 1
 ---
 
-# Lab 1: Installing Debian 12
+# Lab 1: Installing Ubuntu
 
 ## Lab Preparation
 
@@ -13,8 +13,8 @@ description: Lab 1
 
 In order to save money and resources when learning to install, to manage, and to connect Linux machines to form networks, we will be using a combination of a local install and **Virtual Machines** for this course. :
 
-- **Lab 1**: Create a **Debian 12 Host** install (called **debhost**) on your Solid State External Drive (SSD) which will be bootable on your lab class computers.
-- **Lab 2**: Install a **Virtualization program package** on your **Debian 12** called **KVM** which will be used to create 3 Virtual Machines (VMs) that you will use to learn about Linux system administration for the remainder of this course.
+- **Lab 1**: Create a **Ubuntu Host** install (called **ubuhost**) on your Solid State External Drive (SSD) which will be bootable on your lab class computers.
+- **Lab 2**: Install a **Virtualization program package** on your **Ubuntu host** called **KVM** which will be used to create 3 Virtual Machines (VMs) that you will use to learn about Linux system administration for the remainder of this course.
 
 The virtualization software will allow you to create and administer **3 different virtual machines** (**VMs**) on your Debian host (debhost) computer system.
 ![labenv.png](/img/debian-lab1-network-diagram-updated.png)
@@ -25,17 +25,17 @@ It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capac
 
 ### Main Objectives
 
-- Create a bootable USB drive of Debian 12 using Rufus.
-- **Correctly install Debian 12 (debhost)** on your SSD and check that it boots correctly.
+- Create a bootable USB drive of Ubuntu using Rufus.
+- **Correctly install Ubuntu (ubuhost)** on your SSD and check that it boots correctly.
 - Note common Linux commands and record them in your lab logbook.
-- Use **scripts** to generate a post-install report for your Debian 12 host.
+- Use **scripts** to generate a post-install report for your Ubuntu host.
 - **Disable Linux Kernel security enhancements** to allow for more experimentation.
 
 ### Minimum Required Materials
 
 1. **Solid State Drive** Minimum Size: 240GB
 2. **SATA-to-USB Connector** to connect your SSD to the Seneca Lab computer
-3. **USB Flash drive** to install Debian 12 installation image
+3. **USB Flash drive** to install Ubuntu installation image
 4. **Lab Logbook** [(Click Here to Download)](/files/OSL740-Logbook-Online.docx)
 
 ### Linux Command Reference
@@ -68,40 +68,40 @@ It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capac
 - Using the vi Text Editor: **/home/ops235/vi-tutorial**
 - Shell Scripting - Part I (Scripting Basics): **/home/ops235/scripting-1**
 
-In this lab, you will learn how to install **Debian 12** to your SSD for use in the Seneca boot labs.
+In this lab, you will learn how to install **Ubuntu** to your SSD for use in the Seneca boot labs.
 **Please note that at this time the Seneca boot labs are in C2030, C2034, and C2036. You will only be able to boot to your SSDs in these labs.**
 
-**debhost system details:**
+**ubuhost system details:**
 
-- **Name**: debhost
-- **Boot media / Installation**: Bootable USB flash drive with Debian 12 Net Installer image on it
+- **Name**: ubuhost
+- **Boot media / Installation**: Bootable USB flash drive with Ubuntu image on it
 
-  - [Download netinst image](https://www.debian.org/download)
+  - [Download Ubuntu iso](https://ubuntu.com/download/desktop/thank-you?version=24.04.1&architecture=amd64&lts=true)
 
 - **Disk space**: 240GB minimum
 
-**The Debian Web Site**
+**The Ubuntu Web Site**
 
-Open up <https://www.debian.org/> in your browser. To get the latest copy of the Debian 12 netinstaller ISO click on the "Download" button.
+Open up [Ubuntu](https://ubuntu.com/) in your browser. To get the latest copy of the Ubuntu netinstaller ISO click on the "Download" button.
 While you are on the site lets explore...
 
 One of the most important skills you should graduate with is the ability to teach yourself something new. You will not always have the luxury of attending a training course to learn something new, so we must be prepared to learn independently. This often means reading official documentation. Official documentation is also one of the primary sources of information you should use when troubleshooting or configuring a system. Along with user forums and wiki's. Google searches can often produce results that are not specific to your Linux distribution or version, so they can produce inaccurate results.
 
 Reading documentation, like any skill, requires practice. Reading `man` pages for example is often very confusing for new users as it hard to understand all of the terminology. However, the more time you spend reading the documentation the easier it will become.
 
-Click on the "User Support" link. Take a look at some of the support options available. Find the links to the documentation and forums. Take a look around. Bookmark the page. (The Debian website is well known for being difficult to navigate.)
+Click on the **Support** link. Take a look at some of the support options available. Find the links to the documentation and forums. Take a look around. Bookmark the page.
 
-## Investigation 1: Create a bootable installation drive using Rufus and the latest Debian 12 image
+## Investigation 1: Create a bootable installation drive using Rufus and the latest Ubuntu image
 
 **Note:** The steps in investigation 1 to create your install drive must be completed on your own personal computer and should be completed prior to class
 
-- Download the Debian 12 image from the [Debian Website](https://www.debian.org/download)
+- Download the Ubuntu image from the [Ubuntu](https://ubuntu.com/download/desktop/thank-you?version=24.04.1&architecture=amd64&lts=true)
 - Download Rufus from the [Rufus Website](https://rufus.ie/en)
   > ![Rufus Download](/img/rufusdownload.jpg)
-- You should now have both the Rufus executable and the Debian 12 image on your personal computer
+- You should now have both the Rufus executable and the Ubuntu image on your personal computer
   > ![Rufus and Debian](/img/rufusanddebian.jpg)
 - Run Rufus and you will see the Rufus dialogue box appear.
-- Select the Debian 12 image as your boot selection
+- Select the Ubuntu image as your boot selection
   > ![Rufus Select Image](/img/rufusselectimage.jpg)
 - Double check that your flash drive is selected for the "Device" field, your Debian image has been selected for the boot selection, and that all other settings are the same as the image below.
   > ![Rufus Ready](/img/rufusready1.jpg)
@@ -109,7 +109,7 @@ Click on the "User Support" link. Take a look at some of the support options ava
 - **Note: If Rufus asks you to select the mode that you wish to use to write the image, select "Write in ISO image mode".**
 - Once the process has completed you will have your installation flash drive ready.
 
-## Investigation 2: Install Your host Debian 12 system onto your external SSD (debhost)
+## Investigation 2: Install Your host Ubuntu system onto your external SSD (ubuhost)
 
 **Note:** From this step onward, you will be completing these tasks on the Seneca Lab computer. It is highly recommended that you complete this in the first lab class of the semester.
 
@@ -120,77 +120,63 @@ Click on the "User Support" link. Take a look at some of the support options ava
 4. The other device you will see is your installation USB flash drive. The image above shows it labeled as "UEFI Kingston DataTraveler" but yours will be something different. Select your USB installation drive.
 5. Upon selecting your installation USB flash drive you will be asked for an admin password. Provide the password and press "OK". **Note** Your professor will give you the password on the first day of class.
 6. If you created your installation USB flash drive correctly, the Seneca Lab computer will boot to it and eventually you will see the following screen:
-   > ![advanced options](/img/boot-select-advanced.jpg)
-7. Select "Advanced Options".
-8. Select "Graphical Expert Install".
-9. Select "Choose Language", select "English", and click "Continue".
-10. Set your location as "Canada" and click "Continue".
-11. Set your base default locale to "Canada en_CA.UTF-8".
-12. Leave the "Additional Locales" screen blank and click "Continue".
-13. Select "Configure Keyboard" and click "Continue".
-14. Select "American English" and click "Continue".
-15. Select "Detect and Mount Installation Media" and click "Continue". Your media will then be detected. Click "Continue".
-16. Select "Load installer components from installation media" and click "Continue".
-17. On the next screen leave everything unselected and click "Continue".
-18. Select "Detect network hardware" and click "Continue".
-19. Select "Configure network" and click "Continue".
-20. For "Auto-configure networking" select "Yes" and click "Continue".
-21. Leave the "Waiting time for link detection" as the default value and click "Continue".
-22. Give your system the hostname "debhost" and click "Continue".
-23. Leave the domain name blank and click "Continue".
-24. Select "Set up users and passwords" and click "Continue".
-25. For "Allow login as root", select "No" and click "Continue".
-26. Provide your full name on the next screen (first and last name) and click "Continue".
-27. On the next screen provide your username for your user account and click "Continue". This will be the same username you have for your myseneca email address. (eg. if the email address is cdendias@myseneca.ca then the username would be "cdendias".) **Note** Your username MUST match your myseneca username. If it does not match, you will be asked to re-install.
-28. On the next screen, provide a password for your user account. You will need to input it twice. **Make note of your password! If you forget, you will have to re-install!**
-29. Select "Configure the clock" and click "Continue."
-30. For "Set the clock using NTP" select "Yes" and click "Continue".
-31. On the next screen, leave the default NTP server and click "Continue".
-32. For the timezone, select the Eastern timezone and click "Continue".
-33. Next, select "Detect disks" and click "Continue".
-34. Select, "Partition disks" and click "Continue".
-35. For "Partition Method" select "Guided - Use entire disk".
-36. You will now see the following screen:
-    > ![Disk selection](/img/partman-auto_select_disk_0.png)
-37. You should see 3 disks listed here - The lab computer's internal disk, your external SSD, and your installation USB flash drive. Note that the internal disk will have the label "/dev/nvme0n1" (or something similar) while your external SSD label should begin with "SCSI". **WARNING!! DO NOT SELECT THE LAB COMPUTER'S INTERNAL DISK. THIS WILL RENDER THE LAB COMPUTER UNUSABLE AND YOU WILL BE HELD RESPONSIBLE. YOU HAVE BEEN WARNED!** Select your external SSD and click "Continue". If you are uncertain about which disk to select, refer back to step 4 to double check which item on the list is your SSD. You can also double check with your professor.
-38. For the "Partition scheme" select "All files in one partition" and click "Continue".
-39. The next screen will show you a preview of the changes that will be made to the selected disk. Double and triple check that you have selected the correct disk. You should see something like this for your SCSI labeled external SSD:
-    > ![partition final check](/img/partman_choose_partition_0.png)
-40. When you are confident that you have selected the correct disk, select "Finish partitioning and write changes to disk" and click "Continue".
-41. On the next screen, under "Write changes to disk?" select "Yes" and click "Continue".
-42. Next, select "Install the base system" and click "Continue".
-43. For "Kernel to install", use the default value and click "Continue".
-44. For "Drivers to include in the initrd" use the default "generic" drivers and click "Continue".
-45. Next, select "Configure the package manager" and click "Continue".
-46. For "Use a network mirror" select "Yes" and click "Continue".
-47. For "Protocols for file downloads" select "http" and click "Continue".
-48. For "Debian archive mirror country" select "Canada" and click "Continue".
-49. For "Debian archive mirror" leave the default selection - "deb.debian.org" - and click "Continue".
-50. Leave the "HTTP proxy information" blank and click "Continue".
-51. For "Use non-free firmware" select "Yes" and click "Continue".
-52. For "Use non-free software" select "No" and click "Continue".
-53. For "Use contrib software" select "No" and click "Continue".
-54. For "Enable source repositories in APT" select "No" and click "Continue".
-55. For "Services to use" leave the default selections and click "Continue".
-56. Select "Select and install software" and click "Continue".
-57. For "Updates management on this system" select "No automatic updates" and click "Continue". (We will be updating our systems manually)
-58. For "Participate in the package usage survey" select "No" and click "Continue".
-59. On the next screen you will select what software to install with the base install. There are 4 items we need, 3 of which should already be selected. Check the "SSH server" box and you should have all 4 you need as shown below:
-    > ![softwareselection](/img/tasksel_first_0.png)
-60. Double check that you have all 4 selected - Debian desktop environment, GNOME, SSH server, and standard system utilities. Click "Continue".
-61. Select "Install GRUB boot loader" and click "Continue".
-62. For "Force GRUB installation to the EFI removable media path" select "Yes" and click "Continue". **NOTE** This is very important! You will be unable to boot to your external hard drive from the Seneca lab computers if this is not set correctly.
-63. For "Update NVRAM variables to automatically boot into Debian" select "No" and click "Continue". **NOTE** This is also very important! We must not alter the existing NVRAM settings on the Seneca lab computers!
-64. For "Run os-prober automatically to detect and boot other OSes" select "No" and click "Continue".
-65. Select "Finish the Installation" and click "Continue".
-66. For "Is the system clock set to UTC?" select "Yes" and click "Continue".
-67. Your system will now complete the installation and ask to reboot. Click "Continue" to reboot.
+   > ![advanced options](/img/boot.png)
+7. Select **Try or Install Ubuntu**.
+
+Once you have booted to the desktop, follow the steps in the Ubuntu installer.
+
+1. Under **Choose your language**, select **English**, and click **Next**.
+2. Customize any **Accessibility** options you wish, and click **Next**.
+3. Under **Select your keyboard layout** select **English (US)**, and click **Next**.
+4. Under **Connect to the internet** leave **Use wired connection** selected, and click **Next**.
+5. Under **What do you want to do with Ubuntu?**, leave **Install Ubuntu** selected, and click **Next**.
+6. Under **How would you like to install Ubuntu?**, select **Interactive installation**, and click **Next**.
+7. Under **What apps would you like to install to start with?**, select **Default selection**, and click **Next**.
+8. Under \*\*Install recommended proprietary software, check the boxes to:
+
+- Install third-party software for graphics and Wi-Fi hardware
+- Download and install support for additional media formats
+
+9. Click **Next**.
+10. Under **How do you want to install Ubuntu?** select
+
+- Erase disk and install Ubuntu. Click on **Manual installation**
+
+### Creating Partitions
+
+Select **sda**
+
+1. Select **New partition table**
+2. Create a single **Ext4** volume mounted on **/**
+3. Click on **Device for boot loader installation** and select your ssd ie **sda WD Blue SA510 2.5 1000GB (1.00 TB)**. Your partitions should match the following screenshot.
+   > ![partitions](/img/partitions.png)
+
+### Creating your account
+
+- Create your account:
+
+  - Your name: **enter your name**
+  - Your computer's name: **ubuhost**
+  - Your username: **Your Seneca username**
+  - Create a secure password that you will remember
+
+- Select your timezone: **Toronto**
+- Click **Install** and be prepared to wait patiently for a while.
+- When it is done, click **Restart now**.
+- When prompted to remove the installation media, press **Enter**.
+
+Login with your user.
+
+- On the welcome screen, click **Next**
+- Enable Ubuntu Pro: select **Skip for now** and click **Next**
+- Help improve Ubuntu: select an option and click **Next**
+- Click **Finish**
 
 When it reboots, be prepared to bring up the boot menu again, just like you did in step 2. Now your boot menu should have 4 items:
 
 > ![bootmenuafterinstall](/img/bootmenu2.jpg)
 
-Because you installed Debian to your external SSD, it now shows up as a bootable item on this boot menu.
+Because you installed Ubuntu to your external SSD, it now shows up as a bootable item on this boot menu.
 
 **Note:** In the image above, the installation USB flash drive is labeled as "UEFI Kingston DataTraveler". The external SSD in the image above is labeled as "SABRENT". This is not the SSD itself, rather it is the label for the SATA-to-USB connector that you are using. If you are unsure of which one is your SSD, check your physical SATA-to-USB connector that connects your SSD to the Seneca lab computer. You will likely see its brand name somewhere on the connector. Look for that name in the boot list. Now you know which item is your external SSD.
 
@@ -204,51 +190,15 @@ Then you will be presented with the "Welcome" application
 - "Next" keyboard layout
 - Turn off Location services and then "Next"
 - "Skip" connecting your online accounts
-- Click "Start Using Debian GNU/Linux"
+- Click "Start Using Ubuntu"
 
 You can now remove your bootable installation USB flash drive from the computer. If you only have one USB flash drive, you can reformat your flash drive for other uses later in this course. However, it is likely that some students will need to do a re-install of their host system at some point during the semester, so if you can it would be a good idea to keep this one as a bootable installer and use another flash drive for general storage. (Which will become important in Lab 2!)
 
 ## Investigation 3: Common Post-Installation Tasks
 
-### **Enable the root account**
+### Left off here.
 
-During the installation process, we left the "root" account disabled. Lets now enable that account.
-All that is required is to set a password for the "root" account.
-
-- Click on "Activities" or press the "Windows Key" to search for applications.
-- Search for "terminal", right click on the terminal application and select "pin to dash"
-- Open the terminal application to gain access to the bash shell.
-
-To change the root password we need to use elevated or administrative permissions.
-
-Our account has been given "sudo" access which means we can run a command with root permissions simply by preceding the command with `sudo`
-
-- Type `sudo passwd` to run the passwd command as root. Then enter roots new password twice. (You will be required to enter your password to "unlock" sudo)
-
-To test the account we can use the `su` command.
-su is short for "switch user" and we can use it to start a new bash shell as another user. (Default: root)
-
-- Type `su -`, you will be prompted for the root account password.
-- Type `whoami` to confirm the switch and then `exit` to return to the previous shell.
-- Type `whoami`
-- Type `sudo whoami`, We now see there are two methods of accessing root permissions:
-  - Using the `sudo` command at the beginning of our command line to run it as root. We are prompted for our own password to unlock sudo
-  - Using the `su` command to start a new shell as root. We are prompted for the root account password.
-
-We will use `sudo` to temporarily gain root privileges in order to run a command, but still be our normal user.
-This method of obtaining elevated privileges has several advantages over logging in as root:
-
-- First, it only requires each administrator to know their own password.
-- Second, we can control exactly which commands a user is allowed to run as root (We will learn how to do this later in the course), instead of giving them access to everything.
-- Third, the system will log any command that is run using sudo, so that it can be audited later in case something goes awry.
-
-Because it is configurable to a fine degree, and because it provides for better security logging/accountability for System Admins, the preferred method of accessing root permissions is `sudo` . There are some circumstances where using the actual root account may be required.
-
-> ![Caution](/img/caution.png)**Keep the root password and your regular user account password the same on this system and all of the VM's that you create in the labs.**
->
-> In order to simplify running the lab checking scripts in future labs, using the same root password for ALL machines (debhost and virtual machines). Also use the same regular username and passwords for all of your machines (debhost and virtual machines).
-
-> Do not do this in a production environment!
+- Install Chromium, Cinnamon
 
 ### **Changing Locked Screen-saver Power Settings**
 
