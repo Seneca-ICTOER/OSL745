@@ -327,9 +327,11 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
 
 ### Left off here
 
-An installation log file called `/var/log/installer/status` has been created to record the installation of your debhost machine. This file is an ASCII text file which can be viewed with the `less` command.
+- Replace with sudo apt list --installed | wc -l
 
-- Type the command `less /var/log/installer/status` and browse the list of packages installed
+An installation log file called `/var/log/installer/installer-journal.txt ` has been created to record the installation of your debhost machine. This file is an ASCII text file which can be viewed with the `less` command.
+
+- Type the command `less /var/log/installer/installer-journal.txt ` and browse the list of packages installed
 - Type the command `man apt`
 - Read the man page for the apt utility and figure out a command to list only the installed packages.
 - How many packages were installed?
