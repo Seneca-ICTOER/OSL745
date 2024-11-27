@@ -139,31 +139,32 @@ sudo usermod -aG libvirt <username>
 
 7. **Restart your ubuhost**. If you fail to do this, you may experience virtualization network problems and issues loading Virtual Machine Manager.
 
-### left off here
-
 8. Once you've restarted, confirm your changes took affect by running the following as your regular user (don't use sudo):
 
-- `systemctl status libvirtd`
-- `id`
+```bash
+systemctl status libvirtd
+id
+groups
+```
 
-The _libvirtd_ daemon should be running, and the _id_ command should show that your user is part of the **libvirt** group.
+The _libvirtd_ daemon should be running, and the _id_ and _groups_ commands should show that your user is part of the **libvirt** group.
 
-9. Start the graphical `virt-manager` tool by clicking "Activities " and searching for "virt-manager".
-10. Right click on the icon and "Pin to dash" and then run the application or by typing the command `virt-manager` (without sudo!)
+9. Start the graphical `virt-manager` tool by launching your **Menu** and searching for **virt-manager**.
+10. Right click on the icon and **Pin to panel** and then run the application or by typing the command `virt-manager` (without sudo!)
 
 ## Investigation 2: Install Virtual Machines (KVM)
 
 > ![caution](/img/caution.png)**Keep the root password the same for Host and VMs**
 >
-> In order to simplify running the lab checking scripts in future labs, using the same root password for ALL machines (debhost and virtual machines). Also use the same username and passwords for all of your machines (debhost and virtual machines).
+> In order to simplify running the lab checking scripts in future labs, using the same root password for ALL machines (ubuhost and virtual machines). Also use the same username and passwords for all of your machines (ubuhost and virtual machines).
 
 ### Part 1: Setting up the Virtual Network
 
-Once we have installed our 3 VM's we will want to configure them to be able to communicate on the same network.
+Once we have installed our 2 VM's we will want to configure them to be able to communicate on the same network.
 KVM has setup a default virtual network for us to use but it is not configured to start automatically. We will also need to make sure the correct firewall and routing rules are added so that everything works.
 Lets start by gathering information
 
-1. Open a terminal window in debhost and run the following command to display the networks that debhost is connected to.
+1. Open a terminal window in ubuhost and run the following command to display the networks that ubuhost is connected to.
 
 ```bash
 # List the networks connected and our IP address for each network interface
@@ -179,24 +180,21 @@ ip address
 sudo iptables -L
 ```
 
-![iptables1](/img/iptables1.png)
+![ipaddr2](/img/ipaddr2.png)
+![iptables2](/img/iptables2.png)
+You can see that ubuhost has connected to the virtual network and iptables rules have been added to configure access to that network.
 
 3. Open virt-manager
 4. Select the QEMU/KVM connection and then click on Edit --> Connection Details
 5. Select the Virtual Networks tab
-6. Check the "Autostart: On Boot" and then click Apply
-7. Close virt-manager and reboot. You can use the command `sudo reboot` or the graphical option.
-8. Open a terminal window and rerun the previous commands to list network addresses and iptables rules
-   ![ipaddr2](/img/ipaddr2.png)
-   ![iptables2](/img/iptables2.png)
-   You can see that debhost has connected to the virtual network and iptables rules have been added to configure access to that network.
+6. Confirm the "Autostart: On Boot". If it is not, check it and then click Apply
 
-### Part 2 Installing deb1
+### Part 2 Installing ubu1
 
 **VM Details:**
 
-- **VM Name (and hostname)**: deb1
-- **Debian Network Install with Graphical Desktop Environment**:
+- **VM Name (and hostname)**: ubu1
+- **Ubuntu Server 2024**:
 - **VM Image Pathname**: /var/lib/libvirt/images/deb1.qcow2
 - **Memory**: 2048MB
 - **Disk space**: 15GB
@@ -212,7 +210,7 @@ sudo iptables -L
 2. Click the **Create a new VM icon** located near the top left-corner of the application window.
 3. Select the **Local install media** option and click **Forward**.
 4. Browse to the location of your ISO image. (probably ~/Downloads) and select the iso image
-5. If the Operating System is not auto detected, uncheck the **"Automatically detect from the installation media"** and Choose **Debian 11**, and click **Forward**.
+5. If the Operating System is not auto detected, uncheck the **"Automatically detect from the installation media"** and Choose **Ubuntu Server 24.04**, and click **Forward**.
 
 > ![vmsource](/img/vmsource.png)
 
@@ -225,9 +223,8 @@ sudo iptables -L
 > ![memcpu](/img/memcpu.png)
 
 8. Set **Hard Disk** size to **15** GB and click **Forward**.
-9. Enter the Name: **deb1**, AND then select the option: **Customize configuration before install**, and click **Finish**.
+9. Enter the Name: **ubu1**, AND then select the option: **Customize configuration before install**, and click **Finish**.
 10. Another dialog will appear. Click **CPUs** (or "processors") and on right-side under Configuration select **Copy Host CPU Configuration**, click **Apply**, and then click **Begin Installation** at the top left-hand side.
-11. When the installer starts select ""Graphical Install" and press enter
 
     > **NOTES**
     >
@@ -235,52 +232,75 @@ sudo iptables -L
     > - To release the keyboard and mouse from the VM use **left-ctrl+left-alt**
     > - To make the VM easier to display, click on **View --> Scale Display --> Always** > ![scale](/img/scale.png)
 
-12. Select **English** as the language
-13. Select **Canada** as the location
-14. Select **American English** as the keyboard
-15. Enter a **Hostname** of **deb1**
-16. Leave the **Domain name**: _blank_
-17. **Do NOT set a root password**
+11. When the installer starts select Select **English** as the language.
+12. If prompted to **Update to the new installer**, do it.
+13. Set Keyboard **Layout** and **Variant** to **English (US)**
+14. Check that **Ubuntu Server** is selected and select **Done**.
+15. Accept the defaults for **Network Configuration** and select **Done**.
+16. Leave proxy address blank and select **Done**.
+17. For **Ubuntu archive mirror configuration** leave the defaults and select **Done**.
+18. For **Guided storage configuration** select **Use an entire disk** and select **Done**.
+19. For **Storage configuration** read the output and select **Done**.
+20. Select **Continue**.
+21. Under **Profile configuration**
 
-    > ![caution](/img/caution.png) > **Remember to user the same username and password on all of your VM's**
+- Enter your **Full name**
+- Enter a **Hostname** of **ubu1**
+- Enter your **Username** (first part of your email address)
+- Enter your **password** twice.
+- Select **Done**
 
-18. Enter your **Full name**
-19. Enter your **Username**
-20. Enter your **password** twice.
-21. Select the **Eastern** time zone
-22. When asked for **Partitioning method**: choose **Guided - use entire disk and setup LVM**
-23. Select **Virtual disk 1(vda)**
-24. Select **All files in one partititon**
-25. Select **yes** to **Write the changes to disk and configure LVM**
-26. Accept the default **Amount of volume group to use for guided partitioning**
-    ![deb1part](/img/deb1part.png)
-
-27. Your storage should be configured as shown above. Select **Finish partitioning and write changes to disk**
-28. Select **Yes** to **Write the changes to disks**
-29. Select **No** to **Scan extra installation media**
-30. Select **Canada** as your **Debian archive mirror country**
-31. Select **deb.debian.org** as your **Debian archive mirror:**
-32. Leave **HTTP proxy information** as _blank_
-33. Select **No** to **Participate in the package survey**
-34. On the **Software Selection Screen** uncheck **Gnome** and select **Cinnamon** instead. Also select **SSH Server**
-    ![softsel](/img/softsel.png)
-
-35. Select **Yes** to **Install the GRUB boot loader**
-36. Select **/dev/vda** as the **Device for boot loader installation**
-37. When the installation is complete **Reboot**
+22. Skip **Ubuntu Pro** and select **Continue**
+23. Check the box beside **Install OpenSSH server** and select **Done**
+24. Under **Featured server snaps** leave the defaults and select **Done**
+25. When the installation is complete **Reboot**
     > ![caution](/img/caution.png)
     > You may need to go into the VM details and remove the media from the **CDROM** device
 
 **Post Installation Tasks**
 
-1. Repeat the steps as you did in Lab 1 to **set the root account password**, **perform a system update**, and **disable AppArmor**.
+1. Login to your **ubu1** vm.
 2. Issue the following command to obtain the IPv4 address for your deb1 VM to record in your Lab 2 logbook:
 
 ```bash
 ip address show
 ```
 
-3. Explore the Cinnamon Desktop Environment.
+3. Issue the following command:
+
+```bash
+sudo less /var/log/installer/autoinstall-user-data
+```
+
+4. Scroll through the file. What do you think this is?
+5. This file was generated when you installed **ubu1**. You will use this to automate the installation for **ubu2** with the identical configuration.
+6. Use cp to copy this file to your home directory.
+
+```bash
+sudo cp /var/log/installer/autoinstall-user-data /home/username
+```
+
+7. Issue **ls -l**. Note the file is owned by root. You need to change file ownership to your user, so you can copy it to your host (via sftp).
+8. Change the ownership of /home/username/autoinstall-user-data to your user.
+
+```bash
+chown jmcarman:jmcarman /home/username/autoinstall-user-data
+```
+
+9. On your **ubuhost**, open a terminal and **sftp** to your **ubu1** using the ip address you previously recorded.
+
+```bash
+sftp username@192.168.122.x
+```
+
+10. Issue the **ls** command to confirm the presence of autoinstall-user-data.
+11. Issue the following command to download the file to your host.
+
+```bash
+get autoinstall-user-data
+```
+
+## Left off here
 
 ### Part 3: Installing deb2 (Non-Graphical Install)
 
