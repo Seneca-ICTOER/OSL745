@@ -438,6 +438,8 @@ echo "Report Date:  $date"
 
 ## Lab 1 Sign-Off
 
+### Add check script here
+
 It is extremely important that you complete Lab 1 correctly as this Debian install will be the platform on which the rest of the course will be completed.
 
 When you have completed Lab 1, ask your instructor to come and check your installation. **This must be done in class.** They will ask you to complete a set of tasks/commands. If everything has been completed correctly, your instructor will mark your Lab 1 as complete.

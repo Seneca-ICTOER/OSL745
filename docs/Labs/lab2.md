@@ -11,18 +11,17 @@ description: Lab 2
 
 ### Purpose / Objectives of Lab 2
 
-In this lab, you will create 3 virtual machines using a virtualization program called **KVM** that will run in your debhost system. These VMs will be used throughout the remainder of this course to learn how to administer them (installing software, managing services, networking, etc).
+In this lab, you will create 3 virtual machines using a virtualization program called **KVM** that will run in your ubuhost system. These VMs will be used throughout the remainder of this course to learn how to administer them (installing software, managing services, networking, etc).
 
 While you are performing this lab, it is recommended to generally note the major differences in the different installation methods, and which method you prefer to use if you were a Linux system administrator in charge of installing many Linux distributions for an organization.
 
 **Main Objectives**
 
-- Installing additional Virtualization Software on your **debhost** machine (**KVM**)
+- Installing additional Virtualization Software on your **ubuhost** machine (**KVM**)
 - Create 3 separate VMs (virtual machines) using different installation methods:
 
-  - **deb1**: Network Debian Installation (**Graphical Desktop Environment**)
-  - **deb2**: Network Debian Installation (minimal install - **CLI only**)
-  - **deb3**: Network Debian Unattended Installation deployed using a **preseed** file (**CLI only**)
+  - **ubu1**: Ubuntu Server 24.04 (**CLI only**)
+  - **ubu2**: Ubuntu Server 24.04 Unattended Installation deployed using a **autoinstall** file (**CLI only**)
 
 - Manipulate virtual machines by CLI (**virsh**)
 - Properly **backup VM images** and backup **VM configuration files**
@@ -30,14 +29,14 @@ While you are performing this lab, it is recommended to generally note the major
 
 ![Lab Environment](/img/debian-lab1-network-diagram-updated.png)
 
-At the end of Lab 2, your debhost system will contain **3 virtual machines** (**deb1, deb2, deb3 VMs** in your **KVM** application). You will now have the option to run one virtual machine at a time, or run all machines simultaneously to learn about networking (covered in later labs)
+At the end of Lab 2, your ubuhost system will contain **2 virtual machines** (**ubu1, ubu2 VMs** in your **KVM** application). You will now have the option to run one virtual machine at a time, or run all machines simultaneously to learn about networking (covered in later labs)
 
 ### Minimum Required Materials
 
 1. **Solid State Drive**
 2. **USB key** (for backups)
-3. **Lab2 Log Book**
-4. **Debian 12 netinst ISO**
+3. **Lab Log Book**
+4. [**Ubuntu Server ISO**](https://ubuntu.com/download/server/thank-you?version=24.04.1&architecture=amd64&lts=true) (Download this before you begin)
 
 ### Linux Command Reference
 
@@ -48,7 +47,7 @@ At the end of Lab 2, your debhost system will contain **3 virtual machines** (**
 
 **Installation Guides:**
 
-- [Installing & Using KVM on Debian](http://wiki.Debian.org/KVM)
+- [Installing & Using KVM on Ubuntu](https://ubuntu.com/blog/kvm-hyphervisor)
 - [Using KVM (tutorial)](http://www.dedoimedo.com/computers/kvm-intro.html)
 - [virsh command reference](https://libvirt.org/sources/virshcmdref/html-single/)
 
@@ -65,17 +64,17 @@ We will now install the KVM package in order to create our VMs. We will also be 
 
 **Perform the following steps:**
 
-1. Log into your `debhost` machine.
+1. Log into your **ubuhost** machine.
 2. perform a software update on your debhost by issuing the following command:
 
 ```bash
 sudo apt update && sudo apt upgrade
 ```
 
-3. Install the qemu-system libvirt-daemon-system, virtinst, and virt-manager packages
+3. Install the kvm virtualisation packages
 
 ```bash
-sudo apt install qemu-system libvirt-daemon-system virtinst virt-manager
+sudo apt install virt-manager
 ```
 
 **About KVM**
@@ -138,7 +137,9 @@ sudo systemctl restart <servicename>
 sudo usermod -aG libvirt <username>
 ```
 
-7. **Restart your debhost**. If you fail to do this, you may experience virtualization network problems and issues loading Virtual Machine Manager.
+7. **Restart your ubuhost**. If you fail to do this, you may experience virtualization network problems and issues loading Virtual Machine Manager.
+
+### left off here
 
 8. Once you've restarted, confirm your changes took affect by running the following as your regular user (don't use sudo):
 
