@@ -319,17 +319,19 @@ sudo less /var/log/installer/autoinstall-user-data
 ip address show
 ```
 
-3. Change the hostname to **ubu2**:
+3. Change the hostname to **ubu2** immediately:
 
 ```bash
-sudo hostnamectl set-hostname ubu2
+sudo hostnamectl set-hostname --static ubu2
 ```
 
-4. Reboot your system to apply the changes.
+4. Issue the hostnamectl command to confirm the changes have been applied.
 
 ```bash
-reboot
+sudo hostnamectl
 ```
+
+5. Logout and log back in to apply the changes to your command prompt.
 
 **Answer INVESTIGATION 2 observations / questions in your lab log book.**
 
