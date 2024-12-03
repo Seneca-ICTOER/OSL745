@@ -260,206 +260,76 @@ You can see that ubuhost has connected to the virtual network and iptables rules
 **Post Installation Tasks**
 
 1. Login to your **ubu1** vm.
-2. Issue the following command to obtain the IPv4 address for your deb1 VM to record in your Lab 2 logbook:
 
-```bash
-ip address show
-```
-
-3. Issue the following command:
-
-```bash
-sudo less /var/log/installer/autoinstall-user-data
-```
-
-4. Scroll through the file. What do you think this is?
-5. This file was generated when you installed **ubu1**. You will use this to automate the installation for **ubu2** with the identical configuration.
-6. Use cp to copy this file to your home directory.
-
-```bash
-sudo cp /var/log/installer/autoinstall-user-data /home/username
-```
-
-7. Issue **ls -l**. Note the file is owned by root. You need to change file ownership to your user, so you can copy it to your host (via sftp).
-8. Change the ownership of /home/username/autoinstall-user-data to your user.
-
-```bash
-chown jmcarman:jmcarman /home/username/autoinstall-user-data
-```
-
-9. On your **ubuhost**, open a terminal and **sftp** to your **ubu1** using the ip address you previously recorded.
-
-```bash
-sftp username@192.168.122.x
-```
-
-10. Issue the **ls** command to confirm the presence of autoinstall-user-data.
-11. Issue the following command to download the file to your host.
-
-```bash
-get autoinstall-user-data
-```
-
-## Left off here
-
-### Part 3: Installing deb2 (Non-Graphical Install)
-
-**VM Details:**
-
-- **VM Name (and hostname)**: deb2
-- **Debian Network Install with TTY (command line) Interface only**:
-- **VM Image Pathname**: /var/lib/libvirt/images/deb2.qcow2
-- **Memory**: 2048MB
-- **Disk space**: 20GB
-- **CPUs**: 1
-
-**Perform the following steps:**
-
-1. Create the VM (called **deb2**) as you did with the **deb1** VM.
-2. Launch `virt-manager`.
-3. Click the **Create a new VM icon** located near the top left-corner of the application window.
-4. Select the **Local install media** option and click **Forward**.
-5. Browse to the location of your ISO image. (probably ~/Downloads) and select the iso image
-6. If the Operating System is not auto detected, uncheck the **"Automatically detect from the installation media"** and Choose **Debian 11**, and click **Forward**.
-7. Set **Memory**: size to **2048** MB and **CPUs** to **1**, then click **Forward**.
-8. Set **Hard Disk** size to **20** GB and click **Forward**.
-9. Enter the Name: **deb2**, AND then select the option: **Customize configuration before install**, and click **Finish**.
-10. Another dialog will appear. Click **CPUs** (or "processors") and on right-side under Configuration select **Copy Host CPU Configuration**, click **Apply**, and then click **Begin Installation** at the top left-hand side.
-11. When the installer starts select ""Graphical Install" and press enter
-12. Select **English** as the language
-13. Select **Canada** as the location
-14. Select **American English** as the keyboard
-15. Enter a **Hostname** of **deb2**
-16. Leave the **Domain name**: _blank_
-17. **Do NOT set a root password**
-
-    > ![caution](/img/caution.png) > **Remember to user the same username and password on all of your VM's**
-
-18. Enter your **Full name**
-19. Enter your **Username**
-20. Enter your **password** twice.
-21. Select the **Eastern** time zone
-22. When asked for **Partitioning method**: choose **Guided - use entire disk and setup LVM**
-23. Select **Virtual disk 1(vda)**
-24. Select **Separate /home partition**
-25. Select **yes** to **Write the changes to disk and configure LVM**
-26. Accept the default **Amount of volume group to use for guided partitioning**
-    ![deb2part](/img/deb2part.png)
-27. Select **Yes** to **Write the changes to disks**
-28. Select **No** to **Scan extra installation media**
-29. Select **No** to **Participate in the package survey**
-30. On the **Software Selection Screen** uncheck **Debian desktop environment** and **Gnome**. Also add the selection **SSH Server**
-    ![softsel2](/img/softsel2.png)
-
-31. Select **Yes** to **Install the GRUB boot loader**
-32. Select **/dev/vda** as the **Device for boot loader installation**
-33. When the installation is complete **Reboot**
-    > ![caution](/img/caution.png)
-    > You may need to go into the VM details and remove the media from the **CDROM** device
-
-**Post Installation Tasks**
-
-1. First change the **tty** display font.
+2. First change the **tty** display font.
 
 ```bash
 # Reconfigure the console font
 sudo dpkg-reconfigure console-setup
 ```
 
-![deb3tty](/img/deb3tty.png)
+![ubu1tty](/img/deb3tty.png)
 
-2. Select **UTF-8**
-3. Select **Latin1**
-4. Select **Terminus**
-5. Select **11x22**
+3. Select **UTF-8**
+4. Select **Guess optimal character set**
+5. Select **Terminus**
+6. Select **14x28**
 
 You can experiment with different settings for Font and Font size.
 
-6. Repeat the steps as you did in Lab 1 to **set the root account password**, **perform a system update**, and **disable AppArmor**.
-7. Issue the following command to obtain the IPv4 address for your **deb2** VM to record in your Lab 2 logbook:
+7. Issue the following command to obtain the IPv4 address for your deb1 VM to record in your Lab 2 logbook:
 
 ```bash
 ip address show
 ```
 
-### Part 4: Installing deb3 using a preseed file
+8. Issue the following command:
+
+```bash
+sudo less /var/log/installer/autoinstall-user-data
+```
+
+9. Scroll through the file. What do you think this is?
+10. This file was generated when you installed **ubu1**.
+
+### Part 3: Cloning ubu1 as ubu2
 
 **VM Details:**
 
-- **VM Name (and hostname)**: deb3
-- **Debian Automated Install with preseed file (command line) Interface only**:
-- **VM Image Pathname**: /var/lib/libvirt/images/deb3.qcow2
-- **Preseed URL**: [https://raw.githubusercontent.com/OPS245/debian-labs/main/deb3-preseed.cfg](https://raw.githubusercontent.com/OPS245/debian-labs/main/deb3-preseed.cfg)
+- **VM Name (and hostname)**: ubu2
+- **VM Image Pathname**: /var/lib/libvirt/images/ubu2.qcow2
 - **Memory**: 2048MB
 - **Disk space**: 15GB
 - **CPUs**: 1
 
-**Preseed Installations**
-
-1. **READ** the first 6 sections of the following [Debian wiki Document](https://wiki.debian.org/DebianInstaller/Preseed)
-
-Preseed files can be be quite complex and difficult to create from scratch. Debian provides an example preseed file that documents the default settings.
-
-[Example preseed file](https://www.debian.org/releases/stable/example-preseed.txt)
-
-We are going to use this [preseed file](https://raw.githubusercontent.com/OPS245/debian-labs/main/deb3-preseed.cfg) to install our **deb3** VM.
-
-2.  **Read** the preseed file and answer the following questions
-
-- What locale will be chosen?
-- What mirror will be used?
-- Will the root account be enabled?
-- What is the regular user account "Full Name"?
-- What is the regular user account name?
-- what is the regular user's password?
-- Will the account have access to `sudo`?
-- What time zone will be selected?
-- Will the ssh server be installed?
-- What will the hostname be?
-- What partitions or LVM volumes will be created?
-
 **Perform the following steps:**
 
-1. Create the VM (called **deb3**) as you did with the **deb2** VM.
-2. Launch `virt-manager`.
-3. Click the **Create a new VM icon** located near the top left-corner of the application window.
-4. Select the **Local install media** option and click **Forward**.
-5. Browse to the location of your ISO image. (probably ~/Downloads) and select the iso image
-6. If the Operating System is not auto detected, uncheck the **"Automatically detect from the installation media"** and Choose **Debian 11**, and click **Forward**.
-7. Set **Memory**: size to **2048** MB and **CPUs** to **1**, then click **Forward**.
-8. Set **Hard Disk** size to **15** GB and click **Forward**.
-9. Enter the Name: **deb3**, AND then select the option: **Customize configuration before install**, and click **Finish**.
-10. Another dialog will appear. Click **CPUs** (or "processors") and on right-side under Configuration select **Copy Host CPU Configuration**, click **Apply**, and then click **Begin Installation** at the top left-hand side.
-11. When the installer starts hit the **ESC** key to access the **boot:** prompt
-12. At the **boot:** prompt enter the following and type enter
-
-```
-auto url=https://raw.githubusercontent.com/OPS245/debian-labs/main/deb3-preseed.cfg
-```
-
-![deb3boot](/img/deb3boot.png)
-
-The installer should start and will perform an auto install using the information in the **preseed** file. When **deb3** reboots login to the **tty** as the user **ops245**.
+1. Launch **virt-manager**.
+2. Right click on **ubu1** and select **clone**.
+3. Set the **Name** to **ubu2**.
+4. Click **Clone**.
 
 **Post Installation Tasks**
 
-1. Follow the same procedure to set the TTY(console) font to your preference.
-2. Create a new regular user account and password that matches your other VM's (We will learn more about these commands in a future lab)
+1. Repeat the steps from your **ubu1** install to change your **tty** font.
+
+2. Issue the following command to obtain the IPv4 address for your **ubu2** VM to record in your Lab 2 logbook:
 
 ```bash
-# Create the user
-sudo useradd -m -s /bin/bash -c "Full Name" <username>
-
-# Set the users password
-sudo passwd <username>
-
-# Add the user to the sudo group
-sudo usermod -aG sudo <username>
+ip address show
 ```
 
-3. Type `exit` to logout and then login as the new user
-4. Test **sudo** access using the command `sudo whoami`
-5. Follow the same process as you did for previous VM's to enable the **root** account, perform an update, and disable the apparmor service
+3. Change the hostname to **ubu2**:
+
+```bash
+sudo hostnamectl set-hostname ubu2
+```
+
+4. Reboot your system to apply the changes.
+
+```bash
+reboot
+```
 
 **Answer INVESTIGATION 2 observations / questions in your lab log book.**
 
@@ -484,21 +354,7 @@ As part of this investigation you will learn how to switch over to the root acco
 > - Create a compressed copy of your **Disk Images** using the **gzip** command.
 > - Backup the VM xml configuration using the **virsh** shell command.
 
-The `virsh` command is a command line tool/shell for managing VM's
-
-We use it to connect to the hypervisor and then interact with our VM's
-
-In order to use the **virsh** command as a regular user to connect to our VM's we must configure an ENVIRONMENT variable.
-
-1. Edit the file `~/.bashrc` as your regular user on `debhost`
-2. Add the following to the file
-
-```bash
-# virsh connection variable
-export LIBVIRT_DEFAULT_URI='qemu:///system'
-```
-
-3. Logout and login again to `debhost`
+The `virsh` command is a command line tool/shell for managing VM's. We use it to connect to the hypervisor and then interact with our VM's
 
 The following example `virsh` commands will be useful
 
@@ -532,18 +388,36 @@ To view the VM in a window without launching `virt-manager`
 virt-viewer <vmname> &
 ```
 
-2. Shut down your **deb1**, **deb2**, and **deb3** VMs. (Use the `virsh` command)
+**On ubuhost**
+
+1. Shut down your **ubu1**, and **ubu2** VMs. (Use the `virsh` command)
    > ![caution](/img/caution.png)
-   > You can shutdown the VM's from the user interface, (For _deb2_ and _deb3_, which are CLI-only, you can issue the following command to shutdown: `sudo poweroff`, or you can use the `virsh` command.
+   > You can shutdown the VM's by issuing the following command to shutdown: `sudo poweroff`, or you can use the `virsh` command.
    > Please be patient, the VMs will shut down!
-3. Create a directory for your backups. `mkdir ~/backups`
-4. Enter the command `virsh dumpxml deb1`
+2. Create a directory for your backups.
 
-   This command will output the xml data that is used to define (create) this VM
-   If we save this output we could use that xml data to recreate the VM
+```bash
+mkdir ~/backups
+```
 
-5. Enter the command `virsh dumpxml deb1 > ~/backups/deb1.xml` to save a copy of the output.
-6. Enter 2 more commands to save the xml data for `deb2` and `deb3`
+3. Enter the command
+
+```bash
+virsh dumpxml ubu1
+```
+
+This command will output the xml data that is used to define (create) this VM
+If we save this output we could use that xml data to recreate the VM
+
+5. Enter the command
+
+```bash
+virsh dumpxml ubu1 > ~/backups/ubu1.xml
+```
+
+this will save a copy of the output.
+
+6. Repeat the steps to save the xml data for `ubu2` to the file `~/backups/ubu2.xml`
 
    Backing up the xml data only has to be done when the VM is created, or if the configuration is modified.
 
@@ -552,21 +426,21 @@ virt-viewer <vmname> &
 
 > `sudo -i` will start a new shell as the root user, you can run a number of commands and then type `exit` to return to your previous shell.
 
-9. Change to the images directory: `cd /var/lib/libvirt/images/`. Note that you did not need to use sudo, as you are already using elevated permissions.
+9.  Change to the images directory: `cd /var/lib/libvirt/images/`. Note that you did not need to use sudo, as you are already using elevated permissions.
 10. Type `ls -lh` to see the contents
-11. To make a compressed copy of your **deb1.qcow2**, **deb2.qcow2**, and **deb3.qcow2** files we will use the `gzip` command.
+11. To make a compressed copy of your **ubu1.qcow2**, and **ubu2.qcow2** files we will use the `gzip` command.
 
-    The `gzip` command will compress the file in place and rename the file with a `.gz` extension.
-    However, this will make the file unusable and doesn't create a copy. We will use STDIN and STDOUT redirection to overcome this.
+        The `gzip` command will compress the file in place and rename the file with a `.gz` extension.
+        However, this will make the file unusable and doesn't create a copy. We will use STDIN and STDOUT redirection to overcome this.
+
+    > The following commands will create a compressed backup of ubu1 and ubu2's virtual disks. These commands will take time (approximately 3-5 minutes per VM) to complete. Be patient.
 
 12. Issue the commands:
 
 ```bash
-gzip < deb1.qcow2 > ~YourRegularUsername/backups/deb1.qcow2.gz
+gzip < ubu1.qcow2 > ~YourRegularUsername/backups/ubu1.qcow2.gz
 
-gzip < deb2.qcow2 > ~YourRegularUsername/backups/deb2.qcow2.gz
-
-gzip < deb3.qcow2 > ~YourRegularUsername/backups/deb3.qcow2.gz
+gzip < ubu2.qcow2 > ~YourRegularUsername/backups/ubu2.qcow2.gz
 ```
 
 **NOTE**: Make certain to use the redirection signs "<" and "\>" properly in the command!
@@ -578,24 +452,24 @@ gzip < deb3.qcow2 > ~YourRegularUsername/backups/deb3.qcow2.gz
 > **NOTE**: Do **NOT** press `<ctrl>c` to cancel this process. If you do, your archive will become incomplete and your recovery will be corrupt.
 
 13. Compare the size of the compressed and original files (hint: use `ls -lh`). If file is very large (like 15GB), you didn't compress it and you need to remove that file and perform the previous step until you get it right!
-14. Once you are **sure you have all three VM disk images backed up**, use the `exit` command to revert back to your normal user.
+14. Once you are **sure you have both VM disk images backed up**, use the `exit` command to revert back to your normal user.
 
 ![vmbackup](/img/vmbackup.png)
 
 ### Part 2: Testing the backup
 
-1. Start the **deb3** VM and login.
+1. Start the **ubu2** VM and login.
    > ![caution](/img/caution.png) **THIS WILL DESTROY YOUR SYSTEM**
    >
-   > **Make certain that you are in your `deb3` VM and not in `debhost`!**
-1. Type this command inside the deb3 virtual machine: `sudo rm -rf /*` (ignore error messages).
+   > **Make certain that you are in your `ubu2` VM and not in `ubuhost`!**
+1. Type this command inside the ubu2 virtual machine: `sudo rm -rf /*` (ignore error messages).
 1. Type the command `sudo poweroff`, try other commands.
 1. Force the VM to poweroff and restart
 1. When the machine restarts it will not boot since all system files have been removed!
-1. Use the **Force Off** option to turn deb3 back off.
-1. Run `virt-manager` right click on the `deb3` VM and select **Delete** make sure that **Delete associated storage file** is selected and **Delete**
+1. Use the **Force Off** option to turn ubu2 back off.
+1. Run `virt-manager` right click on the `ubu2` VM and select **Delete** make sure that **Delete associated storage file** is selected and **Delete**
 
-   `deb3` is now completely gone. Time to test the backup!
+   `ubu2` is now completely gone. Time to test the backup!
 
 1. To restore the VM configuration:
 
@@ -604,13 +478,13 @@ gzip < deb3.qcow2 > ~YourRegularUsername/backups/deb3.qcow2.gz
 virsh list --all
 
 # Define a VM from xml data
-virsh define ~/backups/deb3.xml
+virsh define ~/backups/ubu2.xml
 
 # List all VM's
 virsh list --all
 ```
 
-8. To restore the `deb3` disk image file:
+8. To restore the `ubu2` disk image file:
 
 ```bash
 # Start a sudo shell
@@ -620,35 +494,35 @@ sudo -i
 cd /var/lib/libvirt/images
 
 # Restore file
-gunzip < ~YourRegularUserName/backups/deb3.qcow2.gz > deb3.qcow2
+gunzip < ~YourRegularUserName/backups/ubu2.qcow2.gz > ubu2.qcow2
 
 # Return to previous shell
 exit
 
 ```
 
-9. Start the `deb3` VM and login to make sure it was successfully restored
+9. Start the `ubu2` VM and login to make sure it was successfully restored
 
 > ![caution](/img/caution.png)**Shutting Down the Host while Virtual Machines are Running**
 >
 > If you shut down your host system while virtual machines are running, they will be suspended, and will resume the next time you boot your host system. Note that it is better to shut down the VMs prior to shutting down the host
 
-10. For the remainder of these labs, it is assumed that you will backup **both** the images and XML configuration files for **all** Virtual machines, when asked to backup your virtual machines. It is also highly recommended to backup these files to an external storage device (eg. USB key) in case the host machine gets "wiped" and you need to rebuild your HOST machine and then restore your Virtual Machines...
+10. For the remainder of these labs, it is assumed that you will backup **both** the images and XML configuration files for **all** Virtual machines, when asked to backup your virtual machines. It is also highly recommended to backup these files to an external storage device (eg. USB key) in case the host machine gets "wiped" and you need to rebuild your HOST machine and then restore your Virtual Machines.
 11. Answer this question in your log book:
 
 - In order to fully back up a virtual machine, what information should be saved in addition to the virtual machine image?
 
 **Answer INVESTIGATION 3 observations / questions in your lab log book.**
 
-## Investigation 4: Using Shell Scripts for VM Backup & Management
+## Investigation 4: Managing VMs from the Command Line and Using Shell Scripts for VM Backup & Management
 
 You will continue our use of Bash Shell scripting by first creating a Bash Shell script that will allow the Linux sysadmin to select their created VMs for backup. Afterwards you will download, view and run a couple of Bash Shell scripts that use the virsh command to start and stop your virtual machines.
 
 **Perform the following steps:**
 
-1. Start the **deb1** virtual machine, and stop the **deb2** and **deb3** virtual machines.
-2. Switch to the **debhost** machine, and open a shell terminal.
-3. Enter these admin commands into your **debhost** machine and note the result:
+1. Start the **ubu1** virtual machine, and stop the **ubu2** virtual machine.
+2. Switch to the **ubuhost** machine, and open a shell terminal.
+3. Enter these admin commands into your **ubuhost** machine and note the result:
 
 ```bash
 virsh list
@@ -662,20 +536,21 @@ virsh list --all
 virsh list --inactive
 ```
 
-4. Now, shut-down your deb1 VM normally, and close the deb1 VM window.
+4. Now, shut-down your ubu1 VM normally, and close the ubu1 VM window.
 5. Switch to your terminal and issue the command:
 
 ```bash
-virsh start deb1
+virsh start ubu1
 ```
 
-6. Using the appropriate command check to see if your deb1 VM is now running.
+6. Using the appropriate command check to see if your ubu1 VM is now running.
 7. There are other commands that can be used (such as **suspend**, or **shutdown**). The "shutdown" command may not always work since it relies on the guest handling a particular ACPI event. Why do you think it is useful to have commands to manipulate VMs?
-8. Since this is a text-based version of Linux, you do not need to turn off the screen-saver.
 
 **Virtual Machine Does not Shutdown from Command**
 
 If the Virtual machine fails to shutdown from the `virsh shutdown` command, then you can go to the **Virtual Machine manager** and **halt** or **shutdown** within the VM itself, then you can click the **PowerOff** button in the VM window. You'll want to avoid a forced shutdown since those are equivalent to yanking the power cord out of the wall on a physical machine!
+
+## Left off here
 
 9. Open a Bash shell terminal.
 10. Use a text editor (such as `vi` or `nano`) to create a Bash Shell script called: `~/bin/backupVM.bash`
