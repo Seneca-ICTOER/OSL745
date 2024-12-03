@@ -550,74 +550,25 @@ virsh start ubu1
 
 If the Virtual machine fails to shutdown from the `virsh shutdown` command, then you can go to the **Virtual Machine manager** and **halt** or **shutdown** within the VM itself, then you can click the **PowerOff** button in the VM window. You'll want to avoid a forced shutdown since those are equivalent to yanking the power cord out of the wall on a physical machine!
 
-## Left off here
+### Accept the Lab 2 GitHub Classroom assignment.
 
-9. Open a Bash shell terminal.
-10. Use a text editor (such as `vi` or `nano`) to create a Bash Shell script called: `~/bin/backupVM.bash`
-11. Enter the following text content into your file:
+#### Note: update this link
 
-```bash
-#!/bin/bash
+Use the following [link](https://classroom.github.com/a/CXNeI3Tr) to set up your lab 2 repository. You will be using this for this investigation.
 
+Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
 
-# backupVM.bash
-# Purpose: Backup VM images
-#
-# USAGE: ./backupVM.bash
-#
-# Author: *** INSERT YOUR NAME ***
-# Date: *** CURRENT DATE ***
+### Shared Computer (ie College PC) or Personal Computer: Accessing GitHub Codespaces
 
-user=$(whoami)
-if [ $user != "root" ] # only runs if using sudo or root
-then
- echo "You must run this script with root privileges. Please use sudo" >&2
- exit 1
-fi
-```
+Once you have set up your Lab 2 repository by following the link above (go back and do that if you missed it), you can access GitHub Codespaces from any browser on any device (PC, tablet, smart phone). Codespaces gives you access to Visual Studio Code, with direct access to your repository (without having to clone) from anywhere. It's perfect for a portable development environment. Login to GitHub (if you haven't already) and proceed.
 
-12. Save your editing session, but remain in the text editor.
-13. This shell script is designed particularly for your deb1, deb2, and deb3 VMS.
-14. The code displayed below will prompt the user if they wish for all VMs to be backed-up; otherwise, allow the user the option of specifying which VMs to be backed-up. Add the following code.
+You may have noticed in the link above you can click **Open in GitHub Codespaces**. Feel free to do so now. If you have already clicked past that window the next few steps will show you how to access it again (which is useful for future access attempts anyway). Click on **Code** and create a new codespace. Once you have created it, you can access it by clicking on the named link.
 
-**Make sure you edit the code with the correct username!**
+![Accessing GitHub Codespaces](/img/github-codespaces.png)
 
-```bash
-# Set variables for source path and backup path
-img_path="/var/lib/libvirt/images/"
-backup_path="/home/username/backups/"
+Once your Codespace has created, open the provided template called **vs**, and update the comment block to include **your name** and **today's date**.
 
-# prompt if all VMs to be backed-up
-read -p "Backup all VMs? (y|n):" answer
-
-# Backup all VMs if answer is yes
-if [ "$answer" = "y" ]
-then
- for num in 1 2 3 # Determinant loop for 3 arguments: 1, 2, and 3
- do
-  vm="deb${num}"
-  echo "Backing up VM ${vm}"
-  gzip < ${img_path}${vm}.qcow2 > ${backup_path}${vm}.qcow2.gz
-  echo "${vm} BACKUP DONE"
- done
-
-# Prompt for VM is answer is no
-elif [ "$answer" = "n" ]
-then
- read -p "Which VM should be backed up? (1|2|3): " numanswer
- until echo $numanswer | grep "^[123]$" >> /dev/null # Look for match of single digit: 1,2, or 3
- do
-  read -p "Invalid Selection. Select 1, 2, or 3: " numanswer
- done
- vm="deb${numanswer}"
- echo "Backing up VM ${vm}"
- gzip < ${img_path}${vm}.qcow2 > ${backup_path}${vm}.qcow2.gz
- echo "${vm} BACKUP DONE"
-else
- echo "Invalid Selection... Aborting program"
- exit 2
-fi
-```
+### Left off here
 
 15. Save, set the permissions, and then run that shell script to backup deb1. Confirm that this script did backup this image to ~/backups
 16. What happens if you enter an invalid answer to any of the prompts?
