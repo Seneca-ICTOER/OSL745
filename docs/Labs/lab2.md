@@ -552,15 +552,53 @@ virsh start ubu1
 
 If the Virtual machine fails to shutdown from the `virsh shutdown` command, then you can go to the **Virtual Machine manager** and **halt** or **shutdown** within the VM itself, then you can click the **PowerOff** button in the VM window. You'll want to avoid a forced shutdown since those are equivalent to yanking the power cord out of the wall on a physical machine!
 
+### Configuring SSH keys in your Ubuntu Host & GitHub
+
+You're going to want to configure secure remote access between your GitHub repository and your Ubuntu Host (**ubuhost**). Fortunately, you have the perfect tool available at your fingertips: SSH key pairs.
+
+Start your **ubuhost** virtual machine if it is not already running. Login, launch a terminal and issue the following command to generate a 4096 bit RSA keypair for your GitHub account's email address (replace username@email.com with your email address).
+
+```bash
+ssh-keygen -t rsa -b 4096 -C username@email.com
+```
+
+Accept the defaults and provide a secure passphrase (twice). Your keypair will be generated, with the public key saved as `id_rsa.pub` in `.ssh` (a hidden directory) in your home directory.
+
+Before copying this into your GitHub account settings, you'll want to test it. Issue the following command to test it:
+
+```bash
+ssh -T git@github.com
+```
+
+This should fail, because you haven't added your ssh key to GitHub.
+
+You should see the following output:
+
+![Testing the RSA keypair for github.com](/img/github-test-rsa.png)
+
+Issue the following command to view your public key.
+
+```bash
+cat .ssh/id_rsa.pub
+```
+
+- With your mouse, select the contents of the `cat` command (beginning with `ssh-rsa` and ending with `username@email.com`) and copy it.
+- Access the [SSH and GPG keys](https://github.com/settings/keys) settings in github.com (you will be prompted to login if you haven't already).
+- Click **New SSH key**, give it an appropriate title and paste in your public key (see following screenshot).
+
+![Adding your public key to github.com](/img/github-new-ssh-key.png)
+
+Try issuing the following command again. It should work now.
+
+```bash
+ssh -T git@github.com
+```
+
 ### Accept the Lab 2 GitHub Classroom assignment.
 
-#### Note: update this link
-
-Use the following [link](https://classroom.github.com/a/CXNeI3Tr) to set up your lab 2 repository. You will be using this for this investigation.
+Use the following [link](https://classroom.github.com/a/igcEQwgi) to set up your lab 2 repository. You will be using this for this investigation.
 
 Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
-
-### Shared Computer (ie College PC) or Personal Computer: Accessing GitHub Codespaces
 
 Once you have set up your Lab 2 repository by following the link above (go back and do that if you missed it), you can access GitHub Codespaces from any browser on any device (PC, tablet, smart phone). Codespaces gives you access to Visual Studio Code, with direct access to your repository (without having to clone) from anywhere. It's perfect for a portable development environment. Login to GitHub (if you haven't already) and proceed.
 
@@ -568,12 +606,137 @@ You may have noticed in the link above you can click **Open in GitHub Codespaces
 
 ![Accessing GitHub Codespaces](/img/github-codespaces.png)
 
+### Modifying the vs script
+
 Once your Codespace has created, open the provided template called **vs**, and update the comment block to include **your name** and **today's date**.
 
-### Left off here
+Examine the entire **vs** script. Note that the only sections left to complete are the function declarations. You should be able to understand the rest of the script, as the concepts were covered in OSL645.
 
-15. Save, set the permissions, and then run that shell script to backup deb1. Confirm that this script did backup this image to ~/backups
-16. What happens if you enter an invalid answer to any of the prompts?
+This script will:
+
+- Accept the following options from the command line:
+  - b: to backup virtual machines
+  - r: to restore virtual machines
+  - o vmname: when called with **b** or **r** will perform that action on just the virtual machine (vmname) provided
+  - f: used with **r** to indicate a fresh install of the host. This will install the virtualization software and updates.
+
+#### Functions
+
+Bash functions provide several benefits when writing and using shell scripts:
+
+1. **Code Reusability**: Functions allow you to recall code that you need to use multiple times. This reduces redundancy and makes your scripts more maintainable.
+
+2. **Modularity**: By breaking your script into functions, you can create modular code. Each function can perform a specific task, making your script easier to understand and debug.
+
+3. **Readability**: Functions can make your scripts more readable by giving meaningful names to blocks of code. This helps others (and yourself) understand what each part of the script is doing.
+
+4. **Maintainability**: When you need to update or fix a part of your script, you can do so in one place if that code is within a function. This makes maintenance easier and reduces the risk of introducing errors.
+
+5. **Parameterization**: Functions can accept parameters, allowing you to write more flexible and general-purpose code. This makes your scripts more adaptable to different situations.
+
+In this example, the `greet` function takes one parameter and prints the message **Hello World!**. This function can be reused with different parameters throughout the script.
+
+```bash
+#!/bin/bash
+
+# Define a function
+greet() {
+  echo "Hello, $1!"
+}
+
+# Call the function with a parameter
+greet "World"
+```
+
+### Writing the backup function
+
+Use the following code to write the backup function:
+
+```bash
+# A function to back up the virtual machines
+function backup() {
+
+	# Change directory to where the virtual machines are stored as files
+	cd $spath
+
+	# Use virsh dumpxml to create a backup of the xml file for the virtual machine
+	virsh dumpxml $vm >$dpath/$vm.xml
+
+	# tell the user the back up is in progress
+	echo "Creating backup of $vm in $dpath"
+
+	# Use touch to create the backup destination file if it doesn't exist, update the time and date stamp if it does
+	touch $dpath/$vm.qcow2.backup.gz
+
+	# gzip images and store them in back up directory, run in the background
+	$(gzip <$spath/$vm.qcow2 >$dpath/$vm.qcow2.backup.gz)&
+
+	# Call the progress function to show the user the backup is in process
+	progress
+
+	# Append the name of the virtual machine to the log message variable (logMsg)
+	logMsg="$logMsg $vm,"
+}
+```
+
+### Writing the restore function
+
+Use the following code to write the restore function:
+
+```bash
+# A function to restore the virtual machines
+function restore() {
+
+	# Change directory to where the virtual machine backups are stored
+	cd $spath
+
+	# Tell the user the restoration is in progress
+	echo "Restoring $vm"
+
+	# Use the gunzip command to unzip the backup file and restore it to /var/lib/libvirt/images
+	$(gunzip <$dpath/$vm.qcow2.backup.gz >$spath/$vm.qcow2)&
+
+	# Call the progress function to show the user the restoration is in process
+	progress
+
+	# Append the name of the virtual machine to the log message variable (logMsg)
+	logMsg="$logMsg $vm,"
+
+	# Copy the xml file to the /var/lib/libvirt/images directory
+	cp $spath/$vm.xml $dpath/$vm.xml
+
+	# Use virsh define to define the virtual machine
+	virsh define $vm.xml
+}
+```
+
+In Codespaces, give your vs script execute permission.
+
+```bash
+chmod u+X vs
+```
+
+- Stage your changes and commit them to GitHub.
+
+### Cloning your GitHub repository in your Ubuntu VM
+
+Issue the following command to clone your GitHub repository into your home directory.
+
+> **Important:** Be sure to replace `username` in the following command with YOUR GitHub username.
+
+```bash
+git clone git@github.com:OSL745/lab-2-username
+```
+
+Change to your lab directory, and run your script to create a fresh backup of all your VMs. If you get any errors, double check your script (in codespaces) against the lab instructions. The **only** things you should have modified are the **backup** and **restore** functions.
+
+```bash
+cd lab-2-username
+sudo ./vs -b
+```
+
+Now that you have a working backup script, you are expected to make a fresh backup of your VMs every lab. You will also want to copy these to an exteral USB flash drive. In the event your main drive fails, you will have the backup of your VMs and at worst only have to reinstall your host (Lab 1).
+
 17. You have completed lab2. Proceed to Completing The Lab, and follow the instructions for "lab sign-off".
 
 **Answer INVESTIGATION 4 observations / questions in your lab log book.**
