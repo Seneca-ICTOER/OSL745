@@ -648,6 +648,14 @@ greet() {
 greet "World"
 ```
 
+### Changing the value of dpath
+
+Change the value of the dpath variable to **YOUR** username:
+
+```bash
+dpath="/home/username/backups"
+```
+
 ### Writing the backup function
 
 Use the following code to write the backup function:
@@ -666,10 +674,10 @@ function backup() {
 	echo "Creating backup of $vm in $dpath"
 
 	# Use touch to create the backup destination file if it doesn't exist, update the time and date stamp if it does
-	touch $dpath/$vm.qcow2.backup.gz
+	touch $dpath/$vm.backup.gz
 
 	# gzip images and store them in back up directory, run in the background
-	$(gzip <$spath/$vm.qcow2 >$dpath/$vm.qcow2.backup.gz)&
+	$(gzip <$spath/$vm.qcow2 >$dpath/$vm.qcow2.gz)&
 
 	# Call the progress function to show the user the backup is in process
 	progress
@@ -694,7 +702,7 @@ function restore() {
 	echo "Restoring $vm"
 
 	# Use the gunzip command to unzip the backup file and restore it to /var/lib/libvirt/images
-	$(gunzip <$dpath/$vm.qcow2.backup.gz >$spath/$vm.qcow2)&
+	$(gunzip <$dpath/$vm.qcow2.gz >$spath/$vm.qcow2)&
 
 	# Call the progress function to show the user the restoration is in process
 	progress
