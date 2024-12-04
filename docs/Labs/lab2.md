@@ -715,7 +715,7 @@ function restore() {
 In Codespaces, give your vs script execute permission.
 
 ```bash
-chmod u+X vs
+chmod u+x vs
 ```
 
 - Stage your changes and commit them to GitHub.
