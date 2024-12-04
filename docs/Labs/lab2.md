@@ -442,7 +442,7 @@ this will save a copy of the output.
 ```bash
 gzip < ubu1.qcow2 > ~YourRegularUsername/backups/ubu1.qcow2.gz
 
-gzip < ubu2.qcow2 > ~YourRegularUsername/backups/ubu2.qcow2.gz
+gzip < ubu2.qcow2 > ~YourRegularUsername/backups/ubu2.qcow2.gz & progress --monitor --pid=$!
 ```
 
 **NOTE**: Make certain to use the redirection signs "<" and "\>" properly in the command!
@@ -452,6 +452,8 @@ gzip < ubu2.qcow2 > ~YourRegularUsername/backups/ubu2.qcow2.gz
 > It may look like the command prompt is stuck but it could take a while for gzip to compress an entire operating system.
 >
 > **NOTE**: Do **NOT** press `<ctrl>c` to cancel this process. If you do, your archive will become incomplete and your recovery will be corrupt.
+>
+> Note the difference between the backup for **ubu1**, and **ubu2** which included the additional progress command. This is a useful utility.
 
 13. Compare the size of the compressed and original files (hint: use `ls -lh`). If file is very large (like 15GB), you didn't compress it and you need to remove that file and perform the previous step until you get it right!
 14. Once you are **sure you have both VM disk images backed up**, use the `exit` command to revert back to your normal user.
