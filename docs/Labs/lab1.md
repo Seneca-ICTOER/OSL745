@@ -395,61 +395,145 @@ Therefore, it makes sense to also have a record of the installed software and im
 
 You learned about creating and running Bash Shell Scripts in OSL645. Shell scripts help Linux users and system administrators to automate repetitive tasks to become more efficient and to help them save time. We can take what we have learned from the commands above and put them into a bash script to generate information reports for your newly-installed Linux host machine.
 
-### Create a GitHub Classroom assignment here
+### Configuring SSH keys in your Ubuntu Host & GitHub
 
-1. Create a new directory called "bin" in your home directory (~/bin) and then create a new file in your **~/bin** directory called **myreport.bash**
-2. Populate the beginning of the file with sh-bang line and block comment describing what this script does:
+You're going to want to configure secure remote access between your GitHub repository and your Ubuntu Host (**ubuhost**). Fortunately, you have the perfect tool available at your fingertips: SSH key pairs.
+
+Start your **ubuhost** virtual machine if it is not already running. Login, launch a terminal and issue the following command to generate a 4096 bit RSA keypair for your GitHub account's email address (replace username@email.com with your email address).
 
 ```bash
-#!/usr/bin/bash
-# Author: *** INSERT YOUR NAME ***
-# Date:   *** CURRENT DATE ***
-
-# Purpose: Creates system info report
-# USAGE: ./myreport.bash
+ssh-keygen -t rsa -b 4096 -C username@email.com
 ```
 
-3. Add a line that will print out the heading **System Report**
+Accept the defaults and provide a secure passphrase (twice). Your keypair will be generated, with the public key saved as `id_rsa.pub` in `.ssh` (a hidden directory) in your home directory.
 
-```
-echo "System Report"
-```
+Before copying this into your GitHub account settings, you'll want to test it. Issue the following command to test it:
 
-4. Save your script and run it. Does it work?
-5. You'll notice that the script is currently sending its output to your terminal (STDOUT). We can just use output redirection on the command line when you run the script to send the output to **~/bin/sysreport.txt**.
-6. Open your script in a text editor (like vim) again, and add the following lines below the echo statement:
-
-```
-# Print a heading for the date command output
-date=$(date +'%A %B %d, %Y (%I:%M %p)')
-echo "Report Date:  $date"
+```bash
+ssh -T git@github.com
 ```
 
-7. Save your script and run it again. Observe the output?
-8. Based on the previous investigation and output, add the extra commands for your script to also output (with appropriate headings):
+This should fail, because you haven't added your ssh key to GitHub.
 
-   - The hostname of the machine.
-   - The kernel version.
-   - The IP address
-   - The list of all installed packages.
+You should see the following output:
 
-9. Run your script to make sure it works. Note that the output does not need to match investigation 3 exactly, but it should be very close.
-10. What other commands and information could we document? Perhaps a list of storage devices, partitions and mount points?
+![Testing the RSA keypair for github.com](/img/github-test-rsa.png)
+
+Issue the following command to view your public key.
+
+```bash
+cat .ssh/id_rsa.pub
+```
+
+- With your mouse, select the contents of the `cat` command (beginning with `ssh-rsa` and ending with `username@email.com`) and copy it.
+- Access the [SSH and GPG keys](https://github.com/settings/keys) settings in github.com (you will be prompted to login if you haven't already).
+- Click **New SSH key**, give it an appropriate title and paste in your public key (see following screenshot).
+
+![Adding your public key to github.com](/img/github-new-ssh-key.png)
+
+Try issuing the following command again. It should work now.
+
+```bash
+ssh -T git@github.com
+```
+
+### Accept the Lab 1 GitHub Classroom assignment.
+
+Use the following [link](https://classroom.github.com/a/bKjnUSIp) to set up your lab 1 repository. You will be using this for this investigation.
+
+Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
+
+Once you have set up your Lab 1 repository by following the link above (go back and do that if you missed it), you can access GitHub Codespaces from any browser on any device (PC, tablet, smart phone). Codespaces gives you access to Visual Studio Code, with direct access to your repository (without having to clone) from anywhere. It's perfect for a portable development environment. Login to GitHub (if you haven't already) and proceed.
+
+You may have noticed in the link above you can click **Open in GitHub Codespaces**. Feel free to do so now. If you have already clicked past that window the next few steps will show you how to access it again (which is useful for future access attempts anyway). Click on **Code** and create a new codespace. Once you have created it, you can access it by clicking on the named link.
+
+![Accessing GitHub Codespaces](/img/github-codespaces.png)
+
+### Cloning your GitHub repository in ubuhost
+
+Issue the following command to clone your GitHub repository into your home directory.
+
+> **Important:** Be sure to replace `username` in the following command with YOUR GitHub username.
+
+```bash
+git clone git@github.com:OSL745/lab-1-username
+```
+
+- Issue a command to confirm the repository has been cloned on your Ubuntu VM.
+- Issue a command to change into your **lab-1-username** directory.
+
+Confirm the contents have been written to your **lab-1-username** directory. You should see the following files:
+
+- LICENSE
+- README.md
+- myreport.bash
+
+### Modifying the vs script
+
+In codespaces has created, open the provided template called **vs**, and update the comment block to include **your name** and **today's date**.
+
+Edit _myreport.bash_ file to contain the following:
+
+```bash
+#!/bin/bash
+# Author:
+# Date:
+# Purpose: Create system information report
+# Usage: ./myreport.bash
+#
+
+# Create a system information report using a here document, redirection the output to /home/$USER/sysreport.txt
+cat << EOF > /home/$USER/sysreport.txt
+System Report
+$(date +'%A %B %d, %Y (%I:%M %p)')
+
+Hostname: $(hostname)
+Kernel Version: $(uname -r)
+IP Addresses:
+$(ip a)
+
+Installed Packages:
+$(apt list --installed)
+EOF
+```
+
+1. Issue the **chmod** command to add **execute permission** for the **user** the **users1.bash** file.
+2. Save your editing changes, stage and commit your changes to GitHub.
+
+- What other commands and information could we document? Perhaps a list of storage devices, partitions and mount points?
+
+On **ubuhost**, open a **terminal** and confirm you are in your **home** directory.
+
+3. Issue the following Linux command to change to the local clone of your GitHub repository.
+
+```bash
+cd lab-1-username
+```
+
+4. Pull your changes into **ubuhost**
+
+```bash
+git pull
+```
+
+5. Run your script and observe the output.
+
+```bash
+./myreport.bash
+```
+
+6. Did it work? View the contents of **~/sysreport.txt**
 
 ## Lab 1 Sign-Off
 
-### Add check script here
-
-It is extremely important that you complete Lab 1 correctly as this Debian install will be the platform on which the rest of the course will be completed.
+It is extremely important that you complete Lab 1 correctly as this Ubuntu install will be the platform on which the rest of the course will be completed.
 
 When you have completed Lab 1, ask your instructor to come and check your installation. **This must be done in class.** They will ask you to complete a set of tasks/commands. If everything has been completed correctly, your instructor will mark your Lab 1 as complete.
 
 ## Practice For Quizzes, Tests, Midterm & Final Exam
 
-1. List the major screens (steps) in the installation of Debian 12.
-2. List the steps for updating the Debian software.
-3. What is the **home** directory for the user "root"?
-4. How do you determine the host name of your GNU/Linux workstation?
-5. What command can display the NIC MAC address?
-6. What command is used to get a list of running processes on your newly-installed system?
-7. Write the Linux command to download the on-line file: http://linux.server.org/package.tar.gz
+1. List the major screens (steps) in the installation of Ubuntu.
+1. List the steps for updating software.
+1. How do you determine the host name of your GNU/Linux workstation?
+1. What command can display the NIC MAC address?
+1. What command is used to get a list of running processes on your newly-installed system?

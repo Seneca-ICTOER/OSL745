@@ -554,48 +554,6 @@ virsh start ubu1
 
 If the Virtual machine fails to shutdown from the `virsh shutdown` command, then you can go to the **Virtual Machine manager** and **halt** or **shutdown** within the VM itself, then you can click the **PowerOff** button in the VM window. You'll want to avoid a forced shutdown since those are equivalent to yanking the power cord out of the wall on a physical machine!
 
-### Configuring SSH keys in your Ubuntu Host & GitHub
-
-You're going to want to configure secure remote access between your GitHub repository and your Ubuntu Host (**ubuhost**). Fortunately, you have the perfect tool available at your fingertips: SSH key pairs.
-
-Start your **ubuhost** virtual machine if it is not already running. Login, launch a terminal and issue the following command to generate a 4096 bit RSA keypair for your GitHub account's email address (replace username@email.com with your email address).
-
-```bash
-ssh-keygen -t rsa -b 4096 -C username@email.com
-```
-
-Accept the defaults and provide a secure passphrase (twice). Your keypair will be generated, with the public key saved as `id_rsa.pub` in `.ssh` (a hidden directory) in your home directory.
-
-Before copying this into your GitHub account settings, you'll want to test it. Issue the following command to test it:
-
-```bash
-ssh -T git@github.com
-```
-
-This should fail, because you haven't added your ssh key to GitHub.
-
-You should see the following output:
-
-![Testing the RSA keypair for github.com](/img/github-test-rsa.png)
-
-Issue the following command to view your public key.
-
-```bash
-cat .ssh/id_rsa.pub
-```
-
-- With your mouse, select the contents of the `cat` command (beginning with `ssh-rsa` and ending with `username@email.com`) and copy it.
-- Access the [SSH and GPG keys](https://github.com/settings/keys) settings in github.com (you will be prompted to login if you haven't already).
-- Click **New SSH key**, give it an appropriate title and paste in your public key (see following screenshot).
-
-![Adding your public key to github.com](/img/github-new-ssh-key.png)
-
-Try issuing the following command again. It should work now.
-
-```bash
-ssh -T git@github.com
-```
-
 ### Accept the Lab 2 GitHub Classroom assignment.
 
 Use the following [link](https://classroom.github.com/a/igcEQwgi) to set up your lab 2 repository. You will be using this for this investigation.
