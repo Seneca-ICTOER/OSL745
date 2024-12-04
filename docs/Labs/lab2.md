@@ -677,10 +677,7 @@ function backup() {
 	touch $dpath/$vm.backup.gz
 
 	# gzip images and store them in back up directory, run in the background
-	$(gzip <$spath/$vm.qcow2 >$dpath/$vm.qcow2.gz)&
-
-	# Call the progress function to show the user the backup is in process
-	progress
+	gzip < $spath/$vm.qcow2 > $dpath/$vm.qcow2.gz & progress --monitor --pid=$!
 
 	# Append the name of the virtual machine to the log message variable (logMsg)
 	logMsg="$logMsg $vm,"
@@ -702,10 +699,7 @@ function restore() {
 	echo "Restoring $vm"
 
 	# Use the gunzip command to unzip the backup file and restore it to /var/lib/libvirt/images
-	$(gunzip <$dpath/$vm.qcow2.gz >$spath/$vm.qcow2)&
-
-	# Call the progress function to show the user the restoration is in process
-	progress
+	gunzip < $dpath/$vm.qcow2.gz > $spath/$vm.qcow2 & progress --monitor --pid=$!
 
 	# Append the name of the virtual machine to the log message variable (logMsg)
 	logMsg="$logMsg $vm,"
