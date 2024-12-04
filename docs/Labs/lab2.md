@@ -71,10 +71,10 @@ We will now install the KVM package in order to create our VMs. We will also be 
 sudo apt update && sudo apt upgrade
 ```
 
-3. Install the kvm virtualisation packages
+3. Install the kvm virtualisation packages, and a package required for the backup script later in the lab:
 
 ```bash
-sudo apt install virt-manager
+sudo apt install virt-manager progress
 ```
 
 **About KVM**
