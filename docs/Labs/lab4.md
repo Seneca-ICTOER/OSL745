@@ -1,435 +1,693 @@
 ---
 id: lab4
-title: Lab 4 - Virtual Networks
+title: Lab 4 - Setup and Configure SSH
 sidebar_position: 4
 description: Lab 4
 ---
 
-# Lab 4: Virtual Networks
+# Lab 4: Setup and Configure SSH
 
 ## Lab Preparation
 
 ### Purpose and Objectives of Lab 4
 
-In this lab, you will learn the basics of networking by using your **Virtual Machines**. You will first set up a **virtual network** among those machines. In addition, you will learn to set up **local hostname resolution** (/etc/hosts), **service/port number resolution** for troubleshooting purposes, and use shell scripts with arrays to store network configuration data.
+Setting up a computer network is very important, but often the Linux system administrator must also perform networking maintenance which includes **trouble-shooting, repairing network connection issues** and **maintaining network security**. System administrators need to **protect or "harden" their computer networks from "penetration" from unauthorized computer users**. Hardening a computer system can range from running an **IDS** (Intrusion Detection System) to monitoring and flagging suspicious activity to implementing security policies which could range from running firewalls to setting locked screen savers on workstations.
 
-![My Network](/img/My-network.png)
+In this lab, you will learn how to configure the SSH service in Debian to allow users to securely access and share data between authorized personnel. In addition. Topics such as, using **Public Key Authentication**, setting up an **SSH tunnel** in order to securely run graphical applications safely among computers in the network, and **disabling root login** into a Linux machine. You will also learn how to configure firewall rules to control the flow of packets in and out of your computer.
 
-Setting up networks is an essential operation for a system administrator. Maintaining network connectivity and securing the network are also essential operations. In this lab, we will **configure a private virtual network using static IP addresses**. We will learn how to setup a DHCP network in lab 8.
+![Firewall](/img/Firewall.png)
+
+Preventing unauthorized access is one of the many day-to-day operations for a Linux system administrator and/or security specialist
 
 **Main Objectives**
 
-1. Configure a private virtual network for your **VMs** and your **debhost** machine
-2. Configure network interfaces for your Virtual Machines using both **graphical** and **command-line** utilities.
-3. Use **local hostname resolution** to resolve hostnames to the corresponding IP addresses
-4. Use common networking utilities to associate network services with port numbers for troubleshooting purposes
+1. To use the **ssh** and **scp** commands to access and copy data between Linux servers in a secure manner
+2. Configure, and start the Secure Shell Service (**ssh**)
+
+   - To refuse root login from remote Linux servers or limit users that are permitted to ssh into Linux servers
+
+3. Generate Public/Private keypairs to enable secure authentication to Linux servers
+4. Use ssh to **tunnel Xwindow applications**
+5. Configure the firewall to set a default policy and add exceptions to the policy chains
 
 ### Minimum Required Materials
 
 - **Solid State Drive**
 - **USB key** (for backups)
-- **Lab6 Log Book**
+- **Lab7 Log Book**
 
 ### Linux Command Reference
 
 **Networking Utilities**
 
-| [ip](http://man7.org/linux/man-pages/man8/ip.8.html) | [ping](http://man7.org/linux/man-pages/man8/ping.8.html) | [arp](http://man7.org/linux/man-pages/man8/arp.8.html) | [ss](http://man7.org/linux/man-pages/man8/ss.8.html) |
-
-**Networking Configuration Files**
-
-- [Debian Network Configuration wiki page](https://wiki.debian.org/NetworkConfiguration)
-- [resolv.conf](https://linux.die.net/man/5/resolv.conf)
+| [ssh](http://man7.org/linux/man-pages/man1/ssh.1.html) | [ssh-keygen](http://man7.org/linux/man-pages/man1/ssh-keygen.1.html) | [ssh-copy-id](http://linux.die.net/man/1/ssh-copy-id) | [scp](http://man7.org/linux/man-pages/man1/scp.1.html) | [sftp](http://man7.org/linux/man-pages/man1/sftp.1.html) | [ss](http://man7.org/linux/man-pages/man8/ss.8.html) | [ip](http://man7.org/linux/man-pages/man8/ip.8.html) | [ping](http://man7.org/linux/man-pages/man8/ping.8.html) | [arp](http://man7.org/linux/man-pages/man8/arp.8.html) | [iptables](https://wiki.debian.org/iptables) |
+| ------------------------------------------------------ | -------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
 
 **Additional Utilities**
 
-- [find](http://man7.org/linux/man-pages/man1/find.1.html)
-- [tail](http://man7.org/linux/man-pages/man1/tail.1.html)
-- [cp](http://man7.org/linux/man-pages/man1/cp.1.html)
+- [hostname](http://man7.org/linux/man-pages/man7/hostname.7.html)
+- [hostnamectl](https://man7.org/linux/man-pages/man1/hostnamectl.1.html)
 
-## Investigation 1: Configuring A Virtual Network
+**Managing Services**
 
-For the remainder of this course, we will focus on configuring our VM's to communicate across a (Virtual) network. This lab will focus on setting up a virtual network, connecting our VMs and debhost machine to the network, and configuring local hostname resolution to make it more convenient to use, troubleshoot, and protect. **Lab 7** will focus on configuring SSH and making access to the virtual network more secure. Finally, **lab 8** will focus on configuring a DHCP server to automatically assign an IP addresses and other configuration details to DHCP clients.
+- [systemctl](http://www.dsm.fordham.edu/cgi-bin/man-cgi.pl?topic=systemctl)
 
-### Part 1: Configuring a Private Network (Via Virtual Machine Manager)
+**Configuration Files**
 
-If we are going to setup a private virtual network, there are a number of steps to perform: First, define a new private network in the **Virtual Machine Manager** application; and second, **configure each of our VMs to connect to this new private network**. In Part 1, we will be perform the first operation. In part 2, we will be performing the second operation for all VMS (graphical and command-line).
+- [ssh_config](https://linux.die.net/man/5/ssh_config)
+- [sshd_config](https://linux.die.net/man/5/sshd_config)
 
-Before configuring our network, we want to **turn off dynamic network configuration for our Virtual Machines** by turning off the "**default**" virtual network. We will then define our private network.
+**SSH Reference**
 
-![ops245net](/img/ops245net.png)
+- [Debian SSH Guide](https://wiki.debian.org/SSH)
+- [A good HOW-TO to make ssh more secure](https://linuxconfig.org/how-to-secure-ssh)
 
-This diagram shows the current network configuration of your **debhost** machine in relation to your **Virtual Machines**. In this section, you will be learning to change the default network settings for both your **debhost** machine and **VMs** to belong to a **virtual network** using fixed IP Addresses.
+## Investigation 1: Installing And Maintaining An SSH Server
+
+So far, you have learned to use the **ssh** utility to establish a secure connection to a remote host in order to perform Linux administration tasks. You have issued the ssh command, which is actually the **client** application for ssh. In order to connect to a remote server (like your VMs, Matrix, etc) it needs to run the **SSH service** (aka **sshd**).
+
+In this section, you will learn how to configure an SSH server and restart the ssh service for an existing VM. You will also learn how to configure, restart, and use SSH in order to create secure connections between your Linux machines (host as well as VMs).
+
+### Part 1: Confirming sshd service is Running on VMs.
 
 **Perform the following steps:**
 
-1. Launch your **debhost** and start the Virtual Machine Manager.
-2. Make certain that the **deb1**, **deb2**, and **deb3** virtual machines are **powered off**.
-3. In the Virtual Machine Manager dialog box, select **Edit-> Connection Details**.
-   ![vmmedit](/img/vmmedit.png)
-4. In the **Connection Details** dialog box, select the **Virtual Networks** tab
-5. Click to de-select the **Autostart (on boot)** check-box options and click the **Apply** button.
-6. Stop the default network by clicking on the **stop** button at the bottom left-side of the dialog box.
-   ![vmmdefnet](/img/vmmdefnet.png)
-7. Click the **add** button (the button resembles a "plus sign") to add a new network configuration.
-8. Type the network name called: **network1**.
-9. Click on IPv4 configuration, change the **Network:** address to **192.168.245.0/24**
-10. Uncheck the **Enable DHCPv4** checkbox and click the **Finish** button.
-    ![vmmnetwork1](/img/vmmnetwork1.png)
-11. Select **network1** and make sure the **State:** is Active and **Autostart: On Boot** is enabled.
-    ![vmmnet1start](/img/vmmnet1start.png)
-12. Close the Connection Details window and open a terminal on **debhost**
-13. Confirm that **debhost** is connected to **network1** and gather network information with the following commands:
+Some tasks in this part of the investigation **require you to be connected to Seneca's VPN**.
+
+- If you are running your installation through VMWare, then you can use the [instructions provided by ITS](https://students.senecapolytechnic.ca/spaces/186/it-services/wiki/view/1025/student-vpn) to connect to it from your Windows machine (your debhost and its VMs will use the VPN through the windows machine without further configuration).
+- If you installed your debhost **directly onto a machine without using VMWare** as an intermediary (or the steps above do not work for you), use the following instructions:
+
+  - Install the package openconnect
+  - Run the following command as root (or with sudo): `openconnect --protocol=gp studentvpn.senecapolytechnic.ca -b`
+  - This should prompt you for your username and password (you could also put the user name in the command with -p)
+  - You'll know it is working if you check your ip address and see something in the 10.0.0.0/8 range.
+  - To disconnect, as root (or with sudo): `killall openconnect`
+
+Once you have connected to the VPN with either method you may continue
+
+1. Launch your **debhost machine** and your **deb1** and **deb3** VMs.
+2. Switch to your **debhost**.
+3. Create a file in your current directory of your debhost machine with some text in it called: **myfile.txt**
+4. Issue the following command (using your Matrix login id):
 
 ```bash
-# Show network interfaces including host IPv4 address
-ip address
-
-# Show IPv4 routes including default gateway
-ip route
+# Copy file to remote host
+scp myfile.txt yourmatrixid@matrix.senecapolytechnic.ca:/home/yourmatrixid
 ```
 
-![dehostipadd](/img/debhostipadd.png)
+- (followed by your Matrix password)
+- What did this command do?
 
-> You can see that **debhost** has 3 network interfaces:
+5. Issue the following single command (arguments are separated by a space - use your Matrix login id):
+
+```bash
+# Connect to remote host to execute a single command to confirm copy
+ssh yourmatrixid@matrix.senecapolytechnic.ca ls /home/yourmatrixid/myfile.txt
+```
+
+- (followed by your Matrix password)
+- What did this command do?
+- Issue the following Linux command:
+
+```bash
+# Connect to remote host and display the contents of the file
+ssh yourmatrixid@matrix.senecapolytechnic.ca cat /home/yourmatrixid/myfile.txt
+```
+
+- How do these commands differ from using issuing the ssh command without the ls or cat command? How is this useful?
+- The client ssh application contains the utilities: **ssh**, **scp** and **sftp** (introduced in ULI101) to connect to remote Linux hosts in order to issue commands or transfer files between the Linux hosts. You can install the SSH service on your Linux server, although this has already been performed upon installation. We will now confirm that the ssh service is running on all of your VMs.
+
+6. OpenSSH should have been installed by default. Let's confirm this by issuing the command:
+
+```bash
+# List installed packages filtering for ssh
+dpkg -l | grep ssh
+```
+
+7. You should see a number of packages installed including **openssh-client** and **openssh-server**
+8. The **openssh-server** package installs a service called **ssh**.
+9. Confirm that this service is running by issuing the command:
+
+```bash
+# Check status of a service
+systemctl status ssh
+```
+
+> **Note:** Debian's service is called **ssh** but the process is called **sshd**.
 >
-> - **lo** The "loopback" interface with the reserved loopback IPv4 address of **127.0.0.1/8**
-> - **ens33** (The name will be different if you are using VirtualBox) The interface connected to the VMWare or VirtualBox virtual network.
-> - **virbr1** The interface connected to **network1** with the IPv4 address of **192.168.245.1/24**
+> You can use either name to refer to the service
 
-14. Make a note of the IPv4 address for **virbr1**  
-    ![debhostiproute](/img/debhostiproute.png)
-
-> You can see that **debhost** is configured with a **default gateway** (default route) that is the IPv4 address of either the lab PC or your laptop.
->
-> **debhost** is also connected to 2 networks. The VMWare/VirtualBox virtual network, and the KVM/Qemu virtual network **network1** via the interface **virbr1**
-
-We will now reconfigure each of our VMs to use our new virtual network **network1**
-
-15. Start with the **deb1** VM. Double-click on your **deb1** VM, but instead of starting the VM, click on the **View** menu, and select: **Details**
-16. In the **left pane** of the Virtual Machine window, select **NIC**: and note that this NIC is connected to the **Network source: 'default'**
-17. Change it to **Virtual Network network1: NAT** (i.e. the network that you just created) and click the **Apply** button.
-
-![deb1vmnic](/img/deb1vmnic.png)
-
-### Part 2: Configuring deb1 with a static address on 'network1'
-
-In this section, we will be using the **Gnome Settings** graphical tool to connect our **deb1** VM to **network1**.
-
-Although the private virtual network has been setup via **Virtual Machine Manager**, each virtual machine has to have its interface configured with a valid static address (either **graphically** or by **command line**).
-
-**Perform the following steps:**
-
-1. On your **debhost** machine, run **`ip address`** and make note of the IP address assigned to the **virbr1** (i.e. "Virtual Bridge) interface. This will be the default gateway and DNS server for your other VMs.
-2. Select the **Console** view (instead of Details), start your **deb1** VM, and login.
-3. Within your **deb1** VM, open a terminal and show the network interfaces with the command **`ip address`**
-   ![deb1ipadd1](/img/deb1ipadd1.png)
-
-> You can see the network interface does not have a IPv4 address. DHCP is not available for the network so a static address must be configured
-
-4. Click on the network icon located on the status bar at the lower left corner of the desktop.
-5. Choose **Network Connections**
-
-![deb1netstatus](/img/deb1netstatus.png)
-
-6. Select **Wired Connection 1** and click on the settings icon
-
-![deb1netsettings](/img/deb1netsettings.png)
-
-4. Click on the **IPv4 Settings** tab
-5. Change the Method to **Manual** and **Add** the Address **192.168.245.11**, Netmask **255.255.255.0**
-6. The **Gateway** address should be the IP address of **debhost** (**192.168.245.1**)
-7. Add the same **debhost** address as the **DNS server** and click on Save. **deb1** should connect to the network
-
-![deb1staticip](/img/deb1staticip.png)
-
-8. Open a terminal and display the **network interfaces** and **route table** to confirm the IP address and default gateway.
-
-![deb1ipadd2](/img/deb1ipadd2.png)
-
-![deb1iproute](/img/deb1iproute.png)
-
-9. To check the DNS server and test connectivity try the following commands:
+10. Now that you know the service is running, investigate what **port number** and **protocol** sshd uses by issuing the command:
 
 ```bash
-# To check the DNS server address
-nslookup
-> server
-
-# To resolve the Debian web server to IP address
-> www.debian.org
-
-# To resolve google to IP address
-> www.google.com
-
-# Exit nslookup
-> exit
-
-# Test IP connectivity to debhost
-ping 192.168.245.1
-
-# Test IP connectivity to the Internet
-ping www.debian.org
+# List active TCP and UDP ports with numeric output including "process"
+# ss -p Requires sudo
+sudo ss -atunp
 ```
 
-![deb1ping](/img/deb1ping.png)
+- What protocol and port is the sshd process using? What is the state of the port?
 
-### Part 3: Configure the static network connection using command line tools (deb2 and deb3)
+11. Reissue the `ss` command without the **-n** option. What is the difference?
 
-The deb2 and deb3 VMs are **text-based only** systems, we cannot use a graphical tool to configure the connection to our network. We will learn how to perform this task by editing text files and command-line tools.
+![debhostss2](/img/debhostss2.png)
 
-Although you can use the **ip** command to temporarily create a static IP address connection to a network, you need to add the network settings to the **/etc/network/interfaces** file to automatically connect to the network upon system boot-up.
-
-**Perform the following steps:**
-
-1. Just as you did with **deb1** Configure your **deb3** VM (in the **View -> Details** menu of Virtual Machine Manager) to configure the NIC interface to connect to **network1**, click **Apply**, and switch your deb3 VM view from _details_ to **console**.
-2. Start your **deb3** VM, login, and use **ip address show** to check the current address.
-3. The **`ip`** command can be used to display information about the **interfaces**, **addresses**, and **routes** configured in the system. It can also be used to control those configurations. Try the following commands on **deb3**:
+12. You can refer to the **/etc/services** file in order to determine a port number for a service. Issue the following command to confirm that port 22 is associated with ssh:
 
 ```bash
-# Display links (interfaces on a network) and the MAC address of those interfdaces
-ip link
-ip -brief link
-
-# Display configured IP addresses assigned to interfaces
-ip address
-ip -brief address
-
-# Display routes and default gateway
-ip route
+# Search for ssh port number
+grep ssh /etc/services
 ```
 
-4. At this time you should see no configured routes and no IPv4 address assigned to the interface
-5. To add a static address and default gateway to the interface use the following commands:
+13. Make sure all of your VM's are started and confirm that the **ssh** service is running on **all 3 of your VM's**
+
+### Part 2: SSH Server Security Configuration
+
+Any time that you configure your computer to allow logins from the network you are leaving yourself **vulnerable to potential unauthorized access** by penetration testers or even hackers. Running the ssh service is a fairly common practice but care must be taken to make things more difficult for those individuals that attempt to use **brute force attacks** to gain access to your system. Hackers use their knowledge of your system and can use **password guessing programs** help to gain access. They know which port is likely open to attack (TCP:22), and the name of the administrative account name (root).
+
+**Read this [Securing SSH](https://linuxconfig.org/how-to-secure-ssh) tutorial.**
+
+The Linux system administrator can **configure the SSH server** in order to make the SSH server less vulnerable to attacks. Examples include not permitting root login, and changing the default port number for the ssh service.
+
+**Perform the following steps using your debhost and deb1 VM's:**
+
+1. Change to your **deb1** VM and open a terminal and start a sudo shell.
+2. Read the man page for the `sshd_config` file. Search for the `PermitRootLogin` option and read about the possible settings.
+3. Edit the file **/etc/ssh/sshd_config** and look for the option `PermitRootLogin`.
+4. Un-comment the option and change the option value to `no`.
+
+![sshdconfig](/img/sshdconfig.png)
+
+> **NOTE**: Now any hacking attempt also has to guess an account name as well as the password. If you need root access on the host, you ssh to the host as a regular user and then use **sudo** to access root privileges, just like on the local system.
+
+5. As well as disabling ssh access as root, it is possible to restrict access to just the specific users that require it.
+6. Read the man page for the `sshd_config` file. Search for and read about the `AllowUsers` and `AllowGroups` options.
+7. Edit the file **/etc/ssh/sshd_config** and add a new option of `AllowUsers yourAccountName` (where "yourAccountName" is your regular user account for your deb1 VM)
+
+![sshdconfig2](/img/sshdconfig2.png)
+
+8. In order for these changes to take affect, you need to restart the ssh service:
 
 ```bash
-# Add a static IPv4 address (you may have a different interface name)
-sudo ip address add 192.168.245.13/24 dev enp1s0
-
-# Add a default gateway address
-sudo ip route add default via 192.168.245.1 dev enp1s0
-
-# Make an interface down/up
-ip link set enp1s0 down
-ip link set enp1s0 up
+# Restart ssh
+systemctl restart ssh
 ```
 
-6. Confirm the effect of these commands.
-7. Make sure your link is in an **UP** state with the static address and default gateway
+9. Try using ssh from your **debhost** to your **deb1** VM as **root**. Where you successful?
+10. Try using ssh from your **debhost** to your **deb1** VM as your regular user account. Did it work?
+11. Create another user on deb1 called **other**, include the options to create a home directory and set the shell to **/bin/bash**
+12. Set the password for the newly-created user called **other**
+13. Try using ssh from your **debhost** to your **deb1** VM as the account called **other**. Why didn't it work?
+14. On **deb1** add the user **other** to the supplemental group **sudo**.
+15. Edit the file **/etc/ssh/sshd_config** and add a new option of `AllowGroups sudo`
+16. Comment out the `AllowUsers` option, save the file, and **restart ssh**
+17. Try using ssh from your **debhost** to your **deb1** VM as the user account called **other**. Did it work this time?
 
-![deb3ipstatic](/img/deb3ipstatic.png)
+**Monitoring access**
 
-8. Confirm your connection by pinging the addresses of **debhost** and **deb1**
-9. Test the connection to the Internet by pinging **www.debian.org**
-
-![deb3pingtest1](/img/deb3pingtest1.png)
-
-Hostname resolution via a DNS Server has not been configured
-
-10. Using `sudo` edit the file **`/etc/resolv.conf`** and modify the **nameserver** setting to the address of **debhost**
+An important task of a System Administrator is to monitor for attempts at unauthorized remote access. All ssh connection attempts are recorded in the **systemd** log/journal. The **journalctl** command can be used to view the journal messages
 
 ```bash
-nameserver 192.168.245.1
+# View all journal entries
+sudo journalctl
+
+# View the journal entries concerning the ssh unit
+sudo journalctl -u ssh
+
+# View the journal entries concerning the ssh unit for today
+sudo journalctl -u ssh --since today
+
+# View sudo related entries since yesterday.
+sudo journalctl --since yesterday | grep sudo
 ```
 
-11. Test the connection to the Internet by pinging **www.debian.org**
+> **Note:** systemd services and targets are 2 types of systemd "units"
 
-![deb3pingtest1](/img/deb3pingtest1.png)
-
-12. If everything is working, reboot **deb3**
-13. Login to deb3 and test your connection with `ping` and display your configuration with `ip`
-14. All of the settings have been lost. They need to be made persistent by editing the **/etc/network/interfaces** file
-15. Edit the file and make the following changes to the "primary network interface" (Your interface name may be different)
-
-![deb3interfaces](/img/deb3interfaces.png)
-
-16. Test the settings by bringing the interface down and then up using the commands:
-
-```bash
-# Bring down the interface
-sudo ifdown enp1s0
-
-# Bring up the interface
-sudo ifup enp1s0
-```
-
-17. Test your connection by pinging **www.debian.org**
-18. If the test is successful reboot **deb3** and test again
-19. Now configure your **deb2** VM for a persistent static network connection as well using the IPv4 address of **192.168.245.12**. Don't forget to:
-
-- configure the VM to connect to **network1**
-- configure the **interfaces** file
-- edit **/etc/resolv.conf**
-- test connectivity after a reboot.
-
-You should now be able to ping all of your VM's by address and any named host on the Internet from each of your VM's
+1. Check the journal entries on **deb1**. Try to find the entries showing the other user and the root user being denied access.
+2. Try to find examples of entries reporting the use of **sudo**
 
 **Answer INVESTIGATION 1 observations / questions in your lab log book.**
 
-## Investigation 2: Managing Your New Network
+## Investigation 2: Additional Methods To Secure Your SSH Server
 
-Creating private networks are an important task, but a system administrator also needs to manage the network to make it **convenient to use**, and **troubleshoot** network connectivity problems.
+### Part 1: Generating Private and Public Keys (Public Key Infrastructure)
 
-This investigation will expose you to useful "tools" and utilities to help accomplish this task. **Lab 7** requires that you understand these concepts and have a good general understanding how to use troubleshooting utilities (like **ss**).
+As a method of authentication, using account passwords as the sole authentication factor is deeply flawed. Users have terrible password habits like using the same password for multiple systems/websites, using uncomplicated passwords, writing passwords down, and not changing the password. Practises such as forced frequent password changes have not greatly improved the problem. Increasingly you are seeing multi-factor authentication systems being used to improve the reliability of authentication.
 
-### Part 1: Using /etc/hosts File for Local Hostname Resolution
+We can configure **ssh public/private keys** to be used as a method of authentication instead. This will allow users to generate a pair of matching public/private keys, adding the public key to their account on the remote host. The private key remains on the local host. When the user attempts to connect to the remote host, **ssh** will use the private key to digitally sign the request. On the remote host ssh uses the matching public key to verify the signature.
 
-It is possible to connect to other hosts on the Internet by their domain name using DNS to resolve names to addresses.
+> ![caution](/img/caution.png)
+>
+> Public/Private key authentication is secure and convenient, and it does eliminate many of the problems created by user behavior with passwords.
+>
+> **However,** key files, especially **Private** keys must be properly taken care of. Imagine that the private key can be used to unlock a vault that contains millions of dollars.
+>
+> - If you lose the key, you can't open the vault.
+> - If you leave the key in an insecure location, it can be copied or stolen. Somebody could steal your money.
+> - If you make copies of the key you are increasing the chances of it being exposed.
+> - If you suspect that your key has been compromised you should change the locks on the vault. (Generate new keys)
 
-However your 4 VM's are not registered as hosts with a DNS server so are only accessible by IP address.  
-It can be hard to try to remember more than a couple of IP addresses. In this section, we will setup your network to use local hostname resolution so that we can connect by hostname.
+Therefore, understanding the generation and management of public/private keys is important to the security of our system.
 
-**Hosts files vs. the Domain Name System**
+**Storing Fingerprints**
 
-On large public networks like the Internet or even large private networks we use a network service called [Domain Name System (DNS)](http://en.wikipedia.org/wiki/Domain_Name_System) to resolve the human friendly hostnames like **www.debian.org** to the numeric addresses used by the IP protocol. On smaller networks we can use the `/etc/hosts` on each system to resolve names to addresses.
+When a user connects to a host using ssh, the host sends a "fingerprint" or digital signature to the client to establish its identity. The first time a connection is established the identity must be stored for comparison during subsequent connections. The fingerprints are stored separately for each user in a file called `~/.ssh/known_hosts` .
 
-**Perform the following steps:**
+![sshfingerprint](/img/sshfingerprint.png)
 
-1. Complete this investigation on **all of your VMs** and the **debhost** machine.
-2. Use the `hostname` and `ip` commands on your **debhost** machine and all of your 3 VM's to gather the information needed to configure the **/etc/hosts** file on all of your Linux systems.
-3. Edit the **/etc/hosts** file for **debhost**, and the **deb1**, **deb2** and **deb3** VMs. Add the following contents to the bottom of the **/etc/hosts** file:
+From now on when you connect to that host the client will compare the received fingerprint against the list of known hosts before connecting. If the fingerprint does not match it could indicate somebody had setup a system to impersonate the computer you wish to connect.
 
-```text
-192.168.245.1 debhost
-192.168.245.11 deb1
-192.168.245.12 deb2
-192.168.245.13 deb3
-```
+If you ever receive a message like the one displayed below, it means the fingerprint you received from the server does not match the fingerprint you have stored for that remote host in the file **`~/.ssh/known_hosts`**.
 
-4. Verify that you can now ping all of your VMs from all of your VMs by the hostname instead of the IP address.
+You should investigate why it is happening as it could indicate a **serious security issue**, or it could just mean that something on **the remote host has changed** (i.e. the OS was reinstalled)
 
-### Part 2: Network Connectivity and Network Service Troubleshooting Utilities
-
-Troubleshooting network problems is an extremely important and frequent task for a Linux/Unix system administrator. Since network services (such as file-server, print-servers, web-servers, and email-servers) depend on network connectivity, as Linux/Unix sysadmin must be able to quickly and effectively pin-point sources of network problems in order to resolve them.
-
-Network service problems may not be entirely related to a "broken" network connection, but a service that is not running or not running correctly. The following table lists the most common listing of utilities to assist with detection of network connectivity or network service problems to help correct the problem.
-
-**Common Network Troubleshooting Tools**
-
-| **Purpose**            | **Command(s)**                                       |
-| ---------------------- | ---------------------------------------------------- |
-| Network Connectivity   | `ping`, `arp`, `ip` (replaces deprecated `ifconfig`) |
-| Network Service Status | `ss` (replaces deprecated `netstat`)                 |
-
-Read the first four sections of this [blogpost](https://www.baeldung.com/linux/arp-command) about using the **`arp`** command to examine the **arp cache**.
+![Spoof](/img/Spoof.png)
 
 **Perform the following steps:**
 
-1. Switch to your **debhost** machine and start a sudo shell.
-2. Install the **`net-tools`** package.
-3. Issue the **ping** command to test connectivity to your **deb1**, **deb2**, and **deb3** VMs.
-4. Examine the contents of the ARP cache by using the command: `arp` What is the purpose of ARP?
-5. Check the contents of the cache again by using the command: `arp -n` What was the difference in output?
-6. How did the system resolve the IP address to hostname?
-
-An important task of any System Administrator is to monitor and control the type of connections that can be received by your host. Network applications that connect to (or talk to), Servers/Daemons/Services over a TCP/IP network send requests to a particular TCP or UDP port that is open and accepting requests.
-
-7.  From **debhost** open 2 more terminals, use the **`ssh`** command to connect to **deb2** and **deb3**
-8.  Switch to your **deb1** VM, open a terminal and use **`ssh`** to connect to **debhost**
-9.  Switch to your **deb2** VM, login and use **`ssh`** to connect to **debhost**
-10. Switch back to **debhost**
-
-Try out the Issue the following commands:
+1. Login to your **deb3** VM as your regular user account (login via the VM viewer, NOT using ssh)
+2. Run the following command to check the state of any possible _ssh connections_. What is the state (i.e. LISTENING or ESTABLISHED)?
 
 ```bash
-# Show all active UDP ports
-ss -au
-
-# Show all active TCP ports
-ss -at
-
-# Show both
-ss -aut
-
-# Show all active TCP ports and the process that opened it
-ss -atp
-
-# Show all active TCP ports numerically
-ss -atn
-
-# Show all incoming ssh connections
-ss -t src :22
-
-# Show all outgoing ssh connections
-ss -t dst :22
+# Display the status of ssh ports
+sudo ss -atnp | grep ssh
 ```
 
-> - **TCP** is a connection oriented protocol that uses a 3-way handshake to establish a connection. Those ports that show a state of LISTEN are waiting for connection requests to a particular service. For example you should see the ssh service in a LISTEN state as it is waiting for connections.
-> - **UDP** is a connectionless protocol that relies on application layer protocols to handle reliability of traffic.
+3. While in your **deb3** VM, issue the following command to connect to **your same VM** via ssh:
 
-11. From **deb2** exit your ssh connection into **debhost** and rerun the command on the **`ss -at`**. Instead of **ESTABLISHED** it should now show a state of **CLOSE_WAIT**. Indicating that the TCP connection is being closed.
-12. On your debhost, try the command: `ss -atn` How is this output different? Without the -n option ss attempts to resolve IP addresses to host names (using /etc/hosts) and port numbers to service names (using /etc/services)
-13. Examine the **/etc/services** file and find which ports are used for the services: ssh, sftp, http
+```bash
+ssh username@deb3
+```
+
+4. Enter **yes** at the prompt, and enter your password. The output should appear similar as what is shown below:
+
+![sshfingerprint2](/img/sshfingerprint2.png)
+
+5. Re-run the same **ss**. Is there any change to the connection status?
+
+![deb3sshports](/img/deb3sshports.png)
+
+**Note:** Because we have used ssh to connect **from** deb3 **to** deb3 we can see the ports from both the **client** and **server** point of view.
+
+6. Log-out of your ssh connection by typing `exit`.
+7. Run that same **ss** command again. If you are fast enough you may see the port status is being closed.
+8. Wait a few minutes and then check again. Record your observations.
+
+**KeyPair Authentication**
+
+So far, you have learned to establish an ssh connection to another host using a password to authenticate your identity. But **passwords are not the only or even the best way of authenticating your identity**. We can also use **Public/Private key encryption**.
+
+**Public Key authentication** is a method of establishing identity using a **pair of encryption keys that are designed to work together**. One key is known as your **private key** (which as the name suggests should remain private and protected) and the other is known as the **public key** (which as the name suggests can be freely distributed) The keys are designed to work together to encrypt data asymmetrically, that is to say that when we **encrypt data with one of the keys it can only be decrypted with the other key** from the pair.
+
+If a message is encrypted using the Private key on the local host, and the server on the remote host can decrypt the message successfully using the matching Public key, then the server knows the message could only have come from the local host. The message itself is not secure because potentially any body with a copy of the Public key could read it. But the fact that it could only have come from the host with the Private key proves the identity of the client.
+
+1. Switch to your **deb2** VM. Login as your regular user account
+2. Confirm you are in your deb2 VM by entering the command: `hostname`
+3. Consider the following commands:
+
+```bash
+# Generate a keypair
+ssh-keygen
+
+# Copy the public key to your account on the remote host
+ssh-copy-id username@hostname
+
+# Copy a specific key to your account on the remote host
+ssh-copy-id -i ~/.ssh/mykey.pub username@hostname
+```
+
+4. To generate a keypair (public/private keys), issue the following command: `ssh-keygen`
+
+After generating the keys it prompts you for the location to save the keys. The default is **~/.ssh** Your private key will be saved as **id_rsa** and your public key will be saved as **id_rsa.pub** by default.
+
+5. Press ENTER to accept the default.
+6. You will then be prompted for a **pass-phrase**. The pass-phrase must be entered in order to "unlock" your private key. Pass-phrases are more secure than passwords and should be lengthy, hard to guess and easy to remember. For example one pass-phrase that meets this criteria might be "_seneca students like to dance at 4:00am_". Avoid famous phrases such as "_to be or not to be_" as they are easy to guess. It is possible to leave the pass-phrase blank but this is dangerous. It means that if a hacker was able to get into your account, they could then use your private key to access the other systems you use.
+7. Enter a lengthy passphrase you will remember
+
+The output should appear similar to what is shown below:
+
+![sshkeygen](/img/sshkeygen.png)
+
+8. Now issue the command to copy your public key to your account on **deb3**
+
+```bash
+# Copy public key to deb3
+ssh-copy-id -i ~/.ssh/id_rsa.pub username@deb3
+```
+
+9. When prompted enter your password
+
+![sshcopyid](/img/sshcopyid.png)
+
+10. Try using ssh to now log into your **deb3** VM from your **deb2** VM. What happens? Were you required to use your pass-phrase?
+
+![sshpki](/img/sshpki.png)
+
+11. Where was the Public key copied to? What file is it in?
+
+```bash
+# Display the authorized SSH keys
+cat ~/.ssh/authorized_keys
+```
+
+This file contains the public keys that have been copied to your account
+
+![deb3authkeys](/img/deb3authkeys.png)
+
+12. So now you can login to deb3 from our account on deb2 without needing a password.
+
+**Note:** While you still do need to enter our passphrase to unlock the key, if you had left the passphrase blank then that wouldn't have needed it. There are other tools available to help users manage and unlock keys.
+
+### Part 2: Securely Running Graphical Applications Between Linux Servers
+
+You can also use ssh to **tunnel GUI applications (Window and bitmap information)**, allowing us to login to a remote desktop host and **run a Xwindows application** such as **gedit** or **Firefox** and the application will run on the remote host but be displayed on the local host.
+
+> Xorg (Xwindows, X11) is the longtime Graphical Server that has been used on Linux systems for many years. Regardless of the **Desktop Environment** you chose to install and use, (Gnome, KDE etc ) they all worked with XWindows.
+>
+> A new graphical server has been developed that is starting to replace Xwindows called **Wayland**.
+> Many Linux distributions and some Desktop Environments now default to using Wayland as the Graphical Server.
+>
+> Expect things to change quite quickly.
+
+![sshx](/img/sshx.png)
+
+You can use an SSH tunnel with options to allow running of applications on remote Linux servers.
+
+**Perform the following steps:**
+
+1. For this section, you will be using your **debhost** and your **deb1** VM.
+2. Switch to your debhost, open a terminal and remain logged in as a regular user.
+3. Issue the following command to connect to your **deb1** VM:
+
+```bash
+ssh -X -C username@deb1
+```
+
+- (The **-X** option enables the forwarding of X window information, and the **-C** option enables compression for better performance).
+
+4. Once the connection is properly established, run the command `gedit`
+5. The _gedit_ window will display on your **debhost**, but in reality, this application is running on your **deb1** VM!
+6. Enter some text and save the file as **testfile**
+7. Exit the **gedit** application.
+8. On which host was the file saved? **debhost** or **deb1** What does that tell you about the use of tunneling for this section?
+9. Logout of your ssh connection to **deb1**
+10. Connect again and run the **gedit** application by issuing only one Linux command:
+
+```bash
+ssh -X -C username@deb1 gedit
+```
+
+- Note: ignore warning messages.
+
+11. Exit the gedit application.
+12. Experiment with running other GUI applications via **ssh** (They have to be applications installed on **deb1**).
 
 **Answer INVESTIGATION 2 observations / questions in your lab log book.**
 
-## Investigation 3: Using a bash script to test connectivity to all hosts on the local network
+## Investigation 3: Managing Firewalls For Protection and Troubleshooting
 
-In this investigation you will create a bash script that will ping the hosts on our local network to test if they are connected to the network.
+### Linux Firewall (iptables) Concepts
 
-1. Create a script Write a script called **~/bin/pingtest.bash** that will contains the following code:
+Since Linux servers can be connected to the Internet, it is very important to run a **firewall** to control what packets are allowed to enter and exit from the system. Also what packets might be forwarded to another computer or network. You will use the utility called **iptables** to set the firewall rules on a Linux server.
+
+> The firewall software itself is in-kernel. It is called **nftables**.
+>
+> **nftables** replaces the older **iptables** and can be configured using the **nft** utility.
+> Debian implements the **iptables** utility as a "wrapper" for **nft**. This allows users and organizations with considerable investment in **iptables** configurations and knowledge to continue to use **iptables** syntax to configure **nftables**.
+
+![Chains](/img/Chains.png)
+
+**iptables** configurations consist of **chains** of **policy rules** that a **packet** must pass-through in order to either enter, leave, or be forwarded by the firewall. If a packet matches a rule, then an action is taken (some examples include: **ACCEPT**, **DROP**, **REJECT**, or **LOG**). If the packet passes through the chain of rules without a match, then the packet is directed to the chains default policy. (for example: _ACCEPT_, _REJECT_, or _DROP_).
+
+You can create your own **customized chains of rules** but to keep thing simple, we only deal with 3 **common predefined chains**:
+
+- **INPUT**: Packets coming into current Linux server
+- **OUTPUT**: Packets leaving current Linux server
+- **FORWARD**: Packets being routed between Linux servers
+
+### Part 1: Listing and Clearing Existing iptables Rules
+
+Let's get some practice using the iptables command such as listing CHAIN rules, and clearing the CHAIN rules:
+
+**Perform the following steps:**
+
+1. For the remainder of this section, use your **debhost** machine.
+2. As working with the firewall requires elevated privileges start a sudo shell
+3. Issue the following command to list the existing iptables policy rules:
+
+```bash
+# List all rules for all chains
+iptables -L
+```
+
+You should see all kinds of rules organized into a number of chains. This is quite overwhelming but most of these rules were added when the **libvirtd** service was started during boot. **libvirtd** has to add rules that allow our VM's to communicate over a virtual network.
+
+For now we will shutoff our VM's and disable **libvirtd** to simplify everything.
+
+4. Shutdown the **deb1**, **deb2**, and **deb3** VM's
+5. On **debhost** disable the **libvirtd** service and reboot
+6. After rebooting open a terminal and start a sudo shell
+7. Use the command above to list the iptables rules
+
+![debhostiptables1](/img/debhostiptables1.png)
+
+Notice that you have 3 default chains, **INPUT**, **FORWARD**, and **OUTPUT**
+
+- INPUT is the chain of rules for incoming packets
+- OUTPUT is the chain of rules for outgoing packets
+- FORWARD is the chain of rules for packets that are being routed to other hosts/networks by our host.
+
+Each of the chains has no current rules but they do have a default **policy** of **ACCEPT**
+Which means that if none of the rules in the chain rejected the packet then it would be accepted.
+
+A default **policy** of **DROP** would mean that if none of the rules accepted the packet then it would be dropped.
+
+**Listing iptables Rules:**
+
+```bash
+# List rules for all chains in the default table (filter)
+iptables -L
+
+# List rules for the INPUT chain
+iptables -L INPUT
+
+# List rules for the OUTPUT chain verbosely
+iptables -v -L OUTPUT
+```
+
+8. Issue the iptables commands separately to display the rules for the **OUTPUT** chain and for the **FORWARD** chain.
+
+**Clearing (Flushing) iptables Rules:**
+
+Sometimes it may be useful to completely clear the rules for all of a particular chain. Note the options that can be used to clear (or flush) the iptables rules,
+
+```bash
+# Flush the rules of all chains
+iptables -F
+
+# Flush the rules of the OUTPUT chain
+iptables -F OUTPUT
+```
+
+You will have a chance to flush some rules later.
+
+### Part 2: Setting a Default Policy and Setting Policy Exceptions (iptables)
+
+You will now change the default policy of the **INPUT** chain to **DROP**. This means you will have add rules that allow specific types of packets in. A good way to think about setting policies is to have a "**safety-net**" to take some sort of action to prevent un-handled packets from passing through the firewall by mistake. After the default policy is set-up, then specific exceptions to the default policy can be added to control specific network traffic.
+
+An example would be to set a default policy for incoming network traffic (INPUT chain) to DROP everything, and then set an exception certain exceptions (like ssh connections). Note the following table below for policy setting examples.
+
+**Policy Setting Examples:**
+
+```bash
+# Drops all incoming packets regardless of protocol/ports/address
+iptables -P INPUT DROP
+
+# Accepts all outgoing packets regardless of protocol/ports/address
+iptables -P OUTPUT ACCEPT
+```
+
+| **iptables -P INPUT DROP**   | Drops all incoming packets regardless of protocol (eg. tcp, udp, icmp), port numbers (eg. 22, 80) or source or destination IP Addresses. Setting a default rule to DROP all incoming traffic would make it easier to specify a few exceptions.                                                                                                                                                                |
+| :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **iptables -P INPUT ACCEPT** | Accepts all incoming packets regardless of protocol (eg. tcp, udp, icmp), port numbers (eg. 22, 80) or source or destination IP Addresses. It would seem that setting a default rule to ACCEPT all incoming traffic would require A LOT of exceptions to help "lock-down" the server for protection! The better practice is to use DROP as the default action, and only ACCEPT the traffic you actually want. |
+
+**Perform the following steps:**
+
+1. Make certain you are in your **debhost** machine.
+2. Issue the following Linux command:
+
+```bash
+iptables -P INPUT DROP
+```
+
+3. Issue the **iptables -L** command. Can you see the policy to DROP all incoming connections?
+4. Open Firefox on debhost and attempt to connect to the internet. Although you have set a default policy to DROP all incoming connections, there is a problem: now, you cannot browse the Internet.
+
+In order to fix that problem, you can make an exception(rule) to allow incoming web-based traffic (requested via port 80). The iptables commands to create rules need to consider:
+
+- What order are the rules in the chain? (order can be important)
+- Which protocol(s) are affected (eg. tcp, udp, icmp)
+- What source or destination IP Addresses are affected?
+- What port numbers are affected?
+- What action(target) to take if all of the above conditions are met? (eg. ACCEPT, REJECT, DROP, or LOG)
+
+**iptables Command Structure for setting rules**
+
+Examples:
+
+```bash
+# Append a rule to the INPUT chain allowing incoming ssh traffic from the local network only
+iptables -A INPUT --dport 22 -p tcp -s 192.168.245.0/24 -j ACCEPT
+
+# Append a rule to the INPUT chain allowing all incoming packets to the loopback interface
+iptables -A INPUT -i lo -p all -j ACCEPT
+
+# Insert a rule into 2nd position of the INPUT chain to allow incoming traffic related to established connections
+iptables -I 2 INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Insert a rule into 1st postition of the INPUT chain to allow incoming pings (icmp) from the local network only
+iptables -I 1 INPUT -p icmp -s 192.168.245.0/24 -j ACCEPT
+```
+
+| Placement in Chain                       | Chain Name  | Specify Protocol               | Source/Destination                                  | Target                                        |
+| :--------------------------------------- | :---------- | :----------------------------- | :-------------------------------------------------- | :-------------------------------------------- |
+| **-A** (add / Append to bottom of chain) | **INPUT**   | **-p tcp** (tcp packets)       | **-s IPADDR** (source host or network address)      | **-j DROP**                                   |
+| **-I 2** (insert into 2nd position)      | **OUTPUT**  | **-p udp** (udp packets)       | **-d IPADDR** (destination host or network address) | **-j ACCEPT**                                 |
+| **-R 2** (replace the 2nd rule)          | **FORWARD** | **-p icmp**                    | **-i ens33** (interface name)                       | **-j LOG** (accept packet but record in logs) |
+| **-D 3** (delete rule 3)                 |             | **-p all**                     | **--dport 22** (destination port number)            | **-j REJECT** (reject with error)             |
+|                                          |             | **-p tcp,udp,icmp** (combined) | **--sport 53** (source port numner)                 |                                               |
+|                                          |             | (refer to **/etc/protocols** ) | (refer to **/etc/services**)                        |                                               |
+
+5. Issue the following Linux command to ensure the loopback interface is not affected by these rules. The computer needs to be able to communicate with itself with any state and protocol:
+
+```bash
+iptables -A INPUT -i lo -p all -j ACCEPT
+```
+
+6. Issue the following Linux command to ensure the system can get responses to traffic it sends out:
+
+```bash
+iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+```
+
+7. Use Firefox on **debhost** to connect to the Internet your other web-browser to confirm that you can now browse the Internet. Because the incoming traffic is a response related to my established connection it is accepted.
+
+8. Determine the external facing ip address of **debhost**
+9. Using your Windows machine running VMware (or another machine in your network if you did a bare-metal installation for debhost) try to ping that external facing address. Were you successful?
+10. Issue the following iptables command to allow incoming ping packets (icmp) from only the address of your Windows host. (You will have to use your own IP address)
+
+My VMware host IP:
+![winhostip](/img/winhostip.png)
+
+```bash
+iptables -A INPUT -p icmp -s 192.168.213.1 -j ACCEPT
+```
+
+11. Repeat pinging your debhost's external facing IP Address. What happened? Why?
+
+![iptablesping](/img/iptablesping.png)
+
+12. Try to SSH into YOUR debhost. Were you Successful?
+13. Issue the following Linux command to append a rule to the INPUT chain to allow incoming ssh traffic (ie. port 22):
+
+```bash
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+```
+
+14. Issue an iptables command to confirm that there is a rule to handle incoming tcp packets using port 22.
+15. Try to SSH into your debhost (at least to get a password prompt). Were you Successful? If so, why?
+16. Note that the rule we entered would allow **anyone** who can reach your debhost to try to log in with ssh. This is **not** a good idea. What would you have to change about that rule to only allow the one machine you are connecting from?
+17. Reboot **debhost** open a terminal and start a sudo shell.
+18. List the iptables rules for the INPUT chain. What happened to your iptables rules for the INPUT chain?
+19. Proceed to the next part to learn how to learn how to make your iptables rules persistent.
+
+### Part 3: Making iptables Policies Persistent
+
+Any changes to your iptables rules will be lost when you restart your Linux server, unless you make your iptables rules persistent. Failure to perform the following steps after setting up your firewall rules can cause confusion and wasted time.
+
+**Don't save copies of rules that libvirtd will auto-add every boot.**
+
+When the libvirtd service starts on debhost it adds some rules to iptables to allow the machines in your virtual network communicate with each other and the outside world. We don't want to include these rules in our configuration because it will cause the rules to be loaded twice. This won't actually break anything, but it does clutter up your iptables and make them harder to read. Before you continue with this investigation, confirm that there are no rules currently loaded.
+
+**Perform the following steps:**
+
+1. Make sure that no rules are currently loaded
+2. Set the default **policy** for both the **INPUT** and **FORWARD** chains to **DROP**
+3. Append rules to the **INPUT** chain that allow SSH traffic from your Windows host and from the **192.168.245.0/24** network.
+4. Append a rule to the **INPUT** chain to allow **icmp** traffic from your **192.168.245.0/24** network.
+5. Append a rule to the **INPUT** chain to allow all traffic to the **lo** (loopback) interface.
+6. Append a rule to the **INPUT** chain to allow all traffic that is **RELATED**/**ESTABLISHED**.
+7. List the **INPUT** chain. It should look similar to this
+
+![iptables3](/img/iptables3.png)
+
+8. Test your rules by doing the following:
+
+- ssh from your Windows host to the external ip address of **debhost**
+- Open Firefox on **debhost** and connect to a website on the Internet
+- On **debhost** ping the loopback address **127.0.0.1**
+
+You can't test the traffic from **192.168.245.0/24** until **libvirtd** starts. Before you start **libvirtd** you should save your current rules to make them persistent.
+
+9. Save the current ruleset using the command:
+
+```bash
+# Save iptables rules in memory to a file in the correct format
+iptables-save -f /etc/iptables.rules
+```
+
+10. Verify that the file **/etc/iptables.rules** exists.
+11. Create a new script file **/etc/network/if-pre-up.d/iptables**
+12. Add the following to the file
 
 ```bash
 #!/bin/bash
 
-# ./pingtest.bash
-# Script to test ping to all hosts on local network
-
-while read line
-do
-    if echo $line | grep "^192.168.245" >> /dev/null
-    then
-        addr=$(echo $line | cut -f1 -d' ')
-        host=$(echo $line | cut -f2 -d' ')
-        if ping -c1 $addr > /dev/null
-        then
-            echo "$host online"
-        else
-            echo "$host offline"
-        fi
-    fi
-done < /etc/hosts'
+/sbin/iptables-restore /etc/iptables.rules
 ```
 
-2. Read the script. Try to predict exactly what the script will do.
-3. Make the script executable
-4. To test the script make sure **deb1** is shutdown and **deb2 & deb3** are running.
-5. Run the script
+13. Make the script executable `chmod u+x /etc/network/if-pre-up.d/iptables`
+14. Reboot **debhost** and check that the rules are restored during boot.
+15. Start the **libvirtd** service, and note the rules it adds to your iptables. It will do this automatically every time it starts.
+16. Enable the **libvirtd** service so that it starts during boot.
+17. After rebooting open a terminal and start a sudo shell
+18. List your iptables rules. If everything there?
+19. Start your **deb1**, **deb2**, and **deb3** VM's
+20. Confirm that you can ping **debhost** and that you can connect to **debhost** using **ssh**, from each of your VM's
 
-![pingtest](/img/pingtest.png)
+**Answer INVESTIGATION 3 observations / questions in your lab log book.**
 
-6. Using the example of the **monitor-disk-space.bash** script, modify this script to email your account if the host is offline, instead of sending output to the screen.
-7. Modify your crontab to run this script everyday at 6:00 AM
-8. Run the modified script and take a screenshot of the email you receive.
+## Lab 7 Sign-Off (Show Instructor)
 
-## Submitting your Lab
+Follow the submission instructions for lab 7 on Blackboard.
 
-Follow the submission instructions for Lab 6 on Blackboard.
-
-**Time for a new backup!**
+**Time for a new backup and system updates!**
 
 If you have successfully completed this lab, make a new backup of your virtual machines as well as your host machine.
 
 **Perform the Following Steps:**
 
-1. Make certain that ALL of your VMs are running.
-2. Switch to your **debhost** VM.
-3. Change to your user's **bin** directory.
+1. Make certain ALL of your VMs are running.
+2. Make sure you are connected to Seneca's VPN on your Windows host.
+3. Switch to your **debhost** and change to your user's **bin** directory.
 4. Issue the Linux command:
 
 ```bash
-wget https://raw.githubusercontent.com/OPS245/debian-labs/main/lab6-check.bash
+wget https://raw.githubusercontent.com/OPS245/debian-labs/main/lab7-check.bash
 ```
 
-5. Give the **lab6-check.bash** file execute permissions (for the file owner).
-6. Run the shell script using **sudo** and if there are any warnings, make fixes and re-run shell script until you receive "congratulations" message.
-7. Upload screenshots of, the results of **lab6-check.bash**, and your email message from your **pingtest.bash** script, to Blackboard.
+4. Give the **lab7-check.bash** file execute permissions (for the file owner).
+5. Run the shell script and if there are any warnings, make fixes and re-run shell script until you receive "Congratulations" message.
+6. Upload a screenshot of proof from the previous step to Blackboard, as per your Professor's instructions.
 
-## Practice For Quizzes, Tests, Midterm & Final Exam
+## Practice For Quizzes, Tests, Midterm, and Final Exam
 
-1. What is a port?
-2. What command will set your IP configuration to 192.168.55.22/24 ?
-3. What is the difference between UDP and TCP?
-4. What port number is used for DHCP servers?
-5. What is the function of the file `/etc/hosts` ?
-6. What tool is used to show you a list of current TCP connections?
+1. What port does sshd use by defaults?
+2. What file is used to configure sshd?
+3. What kind of files are stored in the "~/.ssh/" directory?
+4. How do you determine whether the ssh service is running on your system or not?
+5. What is the purpose of the ~/.ssh/known_hosts file?
+6. What is the purpose of the ~/.ssh/authorized_keys file?
+7. How do you stop the ssh service?
+8. How do you tunnel XWindows applications?
+9. What port is the default ssh port?
+10. What port(s) is/are used by httpd service?

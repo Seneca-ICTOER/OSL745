@@ -26,6 +26,7 @@ While you are performing this lab, it is recommended to generally note the major
 - Manipulate virtual machines by CLI (**virsh**)
 - Properly **backup VM images** and backup **VM configuration files**
 - Create and run **Bash Shell scripts** to automatically backup our installed VM's
+- Learn to boot your Ubuntu VM into **Single User mode** for rescue purposes
 
 ![Lab Environment](/img/ubuntu-lab1-network-diagram-updated.png)
 
@@ -703,6 +704,69 @@ Now that you have a working backup script, you are expected to make a fresh back
 
 **Answer INVESTIGATION 4 observations / questions in your lab log book.**
 
+## Investigation 5: Troubleshooting Common Booting, and Forgotten Root Password Issues
+
+### Part 1: Common Booting Issues
+
+There are a few "classic problems" that students can encounter with their virtual machines and their host machine after performing lab2. Although all OPS245 students may not encounter these problems, it is good to be aware of what a potential problem may look like, and know how to solve that problem.
+
+**A few common problems are:**
+
+- I Can't boot into Graphical Mode on my **debhost** machine
+- I Forgot My **Regular User** Password
+- I Forgot My **root** Password
+- I Can't Start My Virtual Machine
+
+**Troubleshooting skills take time to develop. Your approach should be methodical. Consider the following elements:**
+
+- **Gathering Information**
+- Asking questions like "What was changed recently"
+- Examining Log files
+- Reading documentation and searching the Internet
+- **Eliminating** what the problem **IS NOT**
+- Testing possible solutions one at a time
+- Documenting the problem
+
+### Part 2: Booting into Single-User Mode
+
+If you cannot login graphically to your machine (first two common problems), there is an option to boot your system into **single-user** mode. (Sometimes called **rescue mode**)
+
+This "mode" puts the OS into a state that does not provide networking, graphics, or the ability to login in as other regular users.
+You can only login to a TTY (text interface) as the user **root**.
+
+> ![caution](/img/caution.png) This method will only work if a GRUB (**Gr**and **U**nified **B**oot-loader) password has not been set, or that you haven't forgotten the GRUB password.
+
+**Perform the following steps:**
+
+1. Boot up your **debhost**.
+2. Login as as a regular user.
+3. Boot-up your **deb1** VM. **When the Grub Boot menu appears**, press the letter `e` (for "edit").
+   ![deb1grub](/img/deb1grub.png)
+4. Using your arrow keys, scroll down to the line that starts with `linux` add the word `single` as an argument after **quiet** (see diagram below for reference) and then press `ctrl-x` to boot.
+
+![deb1grubsingle](/img/deb1grubsingle.png)
+
+5. The system should boot into a text-based interface. Enter your **root** password.
+   ![single](/img/single.png)
+   One thing that can cause the graphical interface to not function is lack of disk space. All graphical interfaces need to write to temporary files on disk.
+   If your disk is full it will fail.
+6. To look at storage utilization. Issue the command: `df -h`
+   ![df](/img/df.png)
+   > Temporary files are written to the `/tmp` directory, so in the image above that would be on the storage device mounted on `/`
+   > If you have problems with disk space in this course it is likely because you have not been backing up your VM's correctly.
+   > **Do NOT remove the image in _/var/lib/libvirt/images_ directory**!
+
+If you are unable to login to the graphical environment because you have forgotten your password you can use the `passwd` command as root to reset it.
+
+```bash
+# Change a users password
+passwd <username>
+```
+
+7. To restart in graphical mode, simply enter the command `reboot`.
+
+**Answer INVESTIGATION 4 observations / questions in your lab log book.**
+
 ## Lab 2 Sign-Off (Show Instructor)
 
 Follow the submission instructions that your Professor provides.
@@ -737,3 +801,5 @@ wget https://raw.githubusercontent.com/OPS245/debian-labs/main/lab2-check.bash
 7. Show a few examples of bash loops that can be used to error-check user input.
 8. What does the command **apt update** do and why is it important?
 9. What does the command **apt upgrade** do and why is it important?
+10. What is the purpose of booting into single-user mode?
+11. List the steps in order to boot into single-user mode.

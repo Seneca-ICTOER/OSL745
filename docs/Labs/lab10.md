@@ -1,8 +1,8 @@
 ---
 id: lab10
-title: Lab 10 - Amazon RDS Relational Database Service
+title: Lab 10 - Auto Scaling and Elastic Load Balancing
 sidebar_position: 10
-description: Configure the RDS.
+description: Auto Scaling and Elastic Load Balancing.
 ---
 
-# Lab 10 - RDS
+# Lab 10 - Auto Scaling and Elastic Load Balancing
