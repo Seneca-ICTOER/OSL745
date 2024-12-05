@@ -11,14 +11,14 @@ description: Lab 2
 
 ### Purpose / Objectives of Lab 2
 
-In this lab, you will create 3 virtual machines using a virtualization program called **KVM** that will run in your ubuhost system. These VMs will be used throughout the remainder of this course to learn how to administer them (installing software, managing services, networking, etc).
+In this lab, you will create 2 virtual machines using a virtualization program called **KVM** that will run in your ubuhost system. These VMs will be used throughout the remainder of this course to learn how to administer them (installing software, managing services, networking, etc).
 
 While you are performing this lab, it is recommended to generally note the major differences in the different installation methods, and which method you prefer to use if you were a Linux system administrator in charge of installing many Linux distributions for an organization.
 
 **Main Objectives**
 
 - Installing additional Virtualization Software on your **ubuhost** machine (**KVM**)
-- Create 3 separate VMs (virtual machines) using different installation methods:
+- Create 2 separate VMs (virtual machines) using different installation methods:
 
   - **ubu1**: Ubuntu Server 24.04 (**CLI only**)
   - **ubu2**: Ubuntu Server 24.04 Unattended Installation deployed using a **autoinstall** file (**CLI only**)
@@ -27,7 +27,7 @@ While you are performing this lab, it is recommended to generally note the major
 - Properly **backup VM images** and backup **VM configuration files**
 - Create and run **Bash Shell scripts** to automatically backup our installed VM's
 
-![Lab Environment](/img/debian-lab1-network-diagram-updated.png)
+![Lab Environment](/img/ubuntu-lab1-network-diagram-updated.png)
 
 At the end of Lab 2, your ubuhost system will contain **2 virtual machines** (**ubu1, ubu2 VMs** in your **KVM** application). You will now have the option to run one virtual machine at a time, or run all machines simultaneously to learn about networking (covered in later labs)
 
