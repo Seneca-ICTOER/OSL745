@@ -14,10 +14,10 @@ description: Lab 1
 In order to save money and resources when learning to install, to manage, and to connect Linux machines to form networks, we will be using a combination of a local install and **Virtual Machines** for this course. :
 
 - **Lab 1**: Create a **Ubuntu Host** install (called **ubuhost**) on your Solid State External Drive (SSD) which will be bootable on your lab class computers.
-- **Lab 2**: Install a **Virtualization program package** on your **Ubuntu host** called **KVM** which will be used to create 3 Virtual Machines (VMs) that you will use to learn about Linux system administration for the remainder of this course.
+- **Lab 2**: Install a **Virtualization program package** on your **Ubuntu host** called **KVM** which will be used to create 2 Virtual Machines (VMs) that you will use to learn about Linux system administration for the remainder of this course.
 
-The virtualization software will allow you to create and administer **3 different virtual machines** (**VMs**) on your Debian host (debhost) computer system.
-![labenv.png](/img/debian-lab1-network-diagram-updated.png)
+The virtualization software will allow you to create and administer **3 different virtual machines** (**VMs**) on your Ubuntu host (ubuhost) computer system.
+![labenv.png](/img/ubuntu-lab1-network-diagram-updated.png)
 
 It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capacity of 240 GB** or **240 GB available on your own computer** for you to perform the lab work and provide storage for your Debian 12 host and VMs that you will create in Lab 2. **Due to space requirements, you are NOT permitted to share this SSD drive with any other course material than our OPS245 course.**
 
@@ -36,7 +36,7 @@ It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capac
 1. **Solid State Drive** Minimum Size: 240GB
 2. **SATA-to-USB Connector** to connect your SSD to the Seneca Lab computer
 3. **USB Flash drive** to install Ubuntu installation image
-4. **Lab Logbook** [(Click Here to Download)](/files/OSL740-Logbook-Online.docx)
+4. **Lab Logbook** [(Click Here to Download)](/files/OSL745-Logbook-Online.docx)
 
 ### Linux Command Reference
 
@@ -99,10 +99,10 @@ Click on the **Support** link. Take a look at some of the support options availa
 - Download Rufus from the [Rufus Website](https://rufus.ie/en)
   > ![Rufus Download](/img/rufusdownload.jpg)
 - You should now have both the Rufus executable and the Ubuntu image on your personal computer
-  > ![Rufus and Debian](/img/rufusanddebian.jpg)
+  > ![Rufus and Debian](/img/rufusandubuntu.png)
 - Run Rufus and you will see the Rufus dialogue box appear.
 - Select the Ubuntu image as your boot selection
-  > ![Rufus Select Image](/img/rufusselectimage.jpg)
+  > ![Rufus Select Image](/img/rufusselectimage.png)
 - Double check that your flash drive is selected for the "Device" field, your Debian image has been selected for the boot selection, and that all other settings are the same as the image below.
   > ![Rufus Ready](/img/rufusready1.jpg)
 - Click "START" and Rufus will begin to create your installation image on your flash drive
