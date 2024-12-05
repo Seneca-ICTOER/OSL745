@@ -104,7 +104,7 @@ Click on the **Support** link. Take a look at some of the support options availa
 - Select the Ubuntu image as your boot selection
   > ![Rufus Select Image](/img/rufusselectimage.png)
 - Double check that your flash drive is selected for the "Device" field, your Debian image has been selected for the boot selection, and that all other settings are the same as the image below.
-  > ![Rufus Ready](/img/rufusready1.jpg)
+  > ![Rufus Ready](/img/rufusready1.png)
 - Click "START" and Rufus will begin to create your installation image on your flash drive
 - **Note: If Rufus asks you to select the mode that you wish to use to write the image, select "Write in ISO image mode".**
 - Once the process has completed you will have your installation flash drive ready.
