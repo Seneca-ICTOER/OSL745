@@ -1,12 +1,12 @@
 ---
 id: landing-page
-title: Welcome to OSL740
+title: Welcome to OSL745
 sidebar_position: 1
 slug: /
-description: Landing Home Page for OSL740
+description: Landing Home Page for OSL745
 ---
 
-# Welcome to OSL740 - Administration of Open Source Systems
+# Welcome to OSL745 - Administration of Open Source Systems
 
 ## Quick Links
 
@@ -17,7 +17,7 @@ description: Landing Home Page for OSL740
 
 This course is the second in a series of courses about Linux technologies
 
-- OSL640 taught you to be a Linux user. **In OSL740, you will move from being a Linux user to being a Linux system administrator.**
+- OSL645 taught you to be a Linux user. **In OSL745, you will move from being a Linux user to being a Linux system administrator.**
 - As a system administrator, you will be responsible for installing, configuring, adjusting, maintaining, and troubleshooting the operation of computer systems. This is a lot of responsibility, and with that responsibility comes power. You will be able to change anything on the system, and you will also have the ability to damage or destroy the system.
 - In addition to manually configuring machines, you will learn to use automation tools to "deploy" changes to multiple systems within our organization. Although this course will not cover the full features of these tools, it will serve as an introduction to scripting and automation to make you a more capable and efficient system administrator.
 - In this course you will use an external SSD drive (USB 3) with the lab computers on campus to set up a Linux system.
@@ -59,7 +59,7 @@ Most of the learning in this course occurs through the hands-on problem solving 
 3. **USB Flash Drive** (3.0 preferred) **Minimum Capacity:** 16 GB
 4. **Lab Logbook** (download & print Both sides per lab permitted)
 
-   - [Download Doc](/files/OSL740-Logbook-Online.docx)
+   - [Download Doc](/files/OSL745-Logbook-Online.docx)
    - **NOTE: If you've taken this class in a previous semester, you MAY NOT bring that version of the lab logbook to any testing.**
    - Your Professor will direct you on what they want you to do with the Lab Lag Book
 
