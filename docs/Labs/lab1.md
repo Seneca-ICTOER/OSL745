@@ -356,7 +356,156 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
   - `sudo systemctl disable apparmor`
 - We will learn more about these commands later
 
-## Investigation 4: Using Shell Commands to Generate System Information
+## Investigation 4: Managing Software Packages
+
+### Investigation 4 Needs modification
+
+### Part 1: Managing Software and Repositories with apt
+
+We will learn how to install software packages with the **apt** utility. This command is useful for installing software since it automatically resolves software dependencies prior to installing the software. Upon your Debian install, links to software repositories are automatically made to allow for easy software updates and installs from online repositories.
+
+> ![caution](/img/caution.png)**Internet Connection**
+>
+> In order for the **apt** command to work you require a connection to the Internet.
+
+**Common apt Commands**
+
+```bash
+# Remember apt usually requires sudo
+
+# Update the list of available packages in the repositories
+apt update
+
+# Upgrade all installed packages to the newest versions
+apt upgrade
+
+# Search for a given package
+apt search <package>
+
+# Show information for a package
+apt show <package>
+
+# Install a package
+apt install <package>
+
+# Uninstall a package
+apt remove <package>
+
+# List all installed packages
+apt list --installed
+
+# Show configured repositories
+sudo less /etc/apt/sources.list
+```
+
+Unfortunately, there is no guarantee that a particular software package is contained on the default repository. In order to overcome this problem, you can add other repositories that may contain the application that you wish to install.
+
+**Perform the following steps:**
+
+1. Make certain that you are in your **debhost** machine.
+2. Search for the package **elinks** and then show its information
+
+```bash
+sudo apt search elinks
+sudo apt show elinks
+```
+
+What type of software is **elinks**?
+
+3. Now issue the command:
+
+```bash
+sudo apt install elinks
+```
+
+4. How can you tell if the elinks package has been installed?
+5. Test that **elinks** works
+
+```bash
+elinks https://debian.org
+```
+
+6. Type `q` to exit elinks
+7. To remove the elinks package issue the command:
+
+```bash
+sudo apt remove elinks
+```
+
+8. Verify that the elinks package has been removed. Also verify that the application called: **hexchat** is not installed.
+9. Open Firefox on **debhost** to [http://ftp.ca.debian.org/debian/pool/main/h/hexchat](http://ftp.ca.debian.org/debian/pool/main/h/hexchat)
+10. Download the file **hexchat_x.xx.x-x_amd64.deb** (The version numbers in the filename don't matter)
+11. Open a terminal and change to your ~/Downloads directory.
+12. In order to install a package from a local package file (.deb) we can also use `apt`
+
+```bash
+# Install local package file by providing path to .deb file
+sudo apt install ./hexchat*.deb
+```
+
+![hexchat](/img/hexchat.png)
+Was the command successful?
+
+> While it is possible to install a package directly from a package file, it does present some difficulties.
+>
+> - Resolving dependencies, when using `apt` with the repositories it will automatically resolve dependencies
+> - Compatibility, if the package file is not built specifically for this particular Distribution/Architecture/Version then compatibility problems can certainly occur
+> - Conflicts, if you install an alternate package from an outside source as well as the same software from the repo then they can conflict with each other.
+>
+> That doesn't mean we can't install software not included in the repos. We should just try to avoid unofficial .deb packages.
+
+13. Install **hexchat** normally from the repositories
+
+### Part 2: Installing flatpak Applications
+
+While we should mostly be using software provided by our official repos, there are certainly circumstances when software we want is not available. One alternative is using one of the "Universal Packaging" systems to find newer or 3rd party software.
+
+Popular "Universal Package" options include
+
+- snaps (developed and promoted by Ubuntu)
+- flatpaks
+- Appimages
+
+All of these offer "containerization" or "sandboxing" as a way of resolving the issues discussed above, and also to provide additional security.
+
+This [Youtube video](https://www.youtube.com/watch?v=9HuExVD56Bo) explains the different systems.
+
+1. Open Firefox on **debhost** and open (https://flathub.org) and click on the **Setup Flathub** link.
+2. Click on the Debian icon.
+3. Follow the instructions to install the **flatpak** command and configure the **Flathub Repo**
+4. After rebooting, open a terminal and use **apt** to search for a package called **obs-studio**
+5. What version of OBS-Studio is available in the Debian repo?
+6. Open Firefox on **debhost** and open (https://flathub.org)
+7. Search Flathub for "OBS".
+8. Click on "OBS Studio"
+9. What version is available on Flathub?
+
+Flatpaks are a great way of adding software that is either not available or not as up to date as the Debian repos.
+
+We have installed "Debian Stable" and the word "Stable" is very important. Especially on important servers!! While our packages will receive updates, specifically security updates and bug fixes, they are unlikely to receive upgrades that add new features. This is mostly an issue with desktop applications.
+
+10. Install "OBS Studio" with the command:
+
+```bash
+# Install a flatpak
+sudo flatpak install flathub com.obsproject.Studio
+```
+
+11. Answer `y` to accept the required runtime library and proceed with the changes.
+12. After the installation confirm that the application runs.
+13. To uninstall OBS try the following commands:
+
+```bash
+# List installed flatpaks
+sudo flatpak list
+
+# Make note of the Application ID for "OBS Studio"
+
+# Uninstall "OBS Studio""
+sudo flatpak uninstall com.obsproject.Studio
+```
+
+## Investigation 5: Using Shell Commands to Generate System Information
 
 It is very common for system administrators to keep records regarding their installed computer systems. For example, it is necessary to have a record of all the hardware information for each machine in order to help fix computer hardware problems, and to assist when purchasing additional consistent computer hardware.
 
