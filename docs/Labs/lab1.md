@@ -244,122 +244,6 @@ ip route
 
 Viewing your IP address configuration and routing table can be useful tools for troubleshooting network connectivity issues. Ping and traceroute are useful tools for verifying a particular destination is reachable. Traceroute has the added benefit of showing you where the packets are failing.
 
-### Updating the system & Installing software
-
-Now that you have confirmed your Internet connection it's time to access elevated privileges to install software. In Linux you use the **sudo** command to execute any command with elevated (root) privileges), provided your user sudo access. Your user was given this access when you created it in the installation. It's time to use this new power wisely. Update the system using **apt**:
-
-```bash
-sudo apt -y update
-```
-
-Once that has completed, install the following packages with the command **sudo apt install** followed by the package names (separated by a space):
-
-- chromium
-- cinnamon
-- tldr
-
-```bash
-sudo apt -y install chromium cinnamon tldr
-```
-
-### Configuring the Cinnamon desktop
-
-Logout of your graphical system. At the login screen:
-
-- Click on your **user**, but do not enter your password.
-- Click on the **gear** icon in the lower right corner.
-- Select **Cinnamon** from the list.
-- **Login** as your user.
-- From the **Menu** (bottom left hand corner):
-  - Browse to **Internet**
-  - Right click on **Chromium** and select **Add to panel**
-
-### Changing Locked Screen-saver Power Settings
-
-Your system automatically enables a screen-saver application which is a useful security tool to prevent unauthorized viewing of information on a terminal after a certain amount of inactivity. Turning-off the locked screen-saver for this course however is more useful.
-
-To Disable the Locked Screen-saver, Perform the following steps:
-
-- Click on the **menu** button in the bottom left corner.
-- Navigate to **All applications**
-- Select **Screensaver**
-- Click the dropdown beside **Delay before starting screensaver** and select **Never**.
-
-### Perform a system update
-
-The primary source of software and programs that we can install in Linux is online **repositories**.
-
-These repositories are online databases of different available software organized into **Packages**.
-
-The repositories and packages are maintained by the distribution (in this case Ubuntu) and they are maintained separately for each release.
-
-We should check for updated packages frequently (at the beginning of each lab) as they often contain security updates and bug fixes.
-
-To interact with the repositories and manage our software packages, we will use the `apt` command.
-
-`apt` is the command line package management tool used by Debian and many other distributions of Linux.
-
-To check for and install updated packages we need to use 2 separate `apt` commands:
-
-- `apt update` will update the local copy of the repository database
-- `apt upgrade` will check the database for packages that need to be updated, download them and install them along with any required dependencies.
-- To make changes to the software on the system requires root privileges, so we will need to add `sudo` to the beginning of the command.
-  We can also run both commands on a single command line.
-- Type `sudo apt update && sudo apt upgrade`
-
-Using && as a separator between the 2 commands will cause the 2nd command to execute only if the first command is successful.
-
->
-
-> ![caution](/img/caution.png)**If the update results in an updated Linux Kernel then you will want to restart the system**
-
-### **Safe Shutdown and Restart, and safely removing the external SSD**
-
-> ![caution](/img/caution.png)**It is ABSOLUTELY ESSENTIAL that you do NOT remove your SSD drive during your Ubuntu session.**
->
-> You are required to correctly shutdown your Ubuntu host as you would with any operating system.
->
-> **FAILURE TO DO THIS MAY DAMAGE YOUR HOST AND NOT ALLOW IT TO BOOT PROPERLY (YOU HAVE BEEN WARNED).**
->
-> - Click on the power icon in the top right corner of the display and then click on the power icon again
-> - Click on Restart or Shutdown
-
-### What was installed?
-
-- Type the command `man apt` or `tldr apt`
-- Read the man page for the apt utility and figure out a command to list only the installed packages.
-- How many packages were installed? (Hint: pipe the output to `wc -l`)
-
-### **Customizing your desktop/shell**
-
-- Explore the **Themes** available under Applications. You can enable **dark mode** here (under **settings**) if you wish.
-- Read and edit your `~/.bashrc` file and add an alias called `update` that will run the command line `sudo apt update && sudo apt upgrade`
-- Both `nano` and `vi` are installed by default. You could/should also install `vim`
-  - Type `sudo apt install vim`
-
-### **Turning off AppArmor**
-
-### Maybe leave AppArmor? Need to explore effects
-
-> ![caution](/img/caution.png)**Never disable AppArmor in the real world!!**
->
-> It is highly discouraged and unsafe to disable AppArmor on a public-facing server.
-> AppArmor is a Mandatory Access Control framework.
-> When enabled, AppArmor confines programs according to a set of rules that specify what files a given program can access.
-> This goes beyond the traditional protection of file system permissions and helps protect the system against both known and unknown vulnerabilities.
->
-> Some of the tasks we will be doing may require additional and tedious steps to configure AppArmor to not prevent our changes.
-> So for the purposes of this course we will disable AppArmor. It is quite safe to do so because we are operating in a VM so our host is not visible to the public Internet.
-
-- Run the following commands to disable AppArmor:
-  - `sudo systemctl stop apparmor`
-  - `sudo systemctl disable apparmor`
-- We will learn more about these commands later
-
-## Investigation 4: Managing Software Packages
-
-### Investigation 4 Needs modification
-
 ### Part 1: Managing Software and Repositories with apt
 
 We will learn how to install software packages with the **apt** utility. This command is useful for installing software since it automatically resolves software dependencies prior to installing the software. Upon your Debian install, links to software repositories are automatically made to allow for easy software updates and installs from online repositories.
@@ -505,7 +389,113 @@ sudo flatpak list
 sudo flatpak uninstall com.obsproject.Studio
 ```
 
-## Investigation 5: Using Shell Commands to Generate System Information
+### Updating the system & Installing software
+
+Install the following packages with the command **sudo apt install** followed by the package names (separated by a space):
+
+- chromium
+- cinnamon
+- tldr
+
+```bash
+sudo apt -y install chromium cinnamon tldr
+```
+
+### Configuring the Cinnamon desktop
+
+Logout of your graphical system. At the login screen:
+
+- Click on your **user**, but do not enter your password.
+- Click on the **gear** icon in the lower right corner.
+- Select **Cinnamon** from the list.
+- **Login** as your user.
+- From the **Menu** (bottom left hand corner):
+  - Browse to **Internet**
+  - Right click on **Chromium** and select **Add to panel**
+
+### Changing Locked Screen-saver Power Settings
+
+Your system automatically enables a screen-saver application which is a useful security tool to prevent unauthorized viewing of information on a terminal after a certain amount of inactivity. Turning-off the locked screen-saver for this course however is more useful.
+
+To Disable the Locked Screen-saver, Perform the following steps:
+
+- Click on the **menu** button in the bottom left corner.
+- Navigate to **All applications**
+- Select **Screensaver**
+- Click the dropdown beside **Delay before starting screensaver** and select **Never**.
+
+### Perform a system update
+
+The primary source of software and programs that we can install in Linux is online **repositories**.
+
+These repositories are online databases of different available software organized into **Packages**.
+
+The repositories and packages are maintained by the distribution (in this case Ubuntu) and they are maintained separately for each release.
+
+We should check for updated packages frequently (at the beginning of each lab) as they often contain security updates and bug fixes.
+
+To interact with the repositories and manage our software packages, we will use the `apt` command.
+
+`apt` is the command line package management tool used by Debian and many other distributions of Linux.
+
+To check for and install updated packages we need to use 2 separate `apt` commands:
+
+- `apt update` will update the local copy of the repository database
+- `apt upgrade` will check the database for packages that need to be updated, download them and install them along with any required dependencies.
+- To make changes to the software on the system requires root privileges, so we will need to add `sudo` to the beginning of the command.
+  We can also run both commands on a single command line.
+- Type `sudo apt update && sudo apt upgrade`
+
+Using && as a separator between the 2 commands will cause the 2nd command to execute only if the first command is successful.
+
+>
+
+> ![caution](/img/caution.png)**If the update results in an updated Linux Kernel then you will want to restart the system**
+
+### **Safe Shutdown and Restart, and safely removing the external SSD**
+
+> ![caution](/img/caution.png)**It is ABSOLUTELY ESSENTIAL that you do NOT remove your SSD drive during your Ubuntu session.**
+>
+> You are required to correctly shutdown your Ubuntu host as you would with any operating system.
+>
+> **FAILURE TO DO THIS MAY DAMAGE YOUR HOST AND NOT ALLOW IT TO BOOT PROPERLY (YOU HAVE BEEN WARNED).**
+>
+> - Click on the power icon in the top right corner of the display and then click on the power icon again
+> - Click on Restart or Shutdown
+
+### What was installed?
+
+- Type the command `man apt` or `tldr apt`
+- Read the man page for the apt utility and figure out a command to list only the installed packages.
+- How many packages were installed? (Hint: pipe the output to `wc -l`)
+
+### **Customizing your desktop/shell**
+
+- Explore the **Themes** available under Applications. You can enable **dark mode** here (under **settings**) if you wish.
+- Read and edit your `~/.bashrc` file and add an alias called `update` that will run the command line `sudo apt update && sudo apt upgrade`
+- Both `nano` and `vi` are installed by default. You could/should also install `vim`
+  - Type `sudo apt install vim`
+
+### **Turning off AppArmor**
+
+### Maybe leave AppArmor? Need to explore effects
+
+> ![caution](/img/caution.png)**Never disable AppArmor in the real world!!**
+>
+> It is highly discouraged and unsafe to disable AppArmor on a public-facing server.
+> AppArmor is a Mandatory Access Control framework.
+> When enabled, AppArmor confines programs according to a set of rules that specify what files a given program can access.
+> This goes beyond the traditional protection of file system permissions and helps protect the system against both known and unknown vulnerabilities.
+>
+> Some of the tasks we will be doing may require additional and tedious steps to configure AppArmor to not prevent our changes.
+> So for the purposes of this course we will disable AppArmor. It is quite safe to do so because we are operating in a VM so our host is not visible to the public Internet.
+
+- Run the following commands to disable AppArmor:
+  - `sudo systemctl stop apparmor`
+  - `sudo systemctl disable apparmor`
+- We will learn more about these commands later
+
+## Investigation 4: Using Shell Commands to Generate System Information
 
 It is very common for system administrators to keep records regarding their installed computer systems. For example, it is necessary to have a record of all the hardware information for each machine in order to help fix computer hardware problems, and to assist when purchasing additional consistent computer hardware.
 
