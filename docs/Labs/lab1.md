@@ -595,7 +595,7 @@ $(apt list --installed)
 EOF
 ```
 
-1. Issue the **chmod** command to add **execute permission** for the **user** the **users1.bash** file.
+1. Issue the **chmod** command to add **execute permission** for the **user** the **myreport.bash** file.
 2. Save your editing changes, stage and commit your changes to GitHub.
 
 - What other commands and information could we document? Perhaps a list of storage devices, partitions and mount points?
