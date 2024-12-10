@@ -293,43 +293,24 @@ Unfortunately, there is no guarantee that a particular software package is conta
 sudo apt search code
 ```
 
-1. Scroll through the output. Notice there is no package named **code** that is displayed. That is because it is not in the ubuntu repositories. Issue the following commands to add the repository for **code**, which is Visual Studio Code.
-   What type of software is **elinks**?
+1. Scroll through the output. Notice there is no package named **code** that is displayed. That is because it is not in the ubuntu repositories. Issue the following commands to add the repository (from Microsoft) for **code**, which is Visual Studio Code.
 
-1. sudo apt show elinks
+1. View the information for the package **code**.
+
+```bash
+sudo apt info -a code
+```
+
+- Read through the information provided. Who is listed as the maintainer?
+
 1. Now issue the command:
 
 ```bash
-sudo apt install elinks
+sudo apt install code
 ```
 
-4. How can you tell if the elinks package has been installed?
-5. Test that **elinks** works
-
-```bash
-elinks https://debian.org
-```
-
-6. Type `q` to exit elinks
-7. To remove the elinks package issue the command:
-
-```bash
-sudo apt remove elinks
-```
-
-8. Verify that the elinks package has been removed. Also verify that the application called: **hexchat** is not installed.
-9. Open Firefox on **debhost** to [http://ftp.ca.debian.org/debian/pool/main/h/hexchat](http://ftp.ca.debian.org/debian/pool/main/h/hexchat)
-10. Download the file **hexchat_x.xx.x-x_amd64.deb** (The version numbers in the filename don't matter)
-11. Open a terminal and change to your ~/Downloads directory.
-12. In order to install a package from a local package file (.deb) we can also use `apt`
-
-```bash
-# Install local package file by providing path to .deb file
-sudo apt install ./hexchat*.deb
-```
-
-![hexchat](/img/hexchat.png)
-Was the command successful?
+1. From the **menu**, search for **code** and launch **Visual Studio Code**.
+1. Close the application.
 
 > While it is possible to install a package directly from a package file, it does present some difficulties.
 >
@@ -339,9 +320,7 @@ Was the command successful?
 >
 > That doesn't mean we can't install software not included in the repos. We should just try to avoid unofficial .deb packages.
 
-13. Install **hexchat** normally from the repositories
-
-### Part 2: Installing flatpak Applications
+### Part 2: Installing snap Applications
 
 While we should mostly be using software provided by our official repos, there are certainly circumstances when software we want is not available. One alternative is using one of the "Universal Packaging" systems to find newer or 3rd party software.
 
@@ -355,40 +334,38 @@ All of these offer "containerization" or "sandboxing" as a way of resolving the 
 
 This [Youtube video](https://www.youtube.com/watch?v=9HuExVD56Bo) explains the different systems.
 
-1. Open Firefox on **debhost** and open (https://flathub.org) and click on the **Setup Flathub** link.
-2. Click on the Debian icon.
-3. Follow the instructions to install the **flatpak** command and configure the **Flathub Repo**
-4. After rebooting, open a terminal and use **apt** to search for a package called **obs-studio**
-5. What version of OBS-Studio is available in the Debian repo?
-6. Open Firefox on **debhost** and open (https://flathub.org)
-7. Search Flathub for "OBS".
-8. Click on "OBS Studio"
-9. What version is available on Flathub?
-
-Flatpaks are a great way of adding software that is either not available or not as up to date as the Debian repos.
-
-We have installed "Debian Stable" and the word "Stable" is very important. Especially on important servers!! While our packages will receive updates, specifically security updates and bug fixes, they are unlikely to receive upgrades that add new features. This is mostly an issue with desktop applications.
-
-10. Install "OBS Studio" with the command:
+1. Open a **terminal** on **ubuhost**.
+1. Issue the following command to view information about OBS Studio:
 
 ```bash
-# Install a flatpak
-sudo flatpak install flathub com.obsproject.Studio
+sudo snap info obs-studio
 ```
 
-11. Answer `y` to accept the required runtime library and proceed with the changes.
-12. After the installation confirm that the application runs.
-13. To uninstall OBS try the following commands:
+- Based on the output, what is this software and what is it used for?
+
+1. Install OBS Studio as a snap:
 
 ```bash
-# List installed flatpaks
-sudo flatpak list
-
-# Make note of the Application ID for "OBS Studio"
-
-# Uninstall "OBS Studio""
-sudo flatpak uninstall com.obsproject.Studio
+sudo snap install obs-studio
 ```
+
+1. From the **menu**, search for **obs** and launch **OBS Studio**.
+1. Ignore the dialogue prompts (unless you are interested in using this application).
+1. Close the application.
+
+# List installed snaps
+
+```bash
+sudo snap list
+```
+
+1. Uninstall OBS Studio
+
+```bash
+sudo snap remove obs-studio
+```
+
+> Note, OBS Studio is available through the Ubuntu repositories. You could install this with the command **sudo apt install obs-studio**
 
 ### Updating the system & Installing software
 
@@ -658,3 +635,5 @@ When you have completed Lab 1, ask your instructor to come and check your instal
 1. How do you determine the host name of your GNU/Linux workstation?
 1. What command can display the NIC MAC address?
 1. What command is used to get a list of running processes on your newly-installed system?
+1. What is the process to install software using **apt**?
+1. What is the process to install software using **snap**?
