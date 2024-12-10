@@ -19,7 +19,7 @@ In order to save money and resources when learning to install, to manage, and to
 The virtualization software will allow you to create and administer **3 different virtual machines** (**VMs**) on your Ubuntu host (ubuhost) computer system.
 ![labenv.png](/img/ubuntu-lab1-network-diagram-updated.png)
 
-It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capacity of 240 GB** or **240 GB available on your own computer** for you to perform the lab work and provide storage for your Debian 12 host and VMs that you will create in Lab 2. **Due to space requirements, you are NOT permitted to share this SSD drive with any other course material than our OPS245 course.**
+It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capacity of 240 GB** or **240 GB available on your own computer** for you to perform the lab work and provide storage for your Ubuntu host and VMs that you will create in Lab 2. **Due to space requirements, you are NOT permitted to share this SSD drive with any other course material than our OSL745 course.**
 
 > **NOTE: It is feasible to use a notebook computer with sufficient hard disk capacity to perform these labs (as you would for an SSD drive)**. It would require that your notebook computer can connect to the Internet (including in Seneca's computer labs). You would be required to follow the same instructions for this lab (SSD). **If you are planning to do these labs on your own personal laptop, please see your professor before you start the installation process to ensure you have appropriate hardware.**
 
@@ -99,11 +99,11 @@ Click on the **Support** link. Take a look at some of the support options availa
 - Download Rufus from the [Rufus Website](https://rufus.ie/en)
   > ![Rufus Download](/img/rufusdownload.jpg)
 - You should now have both the Rufus executable and the Ubuntu image on your personal computer
-  > ![Rufus and Debian](/img/rufusandubuntu.png)
+  > ![Rufus and Ubuntu](/img/rufusandubuntu.png)
 - Run Rufus and you will see the Rufus dialogue box appear.
 - Select the Ubuntu image as your boot selection
   > ![Rufus Select Image](/img/rufusselectimage.png)
-- Double check that your flash drive is selected for the "Device" field, your Debian image has been selected for the boot selection, and that all other settings are the same as the image below.
+- Double check that your flash drive is selected for the "Device" field, your Ubuntu image has been selected for the boot selection, and that all other settings are the same as the image below.
   > ![Rufus Ready](/img/rufusready1.png)
 - Click "START" and Rufus will begin to create your installation image on your flash drive
 - **Note: If Rufus asks you to select the mode that you wish to use to write the image, select "Write in ISO image mode".**
@@ -180,7 +180,7 @@ Because you installed Ubuntu to your external SSD, it now shows up as a bootable
 
 **Note:** In the image above, the installation USB flash drive is labeled as "UEFI Kingston DataTraveler". The external SSD in the image above is labeled as "SABRENT". This is not the SSD itself, rather it is the label for the SATA-to-USB connector that you are using. If you are unsure of which one is your SSD, check your physical SATA-to-USB connector that connects your SSD to the Seneca lab computer. You will likely see its brand name somewhere on the connector. Look for that name in the boot list. Now you know which item is your external SSD.
 
-Now, select your external SSD from the list of bootable drives. Put in the admin password when prompted and your new Debian install will load up.
+Now, select your external SSD from the list of bootable drives. Put in the admin password when prompted and your new Ubuntu install will load up.
 
 When the system boots up you will be presented with a graphical login screen. Select your username enter your password
 
@@ -246,7 +246,7 @@ Viewing your IP address configuration and routing table can be useful tools for 
 
 ### Part 1: Managing Software and Repositories with apt
 
-We will learn how to install software packages with the **apt** utility. This command is useful for installing software since it automatically resolves software dependencies prior to installing the software. Upon your Debian install, links to software repositories are automatically made to allow for easy software updates and installs from online repositories.
+We will learn how to install software packages with the **apt** utility. This command is useful for installing software since it automatically resolves software dependencies prior to installing the software. Upon your Ubuntu install, links to software repositories are automatically made to allow for easy software updates and installs from online repositories.
 
 > ![caution](/img/caution.png)**Internet Connection**
 >
@@ -414,7 +414,7 @@ We should check for updated packages frequently (at the beginning of each lab) a
 
 To interact with the repositories and manage our software packages, we will use the `apt` command.
 
-`apt` is the command line package management tool used by Debian and many other distributions of Linux.
+`apt` is the command line package management tool used by Ubuntu and many other distributions of Linux.
 
 To check for and install updated packages we need to use 2 separate `apt` commands:
 
