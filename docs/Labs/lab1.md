@@ -430,7 +430,7 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
 
 > ![caution](/img/caution.png)**If the update results in an updated Linux Kernel then you will want to restart the system**
 
-### **Safe Shutdown and Restart, and safely removing the external SSD**
+### Safe Shutdown and Restart, and safely removing the external SSD
 
 > ![caution](/img/caution.png)**It is ABSOLUTELY ESSENTIAL that you do NOT remove your SSD drive during your Ubuntu session.**
 >
@@ -447,7 +447,7 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
 - Read the man page for the apt utility and figure out a command to list only the installed packages.
 - How many packages were installed? (Hint: pipe the output to `wc -l`)
 
-### **Customizing your desktop/shell**
+### Customizing your desktop/shell
 
 - Explore the **Themes** available under Applications. You can enable **dark mode** here (under **settings**) if you wish.
 - Read and edit your `~/.bashrc` file and add an alias called `update` that will run the command line `sudo apt update && sudo apt upgrade`
@@ -566,7 +566,7 @@ Confirm the contents have been written to your **lab-1-username** directory. You
 - README.md
 - myreport.bash
 
-### Modifying the vs script
+### Modifying the myreport.bash script
 
 In codespaces has created, open the provided template called **vs**, and update the comment block to include **your name** and **today's date**.
 
