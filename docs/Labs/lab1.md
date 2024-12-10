@@ -286,17 +286,18 @@ Unfortunately, there is no guarantee that a particular software package is conta
 
 **Perform the following steps:**
 
-1. Make certain that you are in your **debhost** machine.
-2. Search for the package **elinks** and then show its information
+1. Make certain that you are in your **ubuhost** machine.
+1. Search for the package **code** and then show its information
 
 ```bash
-sudo apt search elinks
-sudo apt show elinks
+sudo apt search code
 ```
 
-What type of software is **elinks**?
+1. Scroll through the output. Notice there is no package named **code** that is displayed. That is because it is not in the ubuntu repositories. Issue the following commands to add the repository for **code**, which is Visual Studio Code.
+   What type of software is **elinks**?
 
-3. Now issue the command:
+1. sudo apt show elinks
+1. Now issue the command:
 
 ```bash
 sudo apt install elinks
@@ -475,25 +476,6 @@ Using && as a separator between the 2 commands will cause the 2nd command to exe
 - Read and edit your `~/.bashrc` file and add an alias called `update` that will run the command line `sudo apt update && sudo apt upgrade`
 - Both `nano` and `vi` are installed by default. You could/should also install `vim`
   - Type `sudo apt install vim`
-
-### **Turning off AppArmor**
-
-### Maybe leave AppArmor? Need to explore effects
-
-> ![caution](/img/caution.png)**Never disable AppArmor in the real world!!**
->
-> It is highly discouraged and unsafe to disable AppArmor on a public-facing server.
-> AppArmor is a Mandatory Access Control framework.
-> When enabled, AppArmor confines programs according to a set of rules that specify what files a given program can access.
-> This goes beyond the traditional protection of file system permissions and helps protect the system against both known and unknown vulnerabilities.
->
-> Some of the tasks we will be doing may require additional and tedious steps to configure AppArmor to not prevent our changes.
-> So for the purposes of this course we will disable AppArmor. It is quite safe to do so because we are operating in a VM so our host is not visible to the public Internet.
-
-- Run the following commands to disable AppArmor:
-  - `sudo systemctl stop apparmor`
-  - `sudo systemctl disable apparmor`
-- We will learn more about these commands later
 
 ## Investigation 4: Using Shell Commands to Generate System Information
 
