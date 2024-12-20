@@ -11,12 +11,12 @@ description: Lab 1
 
 ### Purpose of Lab 1
 
-In order to save money and resources when learning to install, to manage, and to connect Linux machines to form networks, we will be using a combination of a local install and **Virtual Machines** for this course. :
+In this course, you will learn to install, manage, and connect Linux machines using a combination of local installations, **Virtual Machines** and **the Cloud**.
 
 - **Lab 1**: Create a **Ubuntu Host** install (called **ubuhost**) on your Solid State External Drive (SSD) which will be bootable on your lab class computers.
 - **Lab 2**: Install a **Virtualization program package** on your **Ubuntu host** called **KVM** which will be used to create 2 Virtual Machines (VMs) that you will use to learn about Linux system administration for the remainder of this course.
 
-The virtualization software will allow you to create and administer **3 different virtual machines** (**VMs**) on your Ubuntu host (ubuhost) computer system.
+The virtualization software will allow you to create and administer **2 different virtual machines** (**VMs**) on your Ubuntu host (ubuhost) computer system.
 ![labenv.png](/img/ubuntu-lab1-network-diagram-updated.png)
 
 It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capacity of 240 GB** or **240 GB available on your own computer** for you to perform the lab work and provide storage for your Ubuntu host and VMs that you will create in Lab 2. **Due to space requirements, you are NOT permitted to share this SSD drive with any other course material than our OSL745 course.**
@@ -82,7 +82,7 @@ In this lab, you will learn how to install **Ubuntu** to your SSD for use in the
 
 **The Ubuntu Web Site**
 
-Open up [Ubuntu](https://ubuntu.com/) in your browser. To get the latest copy of the Ubuntu netinstaller ISO click on the "Download" button.
+Open up [Ubuntu](https://ubuntu.com/) in your browser. To get the latest copy of the Ubuntu ISO click on the "Download" button.
 While you are on the site lets explore...
 
 One of the most important skills you should graduate with is the ability to teach yourself something new. You will not always have the luxury of attending a training course to learn something new, so we must be prepared to learn independently. This often means reading official documentation. Official documentation is also one of the primary sources of information you should use when troubleshooting or configuring a system. Along with user forums and wiki's. Google searches can often produce results that are not specific to your Linux distribution or version, so they can produce inaccurate results.
