@@ -37,7 +37,7 @@ At the end of Lab 2, your ubuhost system will contain **2 virtual machines** (**
 1. **Solid State Drive**
 2. **USB key** (for backups)
 3. **Lab Log Book**
-4. [**Ubuntu Server ISO**](https://ubuntu.com/download/server/thank-you?version=24.04.1&architecture=amd64&lts=true) (Download this before you begin)
+4. [Ubuntu Server ISO](https://ubuntu.com/download/server/thank-you?version=24.04.1&architecture=amd64&lts=true) (Download this before you begin)
 
 ### Linux Command Reference
 
