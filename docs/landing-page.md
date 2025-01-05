@@ -37,11 +37,9 @@ Most of the learning in this course occurs through the hands-on problem solving 
 1. [Ubuntu ISO](https://ubuntu.com/download/desktop/thank-you?version=24.04.1&architecture=amd64&lts=true)
 1. [Ubuntu Server ISO](https://ubuntu.com/download/server/thank-you?version=24.04.1&architecture=amd64&lts=true)
 1. **USB Flash Drive** (3.0 preferred) **Minimum Capacity:** 16 GB
-1. **Lab Logbook** (download & print Both sides per lab permitted)
+1. [Lab Logbook](/files/OSL745-Logbook-Online.docx) (download & print Both sides per lab permitted)
 
-   - [Download Doc](/files/OSL745-Logbook-Online.docx)
-   - **NOTE: If you've taken this class in a previous semester, you MAY NOT bring that version of the lab logbook to any testing.**
-   - Your Professor will direct you on what they want you to do with the Lab Lag Book
+- **NOTE: If you've taken this class in a previous semester, you MAY NOT bring that version of the lab logbook to any testing.**
 
 ## Evaluation
 
