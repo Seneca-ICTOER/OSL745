@@ -57,6 +57,5 @@ Most of the learning in this course occurs through the hands-on problem solving 
 | **Evaluation**  | **Marks** |
 | --------------- | --------- |
 | Labs (10)       | 20%       |
-| Assignments (2) | 30%       |
-| Quizzes (10)    | 20%       |
-| Tests (2)       | 30%       |
+| Assignments (2) | 40%       |
+| Tests (2)       | 40%       |
