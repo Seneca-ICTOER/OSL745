@@ -24,27 +24,18 @@ This course teaches the maintenance and administration of Linux servers in both 
 - You will also set up two additional Linux systems using Virtual Machines and KVM (Linux native virtualization), and therefore gain experience with different types of system configurations as well as setting up networking between systems.
 - You will learn how to configure networking and security features both on-premises and in the cloud.
 
-INTAWS will teach you to administer and use cloud-based services for DNS, Web server and databases.
-In this course you will use AWS via the AWS learner lab. The AWS Learner Lab provides a sandbox environment where you can build, configure and deploy AWS assets such as instances. There are some limitations as to what you can do, however it provides all the functionality we require for this course. In the first 3 labs you will be learning how to build an Apache Web Server in AWS. You will use this Apache Web Server to publish your web pages on in Labs 4-10. You are limited to $100 credit at no cost within the learner lab. Once this runs out, your account will be disabled. Additionally, there is no way to add funds to this pool. If you follow the lab instructions properly you should not have any issues.
+OSL745 will teach you to administer and use cloud-based services for DNS, Web server and databases.
+In this course you will use AWS via the AWS learner lab. The AWS Learner Lab provides a sandbox environment where you can build, configure and deploy AWS assets such as instances. There are some limitations as to what you can do, however it provides all the functionality we require for this course. You are limited to $50 credit at no cost within the learner lab. Once this runs out, your account will be disabled. Additionally, there is no way to add funds to this pool. If you follow the lab instructions properly you should not have any issues.
 
 ## Learning by Doing
 
 Most of the learning in this course occurs through the hands-on problem solving that takes place in the ten labs and two assignments.
-
-## Requirements for Success:
-
-- It is very important to stay up-to-date with the coursework, and to practice until you have confidently mastered each task.
-- All of the software used in this course is open source software, so you are free to use, modify, and redistribute it. This means that you can install it as many times as you want on as many different computers as you would like. It also means that you can tinker with it -- you can take it apart, see how it works, and put it back together in the same or a different way, limited only by your time and ambition. You are encouraged to experiment and question liberally.
-- You should take good notes as you learn new concepts, commands, and the configuration changes that you will make during the labs and assignments. Your Professor will provide more instructions regarding the **Lab Log Book**
-- You are encouraged to experiment and explore. There is so much to learn about Linux and Open Source Software if you are prepared to immerse yourself. Feel free to setup other VM's to experiment with.
-- Carefully read ALL lab instructions and check your work regularly. The labs have been designed with backup safeguards to prevent the student from losing their work. On the other hand, students may lose their work if they fail to follow lab instructions or accidentally forget their ssd devices in the Lab!
 
 ## Required Materials
 
 1. **Solid State Drive (SSD) Minimum Capacity:** 240 GB
 1. [Ubuntu ISO](https://ubuntu.com/download/desktop/thank-you?version=24.04.1&architecture=amd64&lts=true)
 1. [Ubuntu Server ISO](https://ubuntu.com/download/server/thank-you?version=24.04.1&architecture=amd64&lts=true)
-
 1. **USB Flash Drive** (3.0 preferred) **Minimum Capacity:** 16 GB
 1. **Lab Logbook** (download & print Both sides per lab permitted)
 
