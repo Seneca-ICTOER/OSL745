@@ -714,20 +714,15 @@ If you have successfully completed this lab, make a new backup of all of your vi
 
 **Perform the Following Steps:**
 
-1. Use the **virsh start** command to launch all the VMs (**deb1**, **deb2**, and **deb3**).
-2. Inside each virtual machine, run `ip a` on the command line. Open a Terminal window in deb1 to do so. You'll need the IP address of each machine for the next steps.
-3. Switch to your **debhost**, open a terminal, and change directory to **~/bin**.
-4. Issue the command:
+1. On your **ubuhost** issue the command:
 
 ```bash
-wget https://raw.githubusercontent.com/OPS245/debian-labs/main/lab2-check.bash
+virsh list --all
 ```
 
-5. Give the **lab2-check.bash** execute permissions for the file owner.
-6. Run the shell script and if there are any warnings, make fixes and re-run shell script until you receive the "Congratulations" message.
-7. Follow the submission instructions of your Professor:
+1. Call your professor over and show them the output.
 
-## Practice For Quizzes, Tests, Midterm & Final Exam
+## Review Questions
 
 1. How do you start and stop virtual machines?
 2. What is the purpose of the virsh command?
