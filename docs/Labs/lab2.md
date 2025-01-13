@@ -128,7 +128,7 @@ sudo systemctl restart <servicename>
 5. Issue the correct commands to make sure that the "libvirtd" service is both "active" (started) and "enabled" (will start automatically at boot)
 
    > ![caution](/img/caution.png)
-   > The behaviour of the **libvirtd** service on Debian Linux is for the service to stop when not in use and restart when required.
+   > The behaviour of the **libvirtd** service on Ubuntu Linux is for the service to stop when not in use and restart when required.
 
    >
 
@@ -201,9 +201,9 @@ You can see that ubuhost has connected to the virtual network and iptables rules
 - **Disk space**: 15GB
 - **CPUs**: 2
 
-> ![caution](/img/caution.png) It would be best to download a local copy of the Debian "netinst" ISO
+> ![caution](/img/caution.png) It would be best to download a local copy of the Ubuntu Server ISO
 >
-> [Download Debian](https://www.debian.org/download)
+> [Ubuntu Server](https://ubuntu.com/download/server)
 
 **Perform the following steps:**
 
