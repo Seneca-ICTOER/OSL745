@@ -137,72 +137,75 @@ ip -brief address
 ip route
 ```
 
-4. At this time you should see no configured routes and no IPv4 address assigned to the interface
-5. To add a static address and default gateway to the interface use the following commands:
+1. At this time you should will see the default routes and the IP obtained by DHCP through your virtual network. However, these are servers. Servers should have static IPs so you can reliably locate them on the network (or map FQDNs to them, which we will do later in the course).
+1. To add a static address and default gateway to the interface use the following commands:
 
 ```bash
 # Add a static IPv4 address (you may have a different interface name)
-sudo ip address add 192.168.245.13/24 dev enp1s0
-
-# Add a default gateway address
-sudo ip route add default via 192.168.245.1 dev enp1s0
+sudo ip address add 192.168.100.11/24 dev enp1s0
 
 # Make an interface down/up
 ip link set enp1s0 down
 ip link set enp1s0 up
 ```
 
-6. Confirm the effect of these commands.
-7. Make sure your link is in an **UP** state with the static address and default gateway
+1. Confirm the effect of these commands.
+1. Make sure your link is in an **UP** state with the static address and default gateway.
 
-![deb3ipstatic](/img/deb3ipstatic.png)
+![ubu1ipstatic](/img/ubu1ipstatic.png)
 
-8. Confirm your connection by pinging the addresses of **debhost** and **deb1**
-9. Test the connection to the Internet by pinging **www.debian.org**
+1. Confirm your connection by pinging **ubuhost**'s ip address.
+1. Test the connection to the Internet by pinging **www.google.ca** (**ctrl + C** to cancel this once you see it's success or failure a few times).
 
-![deb3pingtest1](/img/deb3pingtest1.png)
+![ubu1pingtest1](/img/ubu1pingtest1.png)
 
-Hostname resolution via a DNS Server has not been configured
+1. If everything is working, reboot **ubu1**
+1. Login to ubu1 and display your ip configuration with `ip`
+1. All of the settings have been lost. They need to be made persistent by editing the **/etc/netplan/99_config.yaml** file
+1. Edit the file and make the following changes to the "primary network interface" (Your interface name may be different)
 
-10. Using `sudo` edit the file **`/etc/resolv.conf`** and modify the **nameserver** setting to the address of **debhost**
-
-```bash
-nameserver 192.168.245.1
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp1s0:
+      addresses:
+        - 192.168.100.1/24
+      routes:
+        - to: default
+          via: 192.168.100.1
+      nameservers:
+        addresses: [192.168.100.1]
 ```
 
-11. Test the connection to the Internet by pinging **www.debian.org**
-
-![deb3pingtest1](/img/deb3pingtest1.png)
-
-12. If everything is working, reboot **deb3**
-13. Login to deb3 and test your connection with `ping` and display your configuration with `ip`
-14. All of the settings have been lost. They need to be made persistent by editing the **/etc/network/interfaces** file
-15. Edit the file and make the following changes to the "primary network interface" (Your interface name may be different)
-
-![deb3interfaces](/img/deb3interfaces.png)
-
-16. Test the settings by bringing the interface down and then up using the commands:
+1. Issue the following command to apply your configuration. **Note:** You should receive an error.
 
 ```bash
-# Bring down the interface
-sudo ifdown enp1s0
-
-# Bring up the interface
-sudo ifup enp1s0
+sudo netplan apply
 ```
 
-17. Test your connection by pinging **www.debian.org**
-18. If the test is successful reboot **deb3** and test again
-19. Now configure your **deb2** VM for a persistent static network connection as well using the IPv4 address of **192.168.245.12**. Don't forget to:
+1. Use **chmod** to make 99_config.yaml read and writable only by the user.
+
+```bash
+sudo chmod 600 /etc/netplan/99_config.yaml
+```
+
+1. Reissue the command to apply your configuration.
+1. Issue a linux command to display your IP configuration.
+1. Test your connection by pinging **www.google.ca**.
+1. If the test is successful reboot **ubu1** and test again.
+1. Now configure your **ubu2** VM for a persistent static network connection as well using the IPv4 address of **192.168.100.12**. Don't forget to:
 
 - configure the VM to connect to **network1**
-- configure the **interfaces** file
-- edit **/etc/resolv.conf**
+- configure the **/etc/netplan/99_config.yaml** file (don't forget about the file permissions)
 - test connectivity after a reboot.
 
-You should now be able to ping all of your VM's by address and any named host on the Internet from each of your VM's
+You should now be able to ping both of your VM's by address and any named host on the Internet from each of your VM's
 
 **Answer INVESTIGATION 1 observations / questions in your lab log book.**
+
+## Done to here
 
 ## Investigation 2: Managing Your New Network
 
