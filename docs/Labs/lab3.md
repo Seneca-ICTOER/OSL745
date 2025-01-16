@@ -57,7 +57,7 @@ If we are going to setup a private virtual network, there are a number of steps 
 
 Before configuring our network, we want to **turn off dynamic network configuration for our Virtual Machines** by turning off the "**default**" virtual network. We will then define our private network.
 
-![ops245net](/img/ops245net.png)
+![osl745net](/img/osl745net.png)
 
 This diagram shows the current network configuration of your **ubuhost** machine in relation to your **Virtual Machines**. In this section, you will be learning to change the default network settings for both your **ubuhost** machine and **VMs** to belong to a **virtual network** using fixed IP Addresses.
 
