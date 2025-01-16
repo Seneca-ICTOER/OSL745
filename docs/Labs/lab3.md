@@ -19,16 +19,16 @@ Setting up networks is an essential operation for a system administrator. Mainta
 
 **Main Objectives**
 
-1. Configure a private virtual network for your **VMs** and your **debhost** machine
+1. Configure a private virtual network for your **VMs** and your **ubuhost** machine
 2. Configure network interfaces for your Virtual Machines using both **graphical** and **command-line** utilities.
-3. Use **local hostname resolution** to resolve hostnames to the corresponding IP addresses
-4. Use common networking utilities to associate network services with port numbers for troubleshooting purposes
+3. Use **local hostname resolution** to resolve hostnames to the corresponding IP addresses.
+4. Use common networking utilities to associate network services with port numbers for troubleshooting purposes.
 
 ### Minimum Required Materials
 
 - **Solid State Drive**
 - **USB key** (for backups)
-- **Lab6 Log Book**
+- **Lab Log Book**
 
 ### Linux Command Reference
 
@@ -38,7 +38,7 @@ Setting up networks is an essential operation for a system administrator. Mainta
 
 **Networking Configuration Files**
 
-- [Debian Network Configuration wiki page](https://wiki.debian.org/NetworkConfiguration)
+- [Ubuntu Network Configuration documentation](https://ubuntu.com/server/docs/configuring-networks)
 - [resolv.conf](https://linux.die.net/man/5/resolv.conf)
 
 **Additional Utilities**
@@ -49,7 +49,7 @@ Setting up networks is an essential operation for a system administrator. Mainta
 
 ## Investigation 1: Configuring A Virtual Network
 
-For the remainder of this course, we will focus on configuring our VM's to communicate across a (Virtual) network. This lab will focus on setting up a virtual network, connecting our VMs and debhost machine to the network, and configuring local hostname resolution to make it more convenient to use, troubleshoot, and protect. **Lab 7** will focus on configuring SSH and making access to the virtual network more secure. Finally, **lab 8** will focus on configuring a DHCP server to automatically assign an IP addresses and other configuration details to DHCP clients.
+For the remainder of this course, we will focus on configuring our VM's to communicate across a (Virtual) network. This lab will focus on setting up a virtual network, connecting our VMs and ubuhost machine to the network, and configuring local hostname resolution to make it more convenient to use, troubleshoot, and protect. **Lab 4** will focus on configuring SSH and making access to the virtual network more secure.
 
 ### Part 1: Configuring a Private Network (Via Virtual Machine Manager)
 
@@ -59,12 +59,12 @@ Before configuring our network, we want to **turn off dynamic network configurat
 
 ![ops245net](/img/ops245net.png)
 
-This diagram shows the current network configuration of your **debhost** machine in relation to your **Virtual Machines**. In this section, you will be learning to change the default network settings for both your **debhost** machine and **VMs** to belong to a **virtual network** using fixed IP Addresses.
+This diagram shows the current network configuration of your **ubuhost** machine in relation to your **Virtual Machines**. In this section, you will be learning to change the default network settings for both your **ubuhost** machine and **VMs** to belong to a **virtual network** using fixed IP Addresses.
 
 **Perform the following steps:**
 
-1. Launch your **debhost** and start the Virtual Machine Manager.
-2. Make certain that the **deb1**, **deb2**, and **deb3** virtual machines are **powered off**.
+1. Launch your **ubuhost** and start the Virtual Machine Manager.
+2. Make certain that the **ubu1**, and **ubu2** virtual machines are **powered off**.
 3. In the Virtual Machine Manager dialog box, select **Edit-> Connection Details**.
    ![vmmedit](/img/vmmedit.png)
 4. In the **Connection Details** dialog box, select the **Virtual Networks** tab
@@ -73,13 +73,13 @@ This diagram shows the current network configuration of your **debhost** machine
    ![vmmdefnet](/img/vmmdefnet.png)
 7. Click the **add** button (the button resembles a "plus sign") to add a new network configuration.
 8. Type the network name called: **network1**.
-9. Click on IPv4 configuration, change the **Network:** address to **192.168.245.0/24**
-10. Uncheck the **Enable DHCPv4** checkbox and click the **Finish** button.
+9. Click on IPv4 configuration, change the **Network:** address to **192.168.100.0/24**
+10. Leave the **Enable DHCPv4** checkbox checked and click the **Finish** button.
     ![vmmnetwork1](/img/vmmnetwork1.png)
 11. Select **network1** and make sure the **State:** is Active and **Autostart: On Boot** is enabled.
     ![vmmnet1start](/img/vmmnet1start.png)
-12. Close the Connection Details window and open a terminal on **debhost**
-13. Confirm that **debhost** is connected to **network1** and gather network information with the following commands:
+12. Close the Connection Details window and open a terminal on **ubuhost**
+13. Confirm that **ubuhost** is connected to **network1** and gather network information with the following commands:
 
 ```bash
 # Show network interfaces including host IPv4 address
@@ -89,102 +89,40 @@ ip address
 ip route
 ```
 
-![dehostipadd](/img/debhostipadd.png)
+![ubuhostipadd](/img/ubuhostipadd.png)
 
-> You can see that **debhost** has 3 network interfaces:
+> You can see that **ubuhost** has 3 network interfaces:
 >
 > - **lo** The "loopback" interface with the reserved loopback IPv4 address of **127.0.0.1/8**
-> - **ens33** (The name will be different if you are using VirtualBox) The interface connected to the VMWare or VirtualBox virtual network.
-> - **virbr1** The interface connected to **network1** with the IPv4 address of **192.168.245.1/24**
+> - **enp34s0** (The name may be slightly different)
+> - **virbr1** The interface connected to **network1** with the IPv4 address of **192.168.100.1/24**
 
-14. Make a note of the IPv4 address for **virbr1**  
-    ![debhostiproute](/img/debhostiproute.png)
+14. Make a note of the IPv4 address for **virbr1** . Note it is the first usable IP in the subnet.
+    ![ubuhostiproute](/img/ubuhostiproute.png)
 
-> You can see that **debhost** is configured with a **default gateway** (default route) that is the IPv4 address of either the lab PC or your laptop.
+> You can see that **ubuhost** is configured with a **default gateway** (default route) that is the IPv4 address of either the lab PC or your laptop.
 >
-> **debhost** is also connected to 2 networks. The VMWare/VirtualBox virtual network, and the KVM/Qemu virtual network **network1** via the interface **virbr1**
+> **ubuhost** is also connected to 2 networks. The physical network in the lab or your laptop, and the KVM/Qemu virtual network **network1** via the interface **virbr1**
 
 We will now reconfigure each of our VMs to use our new virtual network **network1**
 
-15. Start with the **deb1** VM. Double-click on your **deb1** VM, but instead of starting the VM, click on the **View** menu, and select: **Details**
+15. Start with the **ubu1** VM. Double-click on your **ubu1** VM, but instead of starting the VM, click on the **View** menu, and select: **Details**
 16. In the **left pane** of the Virtual Machine window, select **NIC**: and note that this NIC is connected to the **Network source: 'default'**
 17. Change it to **Virtual Network network1: NAT** (i.e. the network that you just created) and click the **Apply** button.
 
-![deb1vmnic](/img/deb1vmnic.png)
+![ubu1vmnic](/img/ubu1vmnic.png)
 
-### Part 2: Configuring deb1 with a static address on 'network1'
+### Part 2: Configure the static network connection using command line tools
 
-In this section, we will be using the **Gnome Settings** graphical tool to connect our **deb1** VM to **network1**.
+The ubu1 and ubu2 VMs are **text-based only** systems, we cannot use a graphical tool to configure the connection to our network. We will learn how to perform this task by editing text files and command-line tools.
 
-Although the private virtual network has been setup via **Virtual Machine Manager**, each virtual machine has to have its interface configured with a valid static address (either **graphically** or by **command line**).
+Although you can use the **ip** command to temporarily create a static IP address connection to a network, you need to add the network settings to the **/etc/netplan/99_config.yaml** file to automatically connect to the network upon system boot-up. **Note:** This file is in yaml (YAML ain't markup language), which has it's own syntax. It's designed to be easy to read and understand. It makes use of whitespace (like Python). If your yaml files are not properly indented, they will not work.
 
-**Perform the following steps:**
+**Perform the following steps on ubu1:**
 
-1. On your **debhost** machine, run **`ip address`** and make note of the IP address assigned to the **virbr1** (i.e. "Virtual Bridge) interface. This will be the default gateway and DNS server for your other VMs.
-2. Select the **Console** view (instead of Details), start your **deb1** VM, and login.
-3. Within your **deb1** VM, open a terminal and show the network interfaces with the command **`ip address`**
-   ![deb1ipadd1](/img/deb1ipadd1.png)
-
-> You can see the network interface does not have a IPv4 address. DHCP is not available for the network so a static address must be configured
-
-4. Click on the network icon located on the status bar at the lower left corner of the desktop.
-5. Choose **Network Connections**
-
-![deb1netstatus](/img/deb1netstatus.png)
-
-6. Select **Wired Connection 1** and click on the settings icon
-
-![deb1netsettings](/img/deb1netsettings.png)
-
-4. Click on the **IPv4 Settings** tab
-5. Change the Method to **Manual** and **Add** the Address **192.168.245.11**, Netmask **255.255.255.0**
-6. The **Gateway** address should be the IP address of **debhost** (**192.168.245.1**)
-7. Add the same **debhost** address as the **DNS server** and click on Save. **deb1** should connect to the network
-
-![deb1staticip](/img/deb1staticip.png)
-
-8. Open a terminal and display the **network interfaces** and **route table** to confirm the IP address and default gateway.
-
-![deb1ipadd2](/img/deb1ipadd2.png)
-
-![deb1iproute](/img/deb1iproute.png)
-
-9. To check the DNS server and test connectivity try the following commands:
-
-```bash
-# To check the DNS server address
-nslookup
-> server
-
-# To resolve the Debian web server to IP address
-> www.debian.org
-
-# To resolve google to IP address
-> www.google.com
-
-# Exit nslookup
-> exit
-
-# Test IP connectivity to debhost
-ping 192.168.245.1
-
-# Test IP connectivity to the Internet
-ping www.debian.org
-```
-
-![deb1ping](/img/deb1ping.png)
-
-### Part 3: Configure the static network connection using command line tools (deb2 and deb3)
-
-The deb2 and deb3 VMs are **text-based only** systems, we cannot use a graphical tool to configure the connection to our network. We will learn how to perform this task by editing text files and command-line tools.
-
-Although you can use the **ip** command to temporarily create a static IP address connection to a network, you need to add the network settings to the **/etc/network/interfaces** file to automatically connect to the network upon system boot-up.
-
-**Perform the following steps:**
-
-1. Just as you did with **deb1** Configure your **deb3** VM (in the **View -> Details** menu of Virtual Machine Manager) to configure the NIC interface to connect to **network1**, click **Apply**, and switch your deb3 VM view from _details_ to **console**.
-2. Start your **deb3** VM, login, and use **ip address show** to check the current address.
-3. The **`ip`** command can be used to display information about the **interfaces**, **addresses**, and **routes** configured in the system. It can also be used to control those configurations. Try the following commands on **deb3**:
+1. Click on **View** and select **Console**.
+1. Start your **ubu1** VM, login, and use **ip address show** to check the current address.
+1. The **`ip`** command can be used to display information about the **interfaces**, **addresses**, and **routes** configured in the system. It can also be used to control those configurations. Try the following commands on **ubu1**:
 
 ```bash
 # Display links (interfaces on a network) and the MAC address of those interfdaces
