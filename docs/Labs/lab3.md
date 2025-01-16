@@ -205,39 +205,35 @@ You should now be able to ping both of your VM's by address and any named host o
 
 **Answer INVESTIGATION 1 observations / questions in your lab log book.**
 
-## Done to here
-
 ## Investigation 2: Managing Your New Network
 
 Creating private networks are an important task, but a system administrator also needs to manage the network to make it **convenient to use**, and **troubleshoot** network connectivity problems.
 
-This investigation will expose you to useful "tools" and utilities to help accomplish this task. **Lab 7** requires that you understand these concepts and have a good general understanding how to use troubleshooting utilities (like **ss**).
+This investigation will expose you to useful "tools" and utilities to help accomplish this task. Future **labs** require that you understand these concepts, as you will expand on them. You should have a good general understanding how to use troubleshooting utilities (like **ss**).
 
 ### Part 1: Using /etc/hosts File for Local Hostname Resolution
 
 It is possible to connect to other hosts on the Internet by their domain name using DNS to resolve names to addresses.
 
-However your 4 VM's are not registered as hosts with a DNS server so are only accessible by IP address.  
-It can be hard to try to remember more than a couple of IP addresses. In this section, we will setup your network to use local hostname resolution so that we can connect by hostname.
+However your VM's are not registered as hosts with a DNS server so are only accessible by IP address. It can be hard to try to remember more than a couple of IP addresses. In this section, we will setup your network to use local hostname resolution so that we can connect by hostname.
 
 **Hosts files vs. the Domain Name System**
 
-On large public networks like the Internet or even large private networks we use a network service called [Domain Name System (DNS)](http://en.wikipedia.org/wiki/Domain_Name_System) to resolve the human friendly hostnames like **www.debian.org** to the numeric addresses used by the IP protocol. On smaller networks we can use the `/etc/hosts` on each system to resolve names to addresses.
+On large public networks like the Internet or even large private networks we use a network service called [Domain Name System (DNS)](http://en.wikipedia.org/wiki/Domain_Name_System) to resolve the human friendly hostnames like **www.debian.org** to the numeric addresses used by the IP protocol. On smaller networks we can use the `/etc/hosts` on each system to resolve names to addresses. Local hostname resolution using `/etc/hosts` was the way to map hostnames to IP addresses for [ARPANET](https://en.wikipedia.org/wiki/ARPANET) (the predecessor to the Internet) prior to the development and release of DNS (the Domain Name System) in 1983/84. We will be learning about **DNS** in **Lab 8**.
 
 **Perform the following steps:**
 
-1. Complete this investigation on **all of your VMs** and the **debhost** machine.
-2. Use the `hostname` and `ip` commands on your **debhost** machine and all of your 3 VM's to gather the information needed to configure the **/etc/hosts** file on all of your Linux systems.
-3. Edit the **/etc/hosts** file for **debhost**, and the **deb1**, **deb2** and **deb3** VMs. Add the following contents to the bottom of the **/etc/hosts** file:
+1. Complete this investigation on **both of your VMs** and the **ubuhost** machine.
+1. Use the `hostname` and `ip` commands on your **ubuhost** machine and both of your VM's to gather the information needed to configure the **/etc/hosts** file on all of your Linux systems.
+1. Edit the **/etc/hosts** file for **ubuhost**, and the **ubu1**, and **ubu2** VMs. Add the following contents to the **/etc/hosts** file (below the mappings for 127.0.0.1, which is the loopback IP). **Note:** You may need to correct the loopback entry of **127.0.1.1** on **ubu2** to map to **ubu2**. This is a holdover from when you cloned the VM in lab 2.
 
 ```text
-192.168.245.1 debhost
-192.168.245.11 deb1
-192.168.245.12 deb2
-192.168.245.13 deb3
+192.168.100.1 ubuhost
+192.168.100.11 ubu1
+192.168.100.12 ubu2
 ```
 
-4. Verify that you can now ping all of your VMs from all of your VMs by the hostname instead of the IP address.
+Verify that you can now ping all of your VMs from all of your VMs by the hostname instead of the IP address.
 
 ### Part 2: Network Connectivity and Network Service Troubleshooting Utilities
 
@@ -256,21 +252,21 @@ Read the first four sections of this [blogpost](https://www.baeldung.com/linux/a
 
 **Perform the following steps:**
 
-1. Switch to your **debhost** machine and start a sudo shell.
-2. Install the **`net-tools`** package.
-3. Issue the **ping** command to test connectivity to your **deb1**, **deb2**, and **deb3** VMs.
-4. Examine the contents of the ARP cache by using the command: `arp` What is the purpose of ARP?
-5. Check the contents of the cache again by using the command: `arp -n` What was the difference in output?
-6. How did the system resolve the IP address to hostname?
+1. Switch to your **ubuhost** machine and start a sudo shell.
+1. Install the **`net-tools`** package.
+1. Issue the **ping** command to test connectivity to your **ubu1**, and **ubu2** VMs.
+1. Examine the contents of the ARP cache by using the command: `arp` What is the purpose of ARP?
+1. Check the contents of the cache again by using the command: `arp -n` What was the difference in output?
+1. How did the system resolve the IP address to hostname?
 
 An important task of any System Administrator is to monitor and control the type of connections that can be received by your host. Network applications that connect to (or talk to), Servers/Daemons/Services over a TCP/IP network send requests to a particular TCP or UDP port that is open and accepting requests.
 
-7.  From **debhost** open 2 more terminals, use the **`ssh`** command to connect to **deb2** and **deb3**
-8.  Switch to your **deb1** VM, open a terminal and use **`ssh`** to connect to **debhost**
-9.  Switch to your **deb2** VM, login and use **`ssh`** to connect to **debhost**
-10. Switch back to **debhost**
+7.  From **ubuhost** open 2 more terminals, use the **`ssh`** command to connect to **ubu1** and **ubu2**
+8.  Switch to your **ubu1** VM, and use **`ssh`** to connect to **ubuhost**
+9.  Switch to your **ubu2** VM, and use **`ssh`** to connect to **ubuhost**
+10. Switch back to **ubuhost**
 
-Try out the Issue the following commands:
+On **ubuhost**, **ubu1** and **ubu2**, issue the following commands and observe the output:
 
 ```bash
 # Show all active UDP ports
@@ -298,11 +294,13 @@ ss -t dst :22
 > - **TCP** is a connection oriented protocol that uses a 3-way handshake to establish a connection. Those ports that show a state of LISTEN are waiting for connection requests to a particular service. For example you should see the ssh service in a LISTEN state as it is waiting for connections.
 > - **UDP** is a connectionless protocol that relies on application layer protocols to handle reliability of traffic.
 
-11. From **deb2** exit your ssh connection into **debhost** and rerun the command on the **`ss -at`**. Instead of **ESTABLISHED** it should now show a state of **CLOSE_WAIT**. Indicating that the TCP connection is being closed.
+11. From **ubu2** exit your ssh connection into **ubuhost** and rerun the command on the **`ss -at`**. Instead of **ESTABLISHED** it should now show a state of **TIME-WAIT**. Indicating that the TCP connection is being closed.
 12. On your debhost, try the command: `ss -atn` How is this output different? Without the -n option ss attempts to resolve IP addresses to host names (using /etc/hosts) and port numbers to service names (using /etc/services)
 13. Examine the **/etc/services** file and find which ports are used for the services: ssh, sftp, http
 
 **Answer INVESTIGATION 2 observations / questions in your lab log book.**
+
+## Done to here
 
 ## Investigation 3: Using a bash script to test connectivity to all hosts on the local network
 
@@ -329,7 +327,7 @@ do
             echo "$host offline"
         fi
     fi
-done < /etc/hosts'
+done < /etc/hosts
 ```
 
 2. Read the script. Try to predict exactly what the script will do.
