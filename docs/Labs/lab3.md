@@ -300,75 +300,54 @@ ss -t dst :22
 
 **Answer INVESTIGATION 2 observations / questions in your lab log book.**
 
-## Done to here
-
 ## Investigation 3: Using a bash script to test connectivity to all hosts on the local network
 
-In this investigation you will create a bash script that will ping the hosts on our local network to test if they are connected to the network.
+In this investigation you will use a bash script that will ping the hosts on our local network to test if they are connected to the network. The script has already been provided for you.
 
-1. Create a script Write a script called **~/bin/pingtest.bash** that will contains the following code:
+1. Clone the GitHub repository (on your ubuhost) that contains the script.
 
 ```bash
-#!/bin/bash
-
-# ./pingtest.bash
-# Script to test ping to all hosts on local network
-
-while read line
-do
-    if echo $line | grep "^192.168.245" >> /dev/null
-    then
-        addr=$(echo $line | cut -f1 -d' ')
-        host=$(echo $line | cut -f2 -d' ')
-        if ping -c1 $addr > /dev/null
-        then
-            echo "$host online"
-        else
-            echo "$host offline"
-        fi
-    fi
-done < /etc/hosts
+git clone git@github.com:OSL745/pingtest
 ```
 
-2. Read the script. Try to predict exactly what the script will do.
-3. Make the script executable
-4. To test the script make sure **deb1** is shutdown and **deb2 & deb3** are running.
-5. Run the script
+2. Change to the pingtest directory.
 
-![pingtest](/img/pingtest.png)
+```bash
+cd ~/pingtest
+```
 
-6. Using the example of the **monitor-disk-space.bash** script, modify this script to email your account if the host is offline, instead of sending output to the screen.
-7. Modify your crontab to run this script everyday at 6:00 AM
-8. Run the modified script and take a screenshot of the email you receive.
+3. View the script (using `cat` or opening it in a text editor. Do not make any changes). Try to predict exactly what the script will do.
+4. Try the script with both your VMs (**ubu1** and **ubu2**) running.
+
+![pingtestallonline](/img/pingtest1.png)
+
+5. Shutdown **ubu2**. **ubu1** should be running. You should see the following output.
+
+![pingtestubu2offline](/img/pingtest2.jpg)
 
 ## Submitting your Lab
 
-Follow the submission instructions for Lab 6 on Blackboard.
+## Lab 3 Sign-Off (Show Instructor)
 
-**Time for a new backup!**
+Follow the submission instructions that your Professor provides.
 
-If you have successfully completed this lab, make a new backup of your virtual machines as well as your host machine.
+**Backup ALL of your VMs!**
+
+If you have successfully completed this lab, make a new backup of all of your virtual machines onto your USB Key.
 
 **Perform the Following Steps:**
 
-1. Make certain that ALL of your VMs are running.
-2. Switch to your **debhost** VM.
-3. Change to your user's **bin** directory.
-4. Issue the Linux command:
+1. On your **ubuhost** issue the commands and show your professor the output:
 
-```bash
-wget https://raw.githubusercontent.com/OPS245/debian-labs/main/lab6-check.bash
-```
-
-5. Give the **lab6-check.bash** file execute permissions (for the file owner).
-6. Run the shell script using **sudo** and if there are any warnings, make fixes and re-run shell script until you receive "congratulations" message.
-7. Upload screenshots of, the results of **lab6-check.bash**, and your email message from your **pingtest.bash** script, to Blackboard.
+- Successfully run the pingtest script on your **ubuhost**
+- `cat /etc/hosts` on **ubuhost**, **ubu1** and **ubu2**
 
 ## Practice For Quizzes, Tests, Midterm & Final Exam
 
 1. What is a port?
-2. What command will set your IP configuration to 192.168.55.22/24 ?
-3. What is the difference between UDP and TCP?
-4. What port number is used for DHCP servers?
-5. What is the function of the file `/etc/hosts` ?
-6. What tool is used to show you a list of current TCP connections?
+1. What command will set your IP configuration to 192.168.55.22/24 ?
+1. What is the difference between UDP and TCP?
+1. What port number is used for DHCP servers?
+1. What is the function of the file `/etc/hosts` ?
+1. What tool is used to show you a list of current TCP connections?
+1. How to you set persistent static IP addresses in Ubuntu?
