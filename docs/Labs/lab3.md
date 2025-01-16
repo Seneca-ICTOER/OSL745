@@ -325,8 +325,6 @@ cd ~/pingtest
 
 ![pingtestubu2offline](/img/pingtest2.png)
 
-## Submitting your Lab
-
 ## Lab 3 Sign-Off (Show Instructor)
 
 Follow the submission instructions that your Professor provides.
