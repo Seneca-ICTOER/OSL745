@@ -321,7 +321,7 @@ cd ~/pingtest
 
 ![pingtestallonline](/img/pingtest1.png)
 
-5. Shutdown **ubu2**. **ubu1** should be running. You should see the following output.
+5. Shutdown **ubu2**. **ubu1** should be running. Run the script again. You should see the following output.
 
 ![pingtestubu2offline](/img/pingtest2.png)
 
