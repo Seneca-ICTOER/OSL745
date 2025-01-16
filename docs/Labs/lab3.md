@@ -323,7 +323,7 @@ cd ~/pingtest
 
 5. Shutdown **ubu2**. **ubu1** should be running. You should see the following output.
 
-![pingtestubu2offline](/img/pingtest2.jpg)
+![pingtestubu2offline](/img/pingtest2.png)
 
 ## Submitting your Lab
 
