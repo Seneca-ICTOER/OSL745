@@ -34,7 +34,7 @@ Preventing unauthorized access is one of the many day-to-day operations for a Li
 
 - **Solid State Drive**
 - **USB key** (for backups)
-- **Lab7 Log Book**
+- **Lab Log Book**
 
 ### Linux Command Reference
 
@@ -59,7 +59,7 @@ Preventing unauthorized access is one of the many day-to-day operations for a Li
 
 **SSH Reference**
 
-- [Debian SSH Guide](https://wiki.debian.org/SSH)
+- [Ubuntu SSH Documentation](https://ubuntu.com/server/docs/openssh-server)
 - [A good HOW-TO to make ssh more secure](https://linuxconfig.org/how-to-secure-ssh)
 
 ## Investigation 1: Installing And Maintaining An SSH Server
@@ -72,72 +72,33 @@ In this section, you will learn how to configure an SSH server and restart the s
 
 **Perform the following steps:**
 
-Some tasks in this part of the investigation **require you to be connected to Seneca's VPN**.
-
-- If you are running your installation through VMWare, then you can use the [instructions provided by ITS](https://students.senecapolytechnic.ca/spaces/186/it-services/wiki/view/1025/student-vpn) to connect to it from your Windows machine (your debhost and its VMs will use the VPN through the windows machine without further configuration).
-- If you installed your debhost **directly onto a machine without using VMWare** as an intermediary (or the steps above do not work for you), use the following instructions:
-
-  - Install the package openconnect
-  - Run the following command as root (or with sudo): `openconnect --protocol=gp studentvpn.senecapolytechnic.ca -b`
-  - This should prompt you for your username and password (you could also put the user name in the command with -p)
-  - You'll know it is working if you check your ip address and see something in the 10.0.0.0/8 range.
-  - To disconnect, as root (or with sudo): `killall openconnect`
-
-Once you have connected to the VPN with either method you may continue
-
-1. Launch your **debhost machine** and your **deb1** and **deb3** VMs.
-2. Switch to your **debhost**.
-3. Create a file in your current directory of your debhost machine with some text in it called: **myfile.txt**
-4. Issue the following command (using your Matrix login id):
-
-```bash
-# Copy file to remote host
-scp myfile.txt yourmatrixid@matrix.senecapolytechnic.ca:/home/yourmatrixid
-```
-
-- (followed by your Matrix password)
-- What did this command do?
-
-5. Issue the following single command (arguments are separated by a space - use your Matrix login id):
-
-```bash
-# Connect to remote host to execute a single command to confirm copy
-ssh yourmatrixid@matrix.senecapolytechnic.ca ls /home/yourmatrixid/myfile.txt
-```
-
-- (followed by your Matrix password)
-- What did this command do?
-- Issue the following Linux command:
-
-```bash
-# Connect to remote host and display the contents of the file
-ssh yourmatrixid@matrix.senecapolytechnic.ca cat /home/yourmatrixid/myfile.txt
-```
-
-- How do these commands differ from using issuing the ssh command without the ls or cat command? How is this useful?
-- The client ssh application contains the utilities: **ssh**, **scp** and **sftp** (introduced in ULI101) to connect to remote Linux hosts in order to issue commands or transfer files between the Linux hosts. You can install the SSH service on your Linux server, although this has already been performed upon installation. We will now confirm that the ssh service is running on all of your VMs.
-
-6. OpenSSH should have been installed by default. Let's confirm this by issuing the command:
+1. OpenSSH should have been installed by default. Let's confirm this by issuing the command:
 
 ```bash
 # List installed packages filtering for ssh
 dpkg -l | grep ssh
 ```
 
-7. You should see a number of packages installed including **openssh-client** and **openssh-server**
-8. The **openssh-server** package installs a service called **ssh**.
-9. Confirm that this service is running by issuing the command:
+2. You should see a number of packages installed including **openssh-client** and **openssh-server**
+1. The **openssh-server** package installs a service called **ssh**.
+1. Confirm that this service is running by issuing the command:
 
 ```bash
 # Check status of a service
 systemctl status ssh
 ```
 
-> **Note:** Debian's service is called **ssh** but the process is called **sshd**.
->
-> You can use either name to refer to the service
+5. If the SSH service is not running, start it and configure it to start automatically on boot.
 
-10. Now that you know the service is running, investigate what **port number** and **protocol** sshd uses by issuing the command:
+```bash
+# Start the ssh service
+systemctl start ssh
+
+# Configure the ssh service to start on boot
+systemctl enable ssh
+```
+
+6. Now that you know the service is running, investigate what **port number** and **protocol** sshd uses by issuing the command:
 
 ```bash
 # List active TCP and UDP ports with numeric output including "process"
@@ -147,18 +108,16 @@ sudo ss -atunp
 
 - What protocol and port is the sshd process using? What is the state of the port?
 
-11. Reissue the `ss` command without the **-n** option. What is the difference?
+6. Reissue the `ss` command without the **-n** option. What is the difference?
 
-![debhostss2](/img/debhostss2.png)
-
-12. You can refer to the **/etc/services** file in order to determine a port number for a service. Issue the following command to confirm that port 22 is associated with ssh:
+7. You can refer to the **/etc/services** file in order to determine a port number for a service. Issue the following command to confirm that port 22 is associated with ssh:
 
 ```bash
 # Search for ssh port number
 grep ssh /etc/services
 ```
 
-13. Make sure all of your VM's are started and confirm that the **ssh** service is running on **all 3 of your VM's**
+8. Repeat steps 4 and 5 on **ubu1** and **ubu2**.
 
 ### Part 2: SSH Server Security Configuration
 
@@ -168,9 +127,9 @@ Any time that you configure your computer to allow logins from the network you a
 
 The Linux system administrator can **configure the SSH server** in order to make the SSH server less vulnerable to attacks. Examples include not permitting root login, and changing the default port number for the ssh service.
 
-**Perform the following steps using your debhost and deb1 VM's:**
+**Perform the following steps using your ubuhost and ubu1 VM's:**
 
-1. Change to your **deb1** VM and open a terminal and start a sudo shell.
+1. Change to your **ubu1** VM.
 2. Read the man page for the `sshd_config` file. Search for the `PermitRootLogin` option and read about the possible settings.
 3. Edit the file **/etc/ssh/sshd_config** and look for the option `PermitRootLogin`.
 4. Un-comment the option and change the option value to `no`.
@@ -192,15 +151,8 @@ The Linux system administrator can **configure the SSH server** in order to make
 systemctl restart ssh
 ```
 
-9. Try using ssh from your **debhost** to your **deb1** VM as **root**. Where you successful?
-10. Try using ssh from your **debhost** to your **deb1** VM as your regular user account. Did it work?
-11. Create another user on deb1 called **other**, include the options to create a home directory and set the shell to **/bin/bash**
-12. Set the password for the newly-created user called **other**
-13. Try using ssh from your **debhost** to your **deb1** VM as the account called **other**. Why didn't it work?
-14. On **deb1** add the user **other** to the supplemental group **sudo**.
-15. Edit the file **/etc/ssh/sshd_config** and add a new option of `AllowGroups sudo`
-16. Comment out the `AllowUsers` option, save the file, and **restart ssh**
-17. Try using ssh from your **debhost** to your **deb1** VM as the user account called **other**. Did it work this time?
+9. Try using ssh from your **ubuhost** to your **ubu1** VM as **root**. Where you successful?
+1. Try using ssh from your **debhost** to your **deb1** VM as your regular user account. Did it work?
 
 **Monitoring access**
 
@@ -222,16 +174,15 @@ sudo journalctl --since yesterday | grep sudo
 
 > **Note:** systemd services and targets are 2 types of systemd "units"
 
-1. Check the journal entries on **deb1**. Try to find the entries showing the other user and the root user being denied access.
-2. Try to find examples of entries reporting the use of **sudo**
+1. Check the journal entries on **ubu1**. Try to find the entries showing the root user being denied access and your user being allowed access.
 
 **Answer INVESTIGATION 1 observations / questions in your lab log book.**
 
 ## Investigation 2: Additional Methods To Secure Your SSH Server
 
-### Part 1: Generating Private and Public Keys (Public Key Infrastructure)
+### Generating Private and Public Keys (Public Key Infrastructure)
 
-As a method of authentication, using account passwords as the sole authentication factor is deeply flawed. Users have terrible password habits like using the same password for multiple systems/websites, using uncomplicated passwords, writing passwords down, and not changing the password. Practises such as forced frequent password changes have not greatly improved the problem. Increasingly you are seeing multi-factor authentication systems being used to improve the reliability of authentication.
+As a method of authentication, using account passwords as the sole authentication factor is deeply flawed. Users have terrible password habits like using the same password for multiple systems/websites, using uncomplicated passwords, writing passwords down, and not changing the password. Practices such as forced frequent password changes have not greatly improved the problem. Increasingly you are seeing multi-factor authentication systems being used to improve the reliability of authentication.
 
 We can configure **ssh public/private keys** to be used as a method of authentication instead. This will allow users to generate a pair of matching public/private keys, adding the public key to their account on the remote host. The private key remains on the local host. When the user attempts to connect to the remote host, **ssh** will use the private key to digitally sign the request. On the remote host ssh uses the matching public key to verify the signature.
 
@@ -264,7 +215,7 @@ You should investigate why it is happening as it could indicate a **serious secu
 
 **Perform the following steps:**
 
-1. Login to your **deb3** VM as your regular user account (login via the VM viewer, NOT using ssh)
+1. Login to your **ubu1** VM as your regular user account (login via the VM viewer, NOT using ssh)
 2. Run the following command to check the state of any possible _ssh connections_. What is the state (i.e. LISTENING or ESTABLISHED)?
 
 ```bash
@@ -272,10 +223,10 @@ You should investigate why it is happening as it could indicate a **serious secu
 sudo ss -atnp | grep ssh
 ```
 
-3. While in your **deb3** VM, issue the following command to connect to **your same VM** via ssh:
+3. While in your **ubu1** VM, issue the following command to connect to **your same VM** via ssh:
 
 ```bash
-ssh username@deb3
+ssh username@ubu1
 ```
 
 4. Enter **yes** at the prompt, and enter your password. The output should appear similar as what is shown below:
@@ -286,7 +237,7 @@ ssh username@deb3
 
 ![deb3sshports](/img/deb3sshports.png)
 
-**Note:** Because we have used ssh to connect **from** deb3 **to** deb3 we can see the ports from both the **client** and **server** point of view.
+**Note:** Because we have used ssh to connect **from** ubu1 **to** ubu1 we can see the ports from both the **client** and **server** point of view.
 
 6. Log-out of your ssh connection by typing `exit`.
 7. Run that same **ss** command again. If you are fast enough you may see the port status is being closed.
@@ -300,8 +251,8 @@ So far, you have learned to establish an ssh connection to another host using a 
 
 If a message is encrypted using the Private key on the local host, and the server on the remote host can decrypt the message successfully using the matching Public key, then the server knows the message could only have come from the local host. The message itself is not secure because potentially any body with a copy of the Public key could read it. But the fact that it could only have come from the host with the Private key proves the identity of the client.
 
-1. Switch to your **deb2** VM. Login as your regular user account
-2. Confirm you are in your deb2 VM by entering the command: `hostname`
+1. Switch to your **ubu1** VM. Login as your regular user account
+2. Confirm you are in your **ubu1** VM by entering the command: `hostname`
 3. Consider the following commands:
 
 ```bash
@@ -315,9 +266,9 @@ ssh-copy-id username@hostname
 ssh-copy-id -i ~/.ssh/mykey.pub username@hostname
 ```
 
-4. To generate a keypair (public/private keys), issue the following command: `ssh-keygen`
+4. To generate a keypair (public/private keys), issue the following command: `ssh-keygen`. Notice the default type is **ed25519** not **rsa**. ed25519 keys are smaller and more secure.
 
-After generating the keys it prompts you for the location to save the keys. The default is **~/.ssh** Your private key will be saved as **id_rsa** and your public key will be saved as **id_rsa.pub** by default.
+After generating the keys it prompts you for the location to save the keys. The default is **~/.ssh** Your private key will be saved as **id_ed25519** and your public key will be saved as **id_ed25519.pub** by default.
 
 5. Press ENTER to accept the default.
 6. You will then be prompted for a **pass-phrase**. The pass-phrase must be entered in order to "unlock" your private key. Pass-phrases are more secure than passwords and should be lengthy, hard to guess and easy to remember. For example one pass-phrase that meets this criteria might be "_seneca students like to dance at 4:00am_". Avoid famous phrases such as "_to be or not to be_" as they are easy to guess. It is possible to leave the pass-phrase blank but this is dangerous. It means that if a hacker was able to get into your account, they could then use your private key to access the other systems you use.
@@ -327,20 +278,18 @@ The output should appear similar to what is shown below:
 
 ![sshkeygen](/img/sshkeygen.png)
 
-8. Now issue the command to copy your public key to your account on **deb3**
+8. Now issue the command to copy your public key to your account on **ubu2**
 
 ```bash
-# Copy public key to deb3
-ssh-copy-id -i ~/.ssh/id_rsa.pub username@deb3
+# Copy public key to ubu2
+ssh-copy-id username@ubu2
 ```
 
 9. When prompted enter your password
 
 ![sshcopyid](/img/sshcopyid.png)
 
-10. Try using ssh to now log into your **deb3** VM from your **deb2** VM. What happens? Were you required to use your pass-phrase?
-
-![sshpki](/img/sshpki.png)
+10. Try using ssh to now log into your **ubu2** VM from your **ubu1** VM. What happens? Were you required to use your pass-phrase?
 
 11. Where was the Public key copied to? What file is it in?
 
@@ -351,70 +300,42 @@ cat ~/.ssh/authorized_keys
 
 This file contains the public keys that have been copied to your account
 
-![deb3authkeys](/img/deb3authkeys.png)
-
-12. So now you can login to deb3 from our account on deb2 without needing a password.
+12. So now you can login to ubu2 from our account on ubu1 without needing a password.
 
 **Note:** While you still do need to enter our passphrase to unlock the key, if you had left the passphrase blank then that wouldn't have needed it. There are other tools available to help users manage and unlock keys.
 
-### Part 2: Securely Running Graphical Applications Between Linux Servers
+13. Apply what you have learned by generating keys on **ubu2** and **ubuhost**. Use the appropriate **ssh-copy-id** commands so you can login from any of these 3 servers without a password. That means you will need to:
 
-You can also use ssh to **tunnel GUI applications (Window and bitmap information)**, allowing us to login to a remote desktop host and **run a Xwindows application** such as **gedit** or **Firefox** and the application will run on the remote host but be displayed on the local host.
+- Copy the key you generated on **ubu1** to **ubuhost**
+- Generate a key on **ubu2** and copy it to **ubuhost** and **ubu1**
+- Generate a key on **ubuhost** and copy it to **ubu1** and **ubu2**
 
-> Xorg (Xwindows, X11) is the longtime Graphical Server that has been used on Linux systems for many years. Regardless of the **Desktop Environment** you chose to install and use, (Gnome, KDE etc ) they all worked with XWindows.
->
-> A new graphical server has been developed that is starting to replace Xwindows called **Wayland**.
-> Many Linux distributions and some Desktop Environments now default to using Wayland as the Graphical Server.
->
-> Expect things to change quite quickly.
-
-![sshx](/img/sshx.png)
-
-You can use an SSH tunnel with options to allow running of applications on remote Linux servers.
-
-**Perform the following steps:**
-
-1. For this section, you will be using your **debhost** and your **deb1** VM.
-2. Switch to your debhost, open a terminal and remain logged in as a regular user.
-3. Issue the following command to connect to your **deb1** VM:
-
-```bash
-ssh -X -C username@deb1
-```
-
-- (The **-X** option enables the forwarding of X window information, and the **-C** option enables compression for better performance).
-
-4. Once the connection is properly established, run the command `gedit`
-5. The _gedit_ window will display on your **debhost**, but in reality, this application is running on your **deb1** VM!
-6. Enter some text and save the file as **testfile**
-7. Exit the **gedit** application.
-8. On which host was the file saved? **debhost** or **deb1** What does that tell you about the use of tunneling for this section?
-9. Logout of your ssh connection to **deb1**
-10. Connect again and run the **gedit** application by issuing only one Linux command:
-
-```bash
-ssh -X -C username@deb1 gedit
-```
-
-- Note: ignore warning messages.
-
-11. Exit the gedit application.
-12. Experiment with running other GUI applications via **ssh** (They have to be applications installed on **deb1**).
+14. Test that you can ssh from each server to the other two (ie from **ubuhost** to **ubu1** and **ubu2**). When you are satisfied this works, move on to Part 2.
 
 **Answer INVESTIGATION 2 observations / questions in your lab log book.**
 
 ## Investigation 3: Managing Firewalls For Protection and Troubleshooting
 
-### Linux Firewall (iptables) Concepts
+### Linux Firewall (nftables) Concepts
 
-Since Linux servers can be connected to the Internet, it is very important to run a **firewall** to control what packets are allowed to enter and exit from the system. Also what packets might be forwarded to another computer or network. You will use the utility called **iptables** to set the firewall rules on a Linux server.
+Since Linux servers can be connected to the Internet, it is very important to run a **firewall** to control what packets are allowed to enter and exit from the system. Also what packets might be forwarded to another computer or network. You will use the utility called **nftables** to set the firewall rules on a Linux server.
+
+There have been many implementations of Linux firewalls. Some common ones you may encounter are:
+
+- **ufw**: Uncomplicated Firewall. This is a frontend in Ubuntu for iptalbes and nftables.
+- **ipchains**: The predecessor to **iptables**, this firewall is legacy (no longer used).
+- **iptables**: A very popular firewall. Released in 2000, it is still pretty commonly used today.
+- **firewalld**: Released in 2011, this was intended as a successor (replacement) for **iptables**. Due to significant differences in syntax compared to iptables, it wasn't adopted as widely as expected.
+- **nftables**: Released in 2014, this is the replacement for **iptables**. While the syntax is different than **iptables**, you can issue **iptables** rules and they will be converted to **nftables** rules. More below:
 
 > The firewall software itself is in-kernel. It is called **nftables**.
 >
 > **nftables** replaces the older **iptables** and can be configured using the **nft** utility.
-> Debian implements the **iptables** utility as a "wrapper" for **nft**. This allows users and organizations with considerable investment in **iptables** configurations and knowledge to continue to use **iptables** syntax to configure **nftables**.
+> While most Linux distributions implement the **iptables** utility as a "wrapper" for **nft**, it's best to adopt the newer syntax and implementation. This wrapper allows users and organizations with considerable investment in **iptables** configurations and knowledge to continue to use **iptables** syntax to configure **nftables**.
 
 ![Chains](/img/Chains.png)
+
+#### Done to here. Describe nftables here:
 
 **iptables** configurations consist of **chains** of **policy rules** that a **packet** must pass-through in order to either enter, leave, or be forwarded by the firewall. If a packet matches a rule, then an action is taken (some examples include: **ACCEPT**, **DROP**, **REJECT**, or **LOG**). If the packet passes through the chain of rules without a match, then the packet is directed to the chains default policy. (for example: _ACCEPT_, _REJECT_, or _DROP_).
 
@@ -424,9 +345,33 @@ You can create your own **customized chains of rules** but to keep thing simple,
 - **OUTPUT**: Packets leaving current Linux server
 - **FORWARD**: Packets being routed between Linux servers
 
-### Part 1: Listing and Clearing Existing iptables Rules
+### Part 1: Disabling UFW, enabling nftables
 
-Let's get some practice using the iptables command such as listing CHAIN rules, and clearing the CHAIN rules:
+**Perform the following steps on ubuhost:**
+
+1. Stop and Disable ufw:
+
+```bash
+sudo systemctl stop ufw
+sudo systemctl disable ufw
+```
+
+2. Start and Enable nftables
+
+```bash
+sudo systemctl start nftables
+sudo systemctl enable nftables
+```
+
+3. Confirm nftables is active and enabled
+
+```bash
+sudo systemctl status nftables
+```
+
+### Part 1: Listing the Existing nftables Rules
+
+Let's get some practice using the nftables command such as viewing the current firewall configuration:
 
 **Perform the following steps:**
 
