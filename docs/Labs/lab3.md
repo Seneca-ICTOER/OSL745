@@ -171,7 +171,7 @@ network:
   ethernets:
     enp1s0:
       addresses:
-        - 192.168.100.1/24
+        - 192.168.100.11/24
       routes:
         - to: default
           via: 192.168.100.1
