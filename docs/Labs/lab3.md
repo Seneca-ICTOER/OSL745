@@ -179,7 +179,7 @@ network:
         addresses: [192.168.100.1]
 ```
 
-1. Issue the following command to apply your configuration. **Note:** You should receive an error.
+1. Issue the following command to apply your configuration. **Note:** You should receive an error about the file permissions for **/etc/netplan/99_config.yaml**.
 
 ```bash
 sudo netplan apply
