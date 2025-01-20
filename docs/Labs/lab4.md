@@ -467,7 +467,7 @@ table inet filter {
                 type filter hook input priority filter; policy drop;
                 iif lo accept comment "Accept localhost traffic"
                 iif virbr1 accept comment "Accept virtual network traffic"
-                ct state related, established accept comment "Accept all traffic originating from us";
+                ct state related, established accept comment "Accept all traffic originating from us"
                 meta l4proto ipv6-icmp accept comment "Accept ICMPv6"
                 meta l4proto icmp accept comment "Accept ICMP"
                 ip protocol igmp accept comment "Accept IGMP"
