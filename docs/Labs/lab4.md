@@ -335,15 +335,17 @@ There have been many implementations of Linux firewalls. Some common ones you ma
 
 ![Chains](/img/Chains.png)
 
-#### Done to here. Describe nftables here:
+**nftables** is a framework by the Netfilter Project that provides packet filtering, network address translation (NAT), and other packet mangling. It replaces the older iptables, ip6tables, arptables, and ebtables frameworks. nftables offers a simpler and more consistent syntax, improved performance, and better scalability. It uses a single command-line tool, `nft`, to manage firewall rules, which are organized into tables, chains, and rules. This structure allows for more efficient rule processing and easier management of complex firewall configurations. Additionally, nftables supports atomic rule updates, which means changes can be made without disrupting existing connections.
 
-**iptables** configurations consist of **chains** of **policy rules** that a **packet** must pass-through in order to either enter, leave, or be forwarded by the firewall. If a packet matches a rule, then an action is taken (some examples include: **ACCEPT**, **DROP**, **REJECT**, or **LOG**). If the packet passes through the chain of rules without a match, then the packet is directed to the chains default policy. (for example: _ACCEPT_, _REJECT_, or _DROP_).
+With nftables there are no pre-defined tables or chains. Each table is explicitly defined, and contains only the objects (chains, sets, maps, flowtables and stateful objects) that you explicitly add to it. **nftables** has the hierarchy of **Tables** > **Chains** > **Rules**; meaning tables contain chains, and those chains contain rules.
 
-You can create your own **customized chains of rules** but to keep thing simple, we only deal with 3 **common predefined chains**:
+We are going to use nftables with the following 3 **chains**, which will function similar to **iptables**:
 
 - **INPUT**: Packets coming into current Linux server
 - **OUTPUT**: Packets leaving current Linux server
 - **FORWARD**: Packets being routed between Linux servers
+
+**nftables** can be configured from the command line, or from a script. In **Part 1** we will be focusing on command line configuration.
 
 ### Part 1: Disabling UFW, enabling nftables
 
@@ -375,71 +377,59 @@ Let's get some practice using the nftables command such as viewing the current f
 
 **Perform the following steps:**
 
-1. For the remainder of this section, use your **debhost** machine.
+1. For the remainder of this section, use your **ubuhost** machine.
 2. As working with the firewall requires elevated privileges start a sudo shell
 3. Issue the following command to list the existing iptables policy rules:
 
 ```bash
 # List all rules for all chains
-iptables -L
+nft list ruleset
 ```
 
-You should see all kinds of rules organized into a number of chains. This is quite overwhelming but most of these rules were added when the **libvirtd** service was started during boot. **libvirtd** has to add rules that allow our VM's to communicate over a virtual network.
+You should see many rules organized into a number of tables, with each table containing one or more chains. This is quite overwhelming but most of these rules were added when the **libvirtd** service was started during boot. **libvirtd** has to add rules that allow our VM's to communicate over a virtual network.
 
-For now we will shutoff our VM's and disable **libvirtd** to simplify everything.
+Notice in the **inet** table, you have the following 3 chains, **INPUT**, **FORWARD**, and **OUTPUT**. The **inet** table applies to both **IPv4** and **IPv6** packets. This is an enhancement in **nftables**. Previous firewalls (like **iptables**) had separate tables for **IPv4** and **IPv6** and even different commands to configure them. We are going to configure **nftables** using the following chains:
 
-4. Shutdown the **deb1**, **deb2**, and **deb3** VM's
-5. On **debhost** disable the **libvirtd** service and reboot
-6. After rebooting open a terminal and start a sudo shell
-7. Use the command above to list the iptables rules
+- **INPUT** is the chain of rules for incoming packets
+- **OUTPUT** is the chain of rules for outgoing packets
+- **FORWARD** is the chain of rules for packets that are being routed to other hosts/networks by our host.
 
-![debhostiptables1](/img/debhostiptables1.png)
-
-Notice that you have 3 default chains, **INPUT**, **FORWARD**, and **OUTPUT**
-
-- INPUT is the chain of rules for incoming packets
-- OUTPUT is the chain of rules for outgoing packets
-- FORWARD is the chain of rules for packets that are being routed to other hosts/networks by our host.
-
-Each of the chains has no current rules but they do have a default **policy** of **ACCEPT**
-Which means that if none of the rules in the chain rejected the packet then it would be accepted.
-
-A default **policy** of **DROP** would mean that if none of the rules accepted the packet then it would be dropped.
+You will notice each of the chains already exist and have no rules. They have a default **policy** of **ACCEPT**. This means that if none of the rules in the chain rejected the packet then it would be accepted. A default **policy** of **DROP** would mean that if none of the rules accepted the packet then it would be dropped.
 
 **Listing iptables Rules:**
 
 ```bash
 # List rules for all chains in the default table (filter)
-iptables -L
+nft list ruleset
 
-# List rules for the INPUT chain
-iptables -L INPUT
-
-# List rules for the OUTPUT chain verbosely
-iptables -v -L OUTPUT
+# List all tables
+nft list tables
 ```
 
-8. Issue the iptables commands separately to display the rules for the **OUTPUT** chain and for the **FORWARD** chain.
+4. Clearing (Flushing) nftables Rules:
 
-**Clearing (Flushing) iptables Rules:**
-
-Sometimes it may be useful to completely clear the rules for all of a particular chain. Note the options that can be used to clear (or flush) the iptables rules,
+Sometimes it may be useful to completely clear the rules for all of a particular chain. Note the options that can be used to clear (or flush) the iptables rules.
 
 ```bash
 # Flush the rules of all chains
-iptables -F
+nft flush ruleset
 
-# Flush the rules of the OUTPUT chain
-iptables -F OUTPUT
+# List rules for all chains in the default table (filter)
+nft list ruleset
+
+# List all tables
+nft list tables
 ```
 
-You will have a chance to flush some rules later.
+Notice when you issue the **list ruleset** and **list tables** commands after flushing the ruleset, nothing appears.
+
+5. Start **ubu1**. Once it has booted, re-issue the commands to **list** the **ruleset** and **tables**. What changed?
+
+### Left off here
 
 ### Part 2: Setting a Default Policy and Setting Policy Exceptions (iptables)
 
-You will now change the default policy of the **INPUT** chain to **DROP**. This means you will have add rules that allow specific types of packets in. A good way to think about setting policies is to have a "**safety-net**" to take some sort of action to prevent un-handled packets from passing through the firewall by mistake. After the default policy is set-up, then specific exceptions to the default policy can be added to control specific network traffic.
-
-An example would be to set a default policy for incoming network traffic (INPUT chain) to DROP everything, and then set an exception certain exceptions (like ssh connections). Note the following table below for policy setting examples.
+You will now change the default policy of the **INPUT** chain to **DROP**. This means you will have add rules that allow specific types of packets in. The best way to configure firewalls is to create an **allow list**, meaning you implicitly drop everything and only allow the traffic you wish. This is exactly what we will do.
 
 **Policy Setting Examples:**
 
