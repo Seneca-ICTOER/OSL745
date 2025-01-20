@@ -396,7 +396,7 @@ Notice in the **inet** table, you have the following 3 chains, **INPUT**, **FORW
 
 You will notice each of the chains already exist and have no rules. They have a default **policy** of **ACCEPT**. This means that if none of the rules in the chain rejected the packet then it would be accepted. A default **policy** of **DROP** would mean that if none of the rules accepted the packet then it would be dropped.
 
-**Listing iptables Rules:**
+**Listing nftables Rules:**
 
 ```bash
 # List rules for all chains in the default table (filter)
@@ -425,194 +425,127 @@ Notice when you issue the **list ruleset** and **list tables** commands after fl
 
 5. Start **ubu1**. Once it has booted, re-issue the commands to **list** the **ruleset** and **tables**. What changed?
 
-### Left off here
+### Part 2: Configuring nftables via the configuration file
 
-### Part 2: Setting a Default Policy and Setting Policy Exceptions (iptables)
+The easiest way to configure nftables is via the configuration file. Changes written here will only be applied upon system reboot, or if you restart the service. You will now change the default policy of the **INPUT** chain to **DROP**. This means you will have add rules that allow specific types of packets in. The best way to configure firewalls is to create an **allow list**, meaning you implicitly drop everything and only allow the traffic you wish. This is exactly what we will do.
 
-You will now change the default policy of the **INPUT** chain to **DROP**. This means you will have add rules that allow specific types of packets in. The best way to configure firewalls is to create an **allow list**, meaning you implicitly drop everything and only allow the traffic you wish. This is exactly what we will do.
-
-**Policy Setting Examples:**
+Edit the nftables configuration file (**/etc/nftables.conf**) to contain the following:
 
 ```bash
-# Drops all incoming packets regardless of protocol/ports/address
-iptables -P INPUT DROP
+#!/usr/sbin/nft -f
 
-# Accepts all outgoing packets regardless of protocol/ports/address
-iptables -P OUTPUT ACCEPT
+flush ruleset
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter; policy drop;
+        }
+        chain forward {
+                type filter hook forward priority filter;
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+}
 ```
 
-| **iptables -P INPUT DROP**   | Drops all incoming packets regardless of protocol (eg. tcp, udp, icmp), port numbers (eg. 22, 80) or source or destination IP Addresses. Setting a default rule to DROP all incoming traffic would make it easier to specify a few exceptions.                                                                                                                                                                |
-| :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **iptables -P INPUT ACCEPT** | Accepts all incoming packets regardless of protocol (eg. tcp, udp, icmp), port numbers (eg. 22, 80) or source or destination IP Addresses. It would seem that setting a default rule to ACCEPT all incoming traffic would require A LOT of exceptions to help "lock-down" the server for protection! The better practice is to use DROP as the default action, and only ACCEPT the traffic you actually want. |
-
-**Perform the following steps:**
-
-1. Make certain you are in your **debhost** machine.
-2. Issue the following Linux command:
+Save your changes and restart the **nftables** service.
 
 ```bash
-iptables -P INPUT DROP
+systemctl restart nftables
 ```
 
-3. Issue the **iptables -L** command. Can you see the policy to DROP all incoming connections?
-4. Open Firefox on debhost and attempt to connect to the internet. Although you have set a default policy to DROP all incoming connections, there is a problem: now, you cannot browse the Internet.
-
-In order to fix that problem, you can make an exception(rule) to allow incoming web-based traffic (requested via port 80). The iptables commands to create rules need to consider:
-
-- What order are the rules in the chain? (order can be important)
-- Which protocol(s) are affected (eg. tcp, udp, icmp)
-- What source or destination IP Addresses are affected?
-- What port numbers are affected?
-- What action(target) to take if all of the above conditions are met? (eg. ACCEPT, REJECT, DROP, or LOG)
-
-**iptables Command Structure for setting rules**
-
-Examples:
+Try to ping www.google.ca. What happens? Notice the input chain has a policy to drop all packets. As there are no rules to allow traffic, everything will be dropped. Edit the nftables configuration file and add the following:
 
 ```bash
-# Append a rule to the INPUT chain allowing incoming ssh traffic from the local network only
-iptables -A INPUT --dport 22 -p tcp -s 192.168.245.0/24 -j ACCEPT
+#!/usr/sbin/nft -f
 
-# Append a rule to the INPUT chain allowing all incoming packets to the loopback interface
-iptables -A INPUT -i lo -p all -j ACCEPT
+flush ruleset
 
-# Insert a rule into 2nd position of the INPUT chain to allow incoming traffic related to established connections
-iptables -I 2 INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+table inet filter {
+        chain input {
+                type filter hook input priority filter; policy drop;
+                iif lo accept comment "Accept localhost traffic";
+                iif virbr1 accept comment "Accept virtual network traffic";
+                ct state related, established accept comment "Accept all traffic originating from us";
+                meta l4proto ipv6-icmp accept comment "Accept ICMPv6"
+                meta l4proto icmp accept comment "Accept ICMP"
+                ip protocol igmp accept comment "Accept IGMP"
 
-# Insert a rule into 1st postition of the INPUT chain to allow incoming pings (icmp) from the local network only
-iptables -I 1 INPUT -p icmp -s 192.168.245.0/24 -j ACCEPT
+                udp dport mdns ip6 daddr ff02::fb accept comment "Accept mDNS"
+                udp dport mdns ip daddr 224.0.0.251 accept comment "Accept mDNS"
+        }
+        chain forward {
+                type filter hook forward priority filter;
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+}
 ```
 
-| Placement in Chain                       | Chain Name  | Specify Protocol               | Source/Destination                                  | Target                                        |
-| :--------------------------------------- | :---------- | :----------------------------- | :-------------------------------------------------- | :-------------------------------------------- |
-| **-A** (add / Append to bottom of chain) | **INPUT**   | **-p tcp** (tcp packets)       | **-s IPADDR** (source host or network address)      | **-j DROP**                                   |
-| **-I 2** (insert into 2nd position)      | **OUTPUT**  | **-p udp** (udp packets)       | **-d IPADDR** (destination host or network address) | **-j ACCEPT**                                 |
-| **-R 2** (replace the 2nd rule)          | **FORWARD** | **-p icmp**                    | **-i ens33** (interface name)                       | **-j LOG** (accept packet but record in logs) |
-| **-D 3** (delete rule 3)                 |             | **-p all**                     | **--dport 22** (destination port number)            | **-j REJECT** (reject with error)             |
-|                                          |             | **-p tcp,udp,icmp** (combined) | **--sport 53** (source port numner)                 |                                               |
-|                                          |             | (refer to **/etc/protocols** ) | (refer to **/etc/services**)                        |                                               |
-
-5. Issue the following Linux command to ensure the loopback interface is not affected by these rules. The computer needs to be able to communicate with itself with any state and protocol:
+Save your changes and restart the **nftables** service.
 
 ```bash
-iptables -A INPUT -i lo -p all -j ACCEPT
+systemctl restart nftables
 ```
 
-6. Issue the following Linux command to ensure the system can get responses to traffic it sends out:
+Try to ping www.google.ca. What happens now? Why?
+
+### Part 3: Configuring nftables in ubu1 and ubu2
+
+On **ubu1**, repeat the steps to:
+
+- Stop and Disable **iptables**
+- Start and Enable **nftables**
+
+### Finished to here
+
+Edit the nftables configuration file (**/etc/nftables.conf**) to contain the following:
 
 ```bash
-iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter; policy drop;
+                iif lo accept comment "Accept localhost traffic";
+                ct state related, established accept;
+                tcp dport { ssh } accept comment "Accept SSH traffic"
+        }
+        chain forward {
+                type filter hook forward priority filter;
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+}
 ```
 
-7. Use Firefox on **debhost** to connect to the Internet your other web-browser to confirm that you can now browse the Internet. Because the incoming traffic is a response related to my established connection it is accepted.
-
-8. Determine the external facing ip address of **debhost**
-9. Using your Windows machine running VMware (or another machine in your network if you did a bare-metal installation for debhost) try to ping that external facing address. Were you successful?
-10. Issue the following iptables command to allow incoming ping packets (icmp) from only the address of your Windows host. (You will have to use your own IP address)
-
-My VMware host IP:
-![winhostip](/img/winhostip.png)
+Save your changes and restart the **nftables** service.
 
 ```bash
-iptables -A INPUT -p icmp -s 192.168.213.1 -j ACCEPT
+systemctl restart nftables
 ```
-
-11. Repeat pinging your debhost's external facing IP Address. What happened? Why?
-
-![iptablesping](/img/iptablesping.png)
-
-12. Try to SSH into YOUR debhost. Were you Successful?
-13. Issue the following Linux command to append a rule to the INPUT chain to allow incoming ssh traffic (ie. port 22):
-
-```bash
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-```
-
-14. Issue an iptables command to confirm that there is a rule to handle incoming tcp packets using port 22.
-15. Try to SSH into your debhost (at least to get a password prompt). Were you Successful? If so, why?
-16. Note that the rule we entered would allow **anyone** who can reach your debhost to try to log in with ssh. This is **not** a good idea. What would you have to change about that rule to only allow the one machine you are connecting from?
-17. Reboot **debhost** open a terminal and start a sudo shell.
-18. List the iptables rules for the INPUT chain. What happened to your iptables rules for the INPUT chain?
-19. Proceed to the next part to learn how to learn how to make your iptables rules persistent.
-
-### Part 3: Making iptables Policies Persistent
-
-Any changes to your iptables rules will be lost when you restart your Linux server, unless you make your iptables rules persistent. Failure to perform the following steps after setting up your firewall rules can cause confusion and wasted time.
-
-**Don't save copies of rules that libvirtd will auto-add every boot.**
-
-When the libvirtd service starts on debhost it adds some rules to iptables to allow the machines in your virtual network communicate with each other and the outside world. We don't want to include these rules in our configuration because it will cause the rules to be loaded twice. This won't actually break anything, but it does clutter up your iptables and make them harder to read. Before you continue with this investigation, confirm that there are no rules currently loaded.
-
-**Perform the following steps:**
-
-1. Make sure that no rules are currently loaded
-2. Set the default **policy** for both the **INPUT** and **FORWARD** chains to **DROP**
-3. Append rules to the **INPUT** chain that allow SSH traffic from your Windows host and from the **192.168.245.0/24** network.
-4. Append a rule to the **INPUT** chain to allow **icmp** traffic from your **192.168.245.0/24** network.
-5. Append a rule to the **INPUT** chain to allow all traffic to the **lo** (loopback) interface.
-6. Append a rule to the **INPUT** chain to allow all traffic that is **RELATED**/**ESTABLISHED**.
-7. List the **INPUT** chain. It should look similar to this
-
-![iptables3](/img/iptables3.png)
-
-8. Test your rules by doing the following:
-
-- ssh from your Windows host to the external ip address of **debhost**
-- Open Firefox on **debhost** and connect to a website on the Internet
-- On **debhost** ping the loopback address **127.0.0.1**
-
-You can't test the traffic from **192.168.245.0/24** until **libvirtd** starts. Before you start **libvirtd** you should save your current rules to make them persistent.
-
-9. Save the current ruleset using the command:
-
-```bash
-# Save iptables rules in memory to a file in the correct format
-iptables-save -f /etc/iptables.rules
-```
-
-10. Verify that the file **/etc/iptables.rules** exists.
-11. Create a new script file **/etc/network/if-pre-up.d/iptables**
-12. Add the following to the file
-
-```bash
-#!/bin/bash
-
-/sbin/iptables-restore /etc/iptables.rules
-```
-
-13. Make the script executable `chmod u+x /etc/network/if-pre-up.d/iptables`
-14. Reboot **debhost** and check that the rules are restored during boot.
-15. Start the **libvirtd** service, and note the rules it adds to your iptables. It will do this automatically every time it starts.
-16. Enable the **libvirtd** service so that it starts during boot.
-17. After rebooting open a terminal and start a sudo shell
-18. List your iptables rules. If everything there?
-19. Start your **deb1**, **deb2**, and **deb3** VM's
-20. Confirm that you can ping **debhost** and that you can connect to **debhost** using **ssh**, from each of your VM's
 
 **Answer INVESTIGATION 3 observations / questions in your lab log book.**
 
-## Lab 7 Sign-Off (Show Instructor)
+## Lab 4 Sign-Off (Show Instructor)
 
-Follow the submission instructions for lab 7 on Blackboard.
+Follow the submission instructions that your Professor provides.
 
-**Time for a new backup and system updates!**
+**Backup ALL of your VMs!**
 
-If you have successfully completed this lab, make a new backup of your virtual machines as well as your host machine.
+If you have successfully completed this lab, make a new backup of all of your virtual machines onto your USB Key.
 
 **Perform the Following Steps:**
 
-1. Make certain ALL of your VMs are running.
-2. Make sure you are connected to Seneca's VPN on your Windows host.
-3. Switch to your **debhost** and change to your user's **bin** directory.
-4. Issue the Linux command:
+1. On your **ubuhost** issue the commands and show your professor the output:
 
-```bash
-wget https://raw.githubusercontent.com/OPS245/debian-labs/main/lab7-check.bash
-```
-
-4. Give the **lab7-check.bash** file execute permissions (for the file owner).
-5. Run the shell script and if there are any warnings, make fixes and re-run shell script until you receive "Congratulations" message.
-6. Upload a screenshot of proof from the previous step to Blackboard, as per your Professor's instructions.
+- Successfully run the pingtest script on your **ubuhost**
+- `cat /etc/hosts` on **ubuhost**, **ubu1** and **ubu2**
 
 ## Practice For Quizzes, Tests, Midterm, and Final Exam
 
