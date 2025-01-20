@@ -77,7 +77,7 @@ Click on Launch instance just below the Resources pane. From the Launch an insta
 
 - **Name:** first
 - **OS:** Ubuntu
-- **Amazon Machine Image(AMI):** Make sure Ubuntu Sever 22.04 is selected
+- **Amazon Machine Image(AMI):** Make sure Ubuntu Sever 24.04 is selected
 
 ## Creating SSH key pairs & using public key cryptography
 
