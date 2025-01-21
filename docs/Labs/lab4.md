@@ -514,9 +514,15 @@ table inet filter {
                 iif lo accept comment "Accept localhost traffic";
                 ct state related, established accept;
                 tcp dport { ssh } accept comment "Accept SSH traffic"
+                meta l4proto ipv6-icmp accept comment "Accept ICMPv6"
+                meta l4proto icmp accept comment "Accept ICMP"
+                ip protocol igmp accept comment "Accept IGMP"
+
+                udp dport mdns ip6 daddr ff02::fb accept comment "Accept mDNS"
+                udp dport mdns ip daddr 224.0.0.251 accept comment "Accept mDNS"
         }
         chain forward {
-                type filter hook forward priority filter;
+                type filter hook forward priority filter; policy drop;
         }
         chain output {
                 type filter hook output priority filter;
@@ -530,6 +536,9 @@ Save your changes and restart the **nftables** service.
 systemctl restart nftables
 ```
 
+From a **terminal** on your **host**, try pinging **ubu1**. What happens? Why?
+
+Add the rules from **ubuhost**'s
 **Answer INVESTIGATION 3 observations / questions in your lab log book.**
 
 ## Lab 4 Sign-Off (Show Instructor)
