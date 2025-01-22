@@ -1,11 +1,11 @@
 ---
 id: lab4
-title: Lab 4 - Setup and Configure SSH
+title: Lab 4 - SSH and Firewalls
 sidebar_position: 4
 description: Lab 4
 ---
 
-# Lab 4: Setup and Configure SSH
+# Lab 4: SSH and Firewalls
 
 ## Lab Preparation
 
