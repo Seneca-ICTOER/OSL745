@@ -449,10 +449,10 @@ table inet filter {
 }
 ```
 
-Save your changes and restart the **nftables** service.
+Save your changes and issue the following command to apply the rules.
 
 ```bash
-systemctl restart nftables
+sudo nft -f /etc/nftables.conf
 ```
 
 Try to ping www.google.ca. What happens? Notice the input chain has a policy to drop all packets. As there are no rules to allow traffic, everything will be dropped. Edit the nftables configuration file (**/etc/nftables.conf**) and add the following:
