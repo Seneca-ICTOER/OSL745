@@ -345,11 +345,11 @@ We are going to use nftables with the following 3 **chains**, which will functio
 - **OUTPUT**: Packets leaving current Linux server
 - **FORWARD**: Packets being routed between Linux servers
 
-**nftables** can be configured from the command line, or from a script. In **Part 1** we will be focusing on command line configuration.
+**nftables** can be configured from the command line, or from a script.
 
 ### Part 1: Disabling UFW, enabling nftables
 
-**Perform the following steps on ubuhost:**
+**Perform the following steps on ubu1:**
 
 1. Stop and Disable ufw:
 
@@ -377,7 +377,7 @@ Let's get some practice using the nftables command such as viewing the current f
 
 **Perform the following steps:**
 
-1. For the remainder of this section, use your **ubuhost** machine.
+1. For the remainder of this section, use your **ubu1** VM.
 2. As working with the firewall requires elevated privileges start a sudo shell
 3. Issue the following command to list the existing iptables policy rules:
 
@@ -423,7 +423,7 @@ nft list tables
 
 Notice when you issue the **list ruleset** and **list tables** commands after flushing the ruleset, nothing appears.
 
-5. Start **ubu1**. Once it has booted, re-issue the commands to **list** the **ruleset** and **tables**. What changed?
+5. Restart **ubu1**. Once it has booted, re-issue the commands to **list** the **ruleset** and **tables**. What changed?
 
 ### Part 2: Configuring nftables via the configuration file
 
@@ -455,7 +455,7 @@ Save your changes and restart the **nftables** service.
 systemctl restart nftables
 ```
 
-Try to ping www.google.ca. What happens? Notice the input chain has a policy to drop all packets. As there are no rules to allow traffic, everything will be dropped. Edit the nftables configuration file and add the following:
+Try to ping www.google.ca. What happens? Notice the input chain has a policy to drop all packets. As there are no rules to allow traffic, everything will be dropped. Edit the nftables configuration file (**/etc/nftables.conf**) and add the following:
 
 ```bash
 #!/usr/sbin/nft -f
@@ -466,58 +466,9 @@ table inet filter {
         chain input {
                 type filter hook input priority filter; policy drop;
                 iif lo accept comment "Accept localhost traffic"
-                iif virbr1 accept comment "Accept virtual network traffic"
-                ct state related, established accept comment "Accept all traffic originating from us"
                 meta l4proto ipv6-icmp accept comment "Accept ICMPv6"
                 meta l4proto icmp accept comment "Accept ICMP"
                 ip protocol igmp accept comment "Accept IGMP"
-
-                udp dport mdns ip6 daddr ff02::fb accept comment "Accept mDNS"
-                udp dport mdns ip daddr 224.0.0.251 accept comment "Accept mDNS"
-        }
-        chain forward {
-                type filter hook forward priority filter;
-        }
-        chain output {
-                type filter hook output priority filter;
-        }
-}
-```
-
-Save your changes and restart the **nftables** service.
-
-```bash
-systemctl restart nftables
-```
-
-Try to ping www.google.ca. What happens now? Why?
-
-### Part 3: Configuring nftables in ubu1 and ubu2
-
-On **ubu1**, repeat the steps to:
-
-- Stop and Disable **iptables**
-- Start and Enable **nftables**
-
-### Finished to here
-
-Edit the nftables configuration file (**/etc/nftables.conf**) to contain the following:
-
-```bash
-#!/usr/sbin/nft -f
-
-flush ruleset
-
-table inet filter {
-        chain input {
-                type filter hook input priority filter; policy drop;
-                iif lo accept comment "Accept localhost traffic";
-                ct state related, established accept;
-                tcp dport { ssh } accept comment "Accept SSH traffic"
-                meta l4proto ipv6-icmp accept comment "Accept ICMPv6"
-                meta l4proto icmp accept comment "Accept ICMP"
-                ip protocol igmp accept comment "Accept IGMP"
-
                 udp dport mdns ip6 daddr ff02::fb accept comment "Accept mDNS"
                 udp dport mdns ip daddr 224.0.0.251 accept comment "Accept mDNS"
         }
@@ -530,15 +481,81 @@ table inet filter {
 }
 ```
 
-Save your changes and restart the **nftables** service.
+Save your changes and issue the following command to apply the rules.
 
 ```bash
-systemctl restart nftables
+sudo nft -f /etc/nftables.conf
 ```
 
-From a **terminal** on your **host**, try pinging **ubu1**. What happens? Why?
+Try to ping www.google.ca. What happens now? Why?
 
-Add the rules from **ubuhost**'s
+Edit the nftables configuration file (**/etc/nftables.conf**). Add the following rule to the input chain:
+
+```bash
+ct state related, established accept comment "Accept all traffic originating from this server"
+```
+
+Save your changes and issue the following command to apply the rules.
+
+```bash
+sudo nft -f /etc/nftables.conf
+```
+
+Try to ping www.google.ca. What happens now? Why?
+
+Try to **ssh** to **ubu1** from your host. This should fail, because there isn't a rule to allow ssh and the default policy for the input chain is set to drop. Edit the nftables configuration file (**/etc/nftables.conf**) and add the following rule to the input chain:
+
+```bash
+tcp dport { ssh } accept comment "Accept SSH traffic"
+```
+
+Save your changes and issue a command to apply the updated rules.
+
+### Part 3: Configuring nftables on ubu2
+
+On **ubu1**, repeat the steps to:
+
+- Stop and Disable **ufw**
+- Start and Enable **nftables**
+
+Edit the nftables configuration file (**/etc/nftables.conf**) to contain the following:
+
+```bash
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter; policy drop;
+                iif lo accept comment "Accept localhost traffic"
+                ct state related, established accept comment "Accept all traffic originating from us"
+                tcp dport { ssh } accept comment "Accept ssh traffic"
+                meta l4proto ipv6-icmp accept comment "Accept ICMPv6"
+                meta l4proto icmp accept comment "Accept ICMP"
+                ip protocol igmp accept comment "Accept IGMP"
+                udp dport mdns ip6 daddr f002::fb accept comment "Accept mDNS"
+                udp dport mdns ip daddr 224.0.0.251 accept comment "Accept mDNS"
+        }
+        chain forward {
+                type filter hook forward priority filter; policy drop;
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+}
+```
+
+Save your changes and issue the following command to apply the rules.
+
+```bash
+sudo nft -f /etc/nftables.conf
+```
+
+From a **terminal** on your **host**, verify you can ping and ssh into **ubu1** and **ubu2**. If you can't, double check your nftables rules against the lab instructions.
+
+Reboot **ubu2** and confirm your nftables rules are still present.
+
 **Answer INVESTIGATION 3 observations / questions in your lab log book.**
 
 ## Lab 4 Sign-Off (Show Instructor)
@@ -551,20 +568,21 @@ If you have successfully completed this lab, make a new backup of all of your vi
 
 **Perform the Following Steps:**
 
-1. On your **ubuhost** issue the commands and show your professor the output:
+1. On your **ubu1** and **ubu2** issue the commands and show your professor the output:
 
-- Successfully run the pingtest script on your **ubuhost**
-- `cat /etc/hosts` on **ubuhost**, **ubu1** and **ubu2**
+- The nftables service running
+- The nftables rules
 
 ## Practice For Quizzes, Tests, Midterm, and Final Exam
 
-1. What port does sshd use by defaults?
-2. What file is used to configure sshd?
-3. What kind of files are stored in the "~/.ssh/" directory?
-4. How do you determine whether the ssh service is running on your system or not?
-5. What is the purpose of the ~/.ssh/known_hosts file?
-6. What is the purpose of the ~/.ssh/authorized_keys file?
-7. How do you stop the ssh service?
-8. How do you tunnel XWindows applications?
-9. What port is the default ssh port?
-10. What port(s) is/are used by httpd service?
+1. What file is used to configure ssh?
+1. What kind of files are stored in the "~/.ssh/" directory?
+1. How do you determine whether the ssh service is running on your system or not?
+1. What is the purpose of the ~/.ssh/known_hosts file?
+1. What is the purpose of the ~/.ssh/authorized_keys file?
+1. How do you generate SSH keys? What benefit does this provide?
+1. How do you stop the ssh service?
+1. What port is the default ssh port?
+1. What port is the default http port?
+1. What happens to incoming http traffic if the default policy for the input chain is set to drop, and there isn't a rule to allow port 80?
+1. What do you think would happen if you set the default policy for the **output** chain to drop?
