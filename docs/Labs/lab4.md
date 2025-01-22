@@ -371,7 +371,7 @@ sudo systemctl enable nftables
 sudo systemctl status nftables
 ```
 
-### Part 1: Listing the Existing nftables Rules
+### Part 2: Listing the Existing nftables Rules
 
 Let's get some practice using the nftables command such as viewing the current firewall configuration:
 
@@ -425,7 +425,7 @@ Notice when you issue the **list ruleset** and **list tables** commands after fl
 
 5. Restart **ubu1**. Once it has booted, re-issue the commands to **list** the **ruleset** and **tables**. What changed?
 
-### Part 2: Configuring nftables via the configuration file
+### Part 3: Configuring nftables via the configuration file
 
 The easiest way to configure nftables is via the configuration file. Changes written here will only be applied upon system reboot, or if you restart the service. You will now change the default policy of the **INPUT** chain to **DROP**. This means you will have add rules that allow specific types of packets in. The best way to configure firewalls is to create an **allow list**, meaning you implicitly drop everything and only allow the traffic you wish. This is exactly what we will do.
 
@@ -511,7 +511,7 @@ tcp dport { ssh } accept comment "Accept SSH traffic"
 
 Save your changes and issue a command to apply the updated rules.
 
-### Part 3: Configuring nftables on ubu2
+### Part 4: Configuring nftables on ubu2
 
 On **ubu1**, repeat the steps to:
 
