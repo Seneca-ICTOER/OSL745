@@ -35,7 +35,7 @@ Some important things to note on this screen:
 
 **Stop Lab**: Stops the Learner Lab environment.
 
-**Used $0 of $100**: Shows the balance used of your $100 credit. If this hits $100 of $100 used, your learner lab is disabled. Be careful.
+**Used $0 of $50**: Shows the balance used of your $50 credit. If this hits $50 of $50 used, your learner lab is disabled. Be careful.
 
 **AWS with a red dot next to it**: Once your lab has started, this will turn green. You can then click on this to open the environment.
 
