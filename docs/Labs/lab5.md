@@ -20,7 +20,7 @@ This week's lab will cover the following:
 
 ## Investigating the AWS Learner Lab
 
-You should have received an email (in your Seneca College email) from your professor inviting you to participate in the AWS Academy Learner Lab. If you have received and accepted this invitation you may proceed with this lab. If you have not received this invitation you should contact your professor immediately. You may continue with the rest of the lab once you have received the invitation. Here is a sample email.
+You should have received an email (in your Seneca Polytechnic email) from your professor inviting you to participate in the AWS Academy Learner Lab. If you have received and accepted this invitation you may proceed with this lab. If you have not received this invitation you should contact your professor immediately. You may continue with the rest of the lab once you have received the invitation. Here is a sample email.
 
 ![AWS Invitation](/img/aws-invitation.png)
 
