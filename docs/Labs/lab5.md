@@ -124,15 +124,15 @@ You will be accessing our new Linux VM remotely using SSH, which is a command-li
 - The SSH command will ask you to confirm connecting. Type yes and press Enter.
 - If login is successful, you should see a prompt like this: ubuntu@ip-172-31-91-76:~$
 
-## Completing the Lab
+## Lab 5 Sign-Off (Show Instructor)
 
-Take a screenshot of your successful connection and submit that to the folder on blackboard for proof of completion OR show your professor (depending on how they are marking the labs). The following Exploration Questions are for furthering your knowledge only, and may appear on quizzes or tests at any time later in this course.
+Show your professor a successful connection to your instance. The following Exploration Questions are for furthering your knowledge only, and may appear on quizzes or tests at any time later in this course.
 
 ## Exploration Questions
 
 1. How do you start/stop the AWS learner lab?
 2. How do you enter the AWS learner lab once you have started it?
-3. What happens to your learner lab if your credits hit $100 of $100 used?
+3. What happens to your learner lab if your credits hit $50 of $50 used?
 4. Where do you go to edit networking configuration options such as **security groups**?
 5. Where do you go to launch an instance?
 6. What is an instance?

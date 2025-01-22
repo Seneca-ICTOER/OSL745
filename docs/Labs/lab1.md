@@ -629,7 +629,7 @@ It is extremely important that you complete Lab 1 correctly as this Ubuntu insta
 
 When you have completed Lab 1, ask your instructor to come and check your installation. **This must be done in class.** They will ask you to complete a set of tasks/commands. If everything has been completed correctly, your instructor will mark your Lab 1 as complete.
 
-## Review Questions
+## Exploration Questions
 
 1. List the major screens (steps) in the installation of Ubuntu.
 1. List the steps for updating software.

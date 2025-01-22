@@ -340,7 +340,7 @@ If you have successfully completed this lab, make a new backup of all of your vi
 - Successfully run the pingtest script on your **ubuhost**
 - `cat /etc/hosts` on **ubuhost**, **ubu1** and **ubu2**
 
-## Practice For Quizzes, Tests, Midterm & Final Exam
+## Exploration Questions
 
 1. What is a port?
 1. What command will set your IP configuration to 192.168.55.22/24 ?

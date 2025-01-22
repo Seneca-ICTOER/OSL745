@@ -722,7 +722,7 @@ virsh list --all
 
 1. Call your professor over and show them the output.
 
-## Review Questions
+## Exploration Questions
 
 1. How do you start and stop virtual machines?
 2. What is the purpose of the virsh command?

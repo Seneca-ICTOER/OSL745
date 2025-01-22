@@ -573,7 +573,7 @@ If you have successfully completed this lab, make a new backup of all of your vi
 - The nftables service running
 - The nftables rules
 
-## Practice For Quizzes, Tests, Midterm, and Final Exam
+## Exploration Questions
 
 1. What file is used to configure ssh?
 1. What kind of files are stored in the "~/.ssh/" directory?
