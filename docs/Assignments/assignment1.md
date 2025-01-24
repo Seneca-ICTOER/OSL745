@@ -9,7 +9,7 @@ description: OSL745 Assignment 1
 
 ## Overview
 
-In Assignment 1 you will install configure a LAMP stack, which is an acronym that originally stood for Linux, Apache, MySQL and PHP. LAMP is a commonly used acronym and combination of technologies for hosting web based applications. In fact, newer technologies that have come along to replace elements of the LAMP stack tend to pick their name based on the letter in the acronym that they are providing services for (ie MariaDB or MongoDB, Perl or Python). You will then use this platform to install and host Wordpress (a popular free and open source content management system or CMS). You will also configure your firewall to further enhance the security of your computer system.
+In Assignment 1 you will install configure a LAMP stack, which is an acronym that originally stood for Linux, Apache, MySQL and PHP. LAMP is a commonly used acronym and combination of technologies for hosting web based applications. In fact, newer technologies that have come along to replace elements of the LAMP stack tend to pick their name based on the letter in the acronym that they are providing services for (ie MariaDB or MongoDB, Perl or Python). You will then use this platform to install and host Wordpress (a popular free and open source content management system or CMS). You will also configure your firewall to further enhance the security of your network.
 
 This assignment will be completed inside your **ubu2** VM.
 
@@ -21,9 +21,9 @@ This assignment will be completed inside your **ubu2** VM.
 
 **Submission**: You will be submitting your completed work through a series of screenshots on Blackboard. (See below.)
 
-**NOTE:** Do this assignment inside the **ubu1** virtual machine.
+**NOTE:** Do this assignment inside the **ubu2** virtual machine.
 
-**NOTE:** It is YOUR responsibility to backup your **ubu1** VM for this assignment! You are required to frequently backup your VM prior to exiting a work session during this assignment. Your professor will NOT accept the fact that your hard disk crashed and lost all of your work. If you properly backed up your VM images and xml configuration files to a USB, then you can purchase a new hard-disk or wipe and recreate your hard disk and restore your VMs.
+**NOTE:** It is YOUR responsibility to backup your **ubu2** VM for this assignment! You are required to frequently backup your VM prior to exiting a work session during this assignment. Your professor will NOT accept the fact that your hard disk crashed and lost all of your work. If you properly backed up your VM images and xml configuration files to a USB, then you can purchase a new hard-disk or wipe and recreate your hard disk and restore your VMs.
 
 ## Updating and Installing Packages
 
@@ -50,8 +50,7 @@ Before proceeding make sure you have updated your system using apt.
 - Confirm the apache2 service is running using **systemctl**, and that it is set to start automatically on boot. Use the appropriate **systemctl** commands if either of these is not configured.
 - Confirm that you can connect to your web server using a web browser. **Note:** If you can't connect to it from outside the machine - perhaps your firewall is blocking access to the web server.
 
-  - from your Ubuntu VM (you can test using **lynx**)
-  - from the host (you can test using Firefox with your Ubuntu VM’s IP address). You should see the Apache Test Page.
+  - from the host (open your browser and type **http://ubu2**). You should see the Apache Test Page.
 
 ### Configuring MariaDB
 
@@ -133,7 +132,7 @@ sudo a2ensite wordpress
 
 - Use systemctl to restart the apache service.
 
-Edit the file **/etc/wordpress/config-username-ubuntu.php** where username is your Seneca username. Add the following contents (changing username to your Seneca username where appropriate).
+Edit the file **/etc/wordpress/config-ubu2.php** where username is your Seneca username. Add the following contents (changing username to your Seneca username where appropriate).
 
 ```php
 <?php
@@ -145,10 +144,10 @@ define('WP_CONTENT_DIR', '/usr/share/wordpress/wp-content');
 ?>
 ```
 
-- Open a web browser (ie Firefox) on your host and enter the following url: http://username-ubuntu/blog/wp-admin/install.php
+- Open a web browser (ie Firefox) on your host and enter the following url: http://ubu2/blog/wp-admin/install.php
 - You should see a Wordpress Welcome/Setup page. Follow the prompts on screen and enter the appropriate information.
   - Use the **Database Name**, **Username** and **Password** you configured above in mariadb.
-  - Set the title to Your Name's Blog. For example for me it would be "OSL745 Professor's Blog"
+  - Set the title to Your Name's Blog. For example for me it would be "Jason Carman's Blog"
   - Set the username to your Seneca ID.
   - Set the password to your Seneca ID. You may need to check the box to **Confirm use of weak password**
   - Set the email to your Seneca email address.
@@ -164,15 +163,17 @@ Write a blog post on your new blog explaining:
 
 Make your posts look professional. That means use good english, headings, bullet or numbered lists, etc.
 
+- from the host (open your browser and type **http://ubu2/blog**). You should see your blog's home page and blog posts.
+
 ## Submission
 
 On your **Ubuntu** vm issue the following command to download the check script. You may need to install git using apt.
 
 ```bash
-git clone https://github.com/jmcarman/a2-check
+git clone https://github.com/OSL745/a1-check
 ```
 
-Give the **marka2.bash** script execute permission and run it.
+Give the **marka1.bash** script execute permission and run it.
 
 Upload the following to the Assignment 2 folder on blackboard:
 
