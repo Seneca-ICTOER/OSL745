@@ -17,6 +17,7 @@ This week's lab will cover the following:
 - Exploring Amazon Elastic Cloud Compute (EC2).
 - Adding an instance in AWS.
 - Creating SSH key pairs &amp; paired key encryption.
+- Creating a Dotfiles repository in GitHub.
 
 ## Investigating the AWS Learner Lab
 
@@ -48,19 +49,18 @@ If you click on **Services** in the top left corner (beside the AWS logo), you w
 
 ## Modifying VPC Security Groups
 
-An Amazon Virtual Private Cloud (VPC) is a dedicated virtual network within AWS' public cloud. It work similar to how a traditional network does in a data center. w3schools has some [additional information](https://www.w3schools.com/aws/aws_cloudessentials_awsconnectivity.php). To access the VPC settings, click on Services (top left corner beside the AWS icon), and navigate to:
+An Amazon Virtual Private Cloud (VPC) is a dedicated virtual network within AWS' public cloud. It work similar to how a traditional network does in a data center. w3schools has some [additional information](https://www.w3schools.com/aws/aws_cloudessentials_awsconnectivity.php).
 
-- Networking & Content Delivery > VPC
-- **Click on VPC.**
-- **Click on Security Groups.**
+**Security Group** settings are located in the left side navigation under **Network & Security** > **Security Groups**. Click on **Security Groups**.
 
 Your screen should look like the following:
 ![AWS Security Groups](/img/awssecuritygroups.png)
 
-Click on **InBound rules** > **Edit InBound Rules** and add the following rule:
+Make sure the box beside your **Security Group** is checked. Click on **InBound rules** > **Edit InBound Rules** and add the following rule:
 
-- **Port Range:** 22
+- **Type:** SSH or **Port Range:** 22 (both will accomplish the same thing)
 - **The box beside the magnifying glass:** 0.0.0.0/0
+- Click **Save Rules**
 
 This will allow incoming SSH connections from anywhere. We will use this in the next part to connect to your instance. The screenshot below shows what your inbound rules should look like:
 ![AWS Inbound Rules - Lab 1](/img/awssg-inboundrules.png)
@@ -123,6 +123,60 @@ You will be accessing our new Linux VM remotely using SSH, which is a command-li
 - Paste the example command from the Connect to instance page, and press Enter.
 - The SSH command will ask you to confirm connecting. Type yes and press Enter.
 - If login is successful, you should see a prompt like this: ubuntu@ip-172-31-91-76:~$
+
+## Creating a dotfiles repository in GitHub and Adding your SSH key as a repository secret
+
+A GitHub dotfiles repository is used to store and manage your configuration files (often called "dotfiles" because their filenames start with a dot, e.g., **.bashrc**, **.vimrc**, **.gitconfig**). These files are used to customize your development environment. By keeping them in a GitHub repository, you can easily share your configurations across different machines and with other developers. This practice helps in maintaining consistency in your development setup and makes it easier to set up new environments quickly. A dotfiles repo can also be used to host scripts you wish run upon the creation of any Codespace you create using your GitHub account (ie account wide).
+
+You are going to create a dotfiles repository using an existing template repository. Template repositories are used for creating new repositories from a common base. This is how the GitHub Classroom assignments you have accepted have worked. The template repository has a script in it that will add your **AWS ssh key** (.pem file) to any Codespace you create allowing you to access your instance via SSH from the terminal in Codespaces.
+
+- In your web browser, navigate to the [dotfiles template repository](https://github.com/OSL745/dotfiles) in the OSL745 organization.
+- In the top right corner, click **Use this template**
+- Make sure **owner** is set to **your GitHub user**, and provide the **repository name** as **dotfiles**. Your screen should look similar the picture below. You can set it's visibility to **private** if you wish. With a private repo, no one will even see it exists.
+  ![Creating a dotfiles repo](/img/createrepo.png)
+
+## Adding your .pem file as a GitHub secret
+
+Browse to your **dotfiles** repository.
+
+- Click on **Settings**
+- Click on **Secrets and variables**
+- Click on **Codespaces**
+- Click the Green button labelled **New repository secret**
+- Add the secret With the following
+  - name **SSH_KEY**
+  - In the Secret field, paste in the contents of your .pem file. You can use cat from your local command line (yes, even from the Windows Terminal / PowerShell) and copy/paste.
+
+Your screen should look as follows (note, in the screenshot the secret field has been left empty) New Repository Secret
+![New Repository Secret](/img/new-secret.png)
+
+- Click the green button labelled Add secret
+
+## Automatically installing your dotfiles repository for every Codespace you create
+
+In your web browser, navigate to your GitHub Profile.
+
+- Click on your GitHub profile (top right corner)
+- Click on **Settings**
+- Click on Codespaces
+
+Under **Dotfiles**:
+
+- Check the box beside **Automatically install dotfiles**
+- Browse to your **dotfiles** repository. Note, it may automatically populate.
+
+## Connecting to your AWS instance from the terminal in Codespaces
+
+You may need to rebuild the container for any existing Codespaces you own.
+Note: Keys added via your dotfiles repo will be installed over top of per-repo keys with this configuration.
+
+Launch Codespaces from any of your previous GitHub Classroom assignments (or even for your dotfiles repo). In the terminal (in the bottom) copy paste the SSH command from **EC2 Instance Connect** and remove the path to the key. Since the script wrote your private key to the default location, you do not need to specify the path to the key. It should look similar to following.
+
+```bash
+ssh -i "osl745.pem" ubuntu@ec2-23-20-90-70.compute-1.amazonaws.com
+```
+
+Once you have confirmed this works, you can logout from your Codespaces terminal and shut everything down (Codespaces and the AWS Learner Lab). For proof, show your professor a successful connection to your instance (either via ec2 instance connect, SSH from Codespaces or both).
 
 ## Lab 5 Sign-Off (Show Instructor)
 
