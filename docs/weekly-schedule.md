@@ -42,7 +42,7 @@ description: Weekly Schedule Page for OSL745
 
 | Learning Objectives and Tasks  | **Lecture Notes:**                                                                                                                                                                       | Evaluation                                |
 | :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------- |
-| **Securing Networks**          | [Week 4 Slides](https://docs.google.com/presentation/d/e/2PACX-1vTG6FqMd8QtybFCjBWCDoJZFrqvrNX5rrBxmWxl122kx-GoU_kxxhk2mhjIngZGdYeoJ_6tFVQU3Dc8/pub?start=false&loop=false&delayms=3000) | [Lab 4: Securing Networks](/Labs/lab4.md) |
+| **Securing Networks**          | [Week 4 Slides](https://docs.google.com/presentation/d/e/2PACX-1vRb_i-rTR4guILBL2xloZ4q008ownPbF7if9ICiI9g3YTY4o192gjRnQY09SMqUDokH8gGswop4lfvS/pub?start=false&loop=false&delayms=3000) | [Lab 4: Securing Networks](/Labs/lab4.md) |
 | - Securing Remote Access (SSH) |                                                                                                                                                                                          |                                           |
 | - Firewalls (nftables)         |                                                                                                                                                                                          |                                           |
 
