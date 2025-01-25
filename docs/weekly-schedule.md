@@ -40,11 +40,11 @@ description: Weekly Schedule Page for OSL745
 
 ## Week 4
 
-| Learning Objectives and Tasks                 | **Lecture Notes:**                                                                                                                                                                       | Evaluation                                |
-| :-------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------- |
-| **Setup and Configure Secure Shell Services** | [Week 4 Slides](https://docs.google.com/presentation/d/e/2PACX-1vTG6FqMd8QtybFCjBWCDoJZFrqvrNX5rrBxmWxl122kx-GoU_kxxhk2mhjIngZGdYeoJ_6tFVQU3Dc8/pub?start=false&loop=false&delayms=3000) | [Lab 4: SSH and Firewalls](/Labs/lab4.md) |
-| - Network Services                            |                                                                                                                                                                                          |                                           |
-| - SSH                                         |                                                                                                                                                                                          |                                           |
+| Learning Objectives and Tasks  | **Lecture Notes:**                                                                                                                                                                       | Evaluation                                |
+| :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------- |
+| **Securing Networks**          | [Week 4 Slides](https://docs.google.com/presentation/d/e/2PACX-1vTG6FqMd8QtybFCjBWCDoJZFrqvrNX5rrBxmWxl122kx-GoU_kxxhk2mhjIngZGdYeoJ_6tFVQU3Dc8/pub?start=false&loop=false&delayms=3000) | [Lab 4: Securing Networks](/Labs/lab4.md) |
+| - Securing Remote Access (SSH) |                                                                                                                                                                                          |                                           |
+| - Firewalls (nftables)         |                                                                                                                                                                                          |                                           |
 
 ## Week 5
 

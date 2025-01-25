@@ -1,11 +1,11 @@
 ---
 id: lab4
-title: Lab 4 - SSH and Firewalls
+title: Lab 4 - Securing Networks
 sidebar_position: 4
 description: Lab 4
 ---
 
-# Lab 4: SSH and Firewalls
+# Lab 4: Securing Networks
 
 ## Lab Preparation
 
