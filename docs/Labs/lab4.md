@@ -55,7 +55,6 @@ Preventing unauthorized access is one of the many day-to-day operations for a Li
 **Configuration Files**
 
 - [ssh_config](https://linux.die.net/man/5/ssh_config)
-- [sshd_config](https://linux.die.net/man/5/sshd_config)
 
 **SSH Reference**
 
@@ -64,11 +63,11 @@ Preventing unauthorized access is one of the many day-to-day operations for a Li
 
 ## Investigation 1: Installing And Maintaining An SSH Server
 
-So far, you have learned to use the **ssh** utility to establish a secure connection to a remote host in order to perform Linux administration tasks. You have issued the ssh command, which is actually the **client** application for ssh. In order to connect to a remote server (like your VMs, Matrix, etc) it needs to run the **SSH service** (aka **sshd**).
+So far, you have learned to use the **ssh** utility to establish a secure connection to a remote host in order to perform Linux administration tasks. You have issued the ssh command, which is actually the **client** application for ssh. In order to connect to a remote server (like your VMs, Matrix, etc) it needs to run the **SSH service** (aka **ssh**).
 
 In this section, you will learn how to configure an SSH server and restart the ssh service for an existing VM. You will also learn how to configure, restart, and use SSH in order to create secure connections between your Linux machines (host as well as VMs).
 
-### Part 1: Confirming sshd service is Running on VMs.
+### Part 1: Confirming ssh service is Running on VMs.
 
 **Perform the following steps:**
 
@@ -98,7 +97,7 @@ systemctl start ssh
 systemctl enable ssh
 ```
 
-6. Now that you know the service is running, investigate what **port number** and **protocol** sshd uses by issuing the command:
+6. Now that you know the service is running, investigate what **port number** and **protocol** ssh uses by issuing the command:
 
 ```bash
 # List active TCP and UDP ports with numeric output including "process"
@@ -106,7 +105,7 @@ systemctl enable ssh
 sudo ss -atunp
 ```
 
-- What protocol and port is the sshd process using? What is the state of the port?
+- What protocol and port is the ssh process using? What is the state of the port?
 
 6. Reissue the `ss` command without the **-n** option. What is the difference?
 
