@@ -309,7 +309,6 @@ rm -f packages.microsoft.gpg
 ```bash
 sudo apt install apt-transport-https
 sudo apt update
-sudo apt install code
 ```
 
 1. View the information for the package **code**.
