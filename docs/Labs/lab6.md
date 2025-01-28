@@ -115,6 +115,8 @@ Create a new Internet Gateway with the following:
 1. Once completed, your **Wordpress Gateway** should display the following:
    ![Wordpress Gateway](/img/wordpressgateway.png)
 
+### Finished to here
+
 ### Route Tables
 
 Find your default route table for your Wordpress VPC and add the name: **VPC-local Route Table**
