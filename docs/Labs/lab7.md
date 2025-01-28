@@ -9,6 +9,8 @@ description: Configure an Apache web server in Amazon Web Services (AWS) with po
 
 ## Overview
 
+This week's lab will cover the following:
+
 - Managing Linux packages and updating the system.
 - Managing Linux services.
 - Modifying Virtual Private Cloud (VPC) Security Groups.
