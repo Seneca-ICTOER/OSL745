@@ -38,7 +38,7 @@ Input the following settings:
 1. Leave all other settings on default
 
 Confirm the settings match the following screenshot.
-![VPC Settings](/img/vpcsetings.png)
+![VPC Settings](/img/vpcsettings.png)
 
 Click **Create VPC** at the bottom right.
 
