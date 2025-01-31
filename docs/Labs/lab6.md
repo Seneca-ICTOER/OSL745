@@ -38,6 +38,7 @@ Input the following settings:
 1. Leave all other settings on default
 
 Confirm the settings match the following screenshot.
+
 ![VPC Settings](/img/vpcsettings.png)
 
 Click **Create VPC** at the bottom right.
@@ -63,18 +64,19 @@ You are going to create 4 subnets in your VPC. Two private subnets, and two publ
 - IPv4 VPC CIDR block: **10.0.0/16**
 - IPv4 subnet CIDR block: **10.0.1.0/24**
 - Your screen should look as follows:
-  ![Create Subnets](/img/createsubnet.png)
+
+![Create Subnets](/img/createsubnet.png)
 
 1. Click **Add new subnet** and repeat the process for the following **three** subnets:
 
 Create one private IPv4 subnets in this VPC:
 
-1. Private Subnet 2 – **10.0.2.0/24 – us-east-1b**
+1. Private Subnet 2 - **10.0.2.0/24 - us-east-1b**
 
 Create two public IPv4 subnets in this VPC:
 
-1. Public Subnet 1 – **10.0.11.0/24 – us-east-1a**
-1. Public Subnet 2 – **10.0.12.0/24 – us-east-1b**
+1. Public Subnet 1 - **10.0.11.0/24 - us-east-1a**
+1. Public Subnet 2 - **10.0.12.0/24 - us-east-1b**
 
 Once you have confirmed your settings are correct, scroll down and click **Create Subnet** in the bottom right.
 
@@ -113,13 +115,21 @@ Create a new Internet Gateway with the following:
 1. In the **Available VPCs** input field, select your **Wordpress VPC**.
 1. Click **Attach internet gateway** to attach it to your Wordpress VPC.
 1. Once completed, your **Wordpress Gateway** should display the following:
-   ![Wordpress Gateway](/img/wordpressgateway.png)
 
-### Finished to here
+![Wordpress Gateway](/img/wordpressgateway.png)
 
 ### Route Tables
 
-Find your default route table for your Wordpress VPC and add the name: **VPC-local Route Table**
+You are going to create **Route tables** in your **VPC** to allow traffic from within your VPC to be routed externally through the **Internet Gateway** you created. In the search box at the top, type VPC.
+
+1. Click on **Route Tables** (located on the left side under **Virtual private cloud**. See screenshot for clarity).
+
+![VPC Route Tables](/img/vpc-route-tables.png)
+
+2. Click on your **Route table ID**.
+   Find your default route table for your Wordpress VPC and add the name: **VPC-local Route Table**
+
+### Finished to here
 
 Create a second route table:
 
