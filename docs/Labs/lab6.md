@@ -189,12 +189,10 @@ Click on **Create security group** and create a security group with the followin
 1. VPC: **Wordpress VPC**
 1. Inbound Rules:
 1. Allow HTTP
-
   - Type: **HTTP**
   - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
 6. Allow SSH
-
   - Type: **SSH**
   - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
@@ -210,8 +208,8 @@ Repeat the above steps to create another security group with the following setti
 1. Description: **Allows MySQL traffic locally**
 1. VPC: **Wordpress VPC**
 1. Inbound Rule:
-   1. Type: **MYSQL/Aurora**
-   1. Source: **Custom** (Select _Wordpress Website SG_ in the search field)
+  - Type: **MYSQL/Aurora**
+  - Source: **Custom** (Select _Wordpress Website SG_ in the search field)
 
 ### Editing Public Subnet route table associations
 
