@@ -181,16 +181,32 @@ Create a second route table:
 
 ### Security Groups
 
-Create a security group with the following settings:
+**Security Group** settings are located in the left side navigation under **Security** > **Security Groups**. Click on **Security Groups**. Note: You can access **Security groups** through **EC2** as well (as you did in lab 5). The menu they are under is different.
 
-1. Name: **Wordpress Website SG**
+Click on **Create security group** and create a security group with the following settings
+
+1. Security group name: **Wordpress Website SG**
 1. Description: **Allows HTTP traffic inbound**
 1. VPC: **Wordpress VPC**
-1. Inbound Rule:
-   1. Type: **HTTP**
-   1. Source: **Anywhere – IPv4 (0.0.0.0/0)**
+1. Inbound Rules:
+1. Allow HTTP
 
-Create a security group with the following settings:
+
+    - Type: **HTTP**
+    - Source: **Anywhere – IPv4 (0.0.0.0/0)**
+
+2. Allow SSH
+
+
+    - Type: **SSH**
+    - Source: **Anywhere – IPv4 (0.0.0.0/0)**
+
+Verify your inbound rules with the following screenshot.
+![Inbound Rules](/img/inbound-rules.png)
+
+Click **Create security group** (bottom right).
+
+Repeat the above steps to create another security group with the following settings:
 
 1. Name: **Wordpress Database SG**
 1. Description: **Allows MySQL traffic locally**
@@ -199,8 +215,30 @@ Create a security group with the following settings:
    1. Type: **MYSQL/Aurora**
    1. Source: **Custom** (Select _Wordpress Website SG_ in the search field)
 
-Edit both public subnets’ route table associations to: **Wordpress Website Route Table**
+### Editing Public Subnet route table associations
 
-### Screenshots for submission
+1. Click on **Subnets** under **Virtual private cloud** (left side).
+2. Check the box beside **Public Subnet 1**
+   Edit both public subnets’ route table associations to: **Wordpress Website Route Table**
+3. Click **Actions** > **Edit route table association**
+4. Select **Wordpress Website Route Table** in the **Route table ID** dropdown menu. See the following screenshot.
+   ![Route table association](/img/route-table-association.png)
 
-Take screenshots showing your 4 new subnets (Public Subnet 1, Public Subnet 2, Private Subnet 1 & Private Subnet 2), Route Table and Internet Gateway have been created.
+5. Click save.
+
+Repeat the steps for **Public Subnet 2**
+
+## Lab 6 Sign-Off (Show Instructor)
+
+Show your professor the following:
+
+- 4 new subnets (Public Subnet 1, Public Subnet 2, Private Subnet 1 & Private Subnet 2)
+- Route Table
+- Internet Gateway
+
+## Exploration Questions
+
+1. What is a VPC?
+1. What are the steps to create a VPC?
+1. What are subnets and route tables?
+1. What comparisons can you make between this lab and the virtual network you created in **Lab 3**?
