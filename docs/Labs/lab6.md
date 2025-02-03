@@ -91,16 +91,39 @@ Make sure the following are **Checked**:
 1. Click **Save**.
 1. Repeat the process for **Public Subnet 2**
 
-### Internet Gateway
+### Adding an Internet Gateway
 
 Your VPC requires a **Gateway** to access outside resources. There are four types of **gateways**
 
-- Internet Gateway
-- Egress-only Internet Gateway
-- Carrier Gateway
-- NAT Gateway
+#### Internet Gateway
 
-### Add descriptions for each of the gateway types.
+An internet gateway is a horizontally scaled, redundant, and highly available VPC component that allows communication between your VPC and the internet. It supports IPv4 and IPv6 traffic. It does not cause availability risks or bandwidth constraints on your network traffic.
+
+An internet gateway enables resources in your public subnets (such as EC2 instances) to connect to the internet if the resource has a public IPv4 address or an IPv6 address. Similarly, resources on the internet can initiate a connection to resources in your subnet using the public IPv4 address or IPv6 address. For example, an internet gateway enables you to connect to an EC2 instance in AWS using your local computer.
+
+#### Egress-only Internet Gateway
+
+An egress-only internet gateway is a horizontally scaled, redundant, and highly available VPC component that allows outbound communication over IPv6 from instances in your VPC to the internet, and prevents the internet from initiating an IPv6 connection with your instances.
+
+An egress-only internet gateway is for use with IPv6 traffic only. To enable outbound-only internet communication over IPv4, use a NAT gateway instead.
+
+#### Carrier Gateway
+
+A carrier gateway is a VPC component that allows connectivity between AWS and your on-premises network using AWS Direct Connect or AWS Site-to-Site VPN. It is specifically designed for use with AWS Outposts, enabling communication between your Outposts and the internet, or between your Outposts and other AWS services. The carrier gateway supports both IPv4 and IPv6 traffic and provides a highly available and redundant connection.
+
+A carrier gateway is used when you need to connect your Outposts to the internet or to other AWS services, ensuring that your on-premises applications can communicate seamlessly with AWS resources.
+
+#### NAT Gateway
+
+A NAT gateway is a Network Address Translation (NAT) service. You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
+
+When you create a NAT gateway, you specify one of the following connectivity types:
+
+- Public – (Default) Instances in private subnets can connect to the internet through a public NAT gateway, but cannot receive unsolicited inbound connections from the internet. You create a public NAT gateway in a public subnet and must associate an elastic IP address with the NAT gateway at creation. You route traffic from the NAT gateway to the internet gateway for the VPC. Alternatively, you can use a public NAT gateway to connect to other VPCs or your on-premises network. In this case, you route traffic from the NAT gateway through a transit gateway or a virtual private gateway.
+
+- Private – Instances in private subnets can connect to other VPCs or your on-premises network through a private NAT gateway. You can route traffic from the NAT gateway through a transit gateway or a virtual private gateway. You cannot associate an elastic IP address with a private NAT gateway. You can attach an internet gateway to a VPC with a private NAT gateway, but if you route traffic from the private NAT gateway to the internet gateway, the internet gateway drops the traffic.
+
+A NAT gateway is for use with IPv4 traffic only. To enable outbound-only internet communication over IPv6, use an egress-only internet gateway instead.
 
 You are going to create an **Internet Gateway**.
 
@@ -129,18 +152,32 @@ You are going to create **Route tables** in your **VPC** to allow traffic from w
 2. Click on your **Route table ID**.
    Find your default route table for your Wordpress VPC and add the name: **VPC-local Route Table**
 
-### Finished to here
+3. Go back to the main **Route Tables** screen.
+4. Click **Create route table** (top right corner).
 
+![Create Route Table](/img/create-route-table.png)
 Create a second route table:
 
-1. Name: **Wordpress Website Route Table**
-1. VPC: **Wordpress VPC**
-1. Routes Entry 1:
-   1. Destination: **10.0.0.0/16**
-   1. Target: **local**
-1. Routes Entry 2:
-   1. Destination: **0.0.0.0/0**
-   1. Target: **Internet Gateway – Wordpress Gateway**
+5. Name: **Wordpress Website Route Table**
+6. VPC: **Wordpress VPC**
+
+![WordPress Route Table](/img/wordpress-route-table.png)
+
+7. Click **Create route table** (bottom right corner).
+8. Click **Edit routes** and add the following routes. The first route may already exist.
+
+- Route Entry 1:
+  - Destination: **10.0.0.0/16**
+  - Target: **local**
+- Route Entry 2:
+  - Destination: **0.0.0.0/0**
+  - Target: **Internet Gateway – Wordpress Gateway**
+
+9. View the following screenshot to confirm your settings are correct. If they are, click **Save changes**.
+
+![Edit Routes](/img/edit-routes.png)
+
+### Finished to here
 
 ### Security Groups
 
