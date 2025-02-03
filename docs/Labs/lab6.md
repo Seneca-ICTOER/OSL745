@@ -81,6 +81,7 @@ Create two public IPv4 subnets in this VPC:
 Once you have confirmed your settings are correct, scroll down and click **Create Subnet** in the bottom right.
 
 Check the box beside **Public Subnet 1**. Click on the **Actions** dropdown (top right) and select **Edit subnet settings**. See the following screenshot.
+
 ![Edit subnet settings](/img/editsubnet.png)
 
 Make sure the following are **Checked**:
@@ -202,6 +203,7 @@ Click on **Create security group** and create a security group with the followin
     - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
 Verify your inbound rules with the following screenshot.
+
 ![Inbound Rules](/img/inbound-rules.png)
 
 Click **Create security group** (bottom right).
@@ -222,6 +224,7 @@ Repeat the above steps to create another security group with the following setti
    Edit both public subnets’ route table associations to: **Wordpress Website Route Table**
 3. Click **Actions** > **Edit route table association**
 4. Select **Wordpress Website Route Table** in the **Route table ID** dropdown menu. See the following screenshot.
+
    ![Route table association](/img/route-table-association.png)
 
 5. Click save.
