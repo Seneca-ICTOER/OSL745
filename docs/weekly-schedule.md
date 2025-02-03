@@ -111,7 +111,7 @@ description: Weekly Schedule Page for OSL745
 
 | Learning Objectives and Tasks               | **Lecture Notes:** | Evaluation                                                        |
 | :------------------------------------------ | :----------------- | :---------------------------------------------------------------- |
-| **Auto Scaling and Elastic Load Balancing** |                    | [Lab 10: Auto Scaling and Elastic Load Balancing](/Labs/lab10.md) |
+| **Elastic Beanstalk** |                    | [Lab 10: Elastic Beanstalk](/Labs/lab10.md) |
 
 ## Week 13
 
