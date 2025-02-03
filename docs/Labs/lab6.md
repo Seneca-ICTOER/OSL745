@@ -178,8 +178,6 @@ Create a second route table:
 
 ![Edit Routes](/img/edit-routes.png)
 
-### Finished to here
-
 ### Security Groups
 
 **Security Group** settings are located in the left side navigation under **Security** > **Security Groups**. Click on **Security Groups**. Note: You can access **Security groups** through **EC2** as well (as you did in lab 5). The menu they are under is different.
@@ -192,15 +190,13 @@ Click on **Create security group** and create a security group with the followin
 1. Inbound Rules:
 1. Allow HTTP
 
-
-    - Type: **HTTP**
-    - Source: **Anywhere – IPv4 (0.0.0.0/0)**
+  - Type: **HTTP**
+  - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
 2. Allow SSH
 
-
-    - Type: **SSH**
-    - Source: **Anywhere – IPv4 (0.0.0.0/0)**
+  - Type: **SSH**
+  - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
 Verify your inbound rules with the following screenshot.
 
