@@ -193,7 +193,7 @@ Click on **Create security group** and create a security group with the followin
   - Type: **HTTP**
   - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
-2. Allow SSH
+6. Allow SSH
 
   - Type: **SSH**
   - Source: **Anywhere – IPv4 (0.0.0.0/0)**
