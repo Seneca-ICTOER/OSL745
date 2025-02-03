@@ -17,6 +17,17 @@ This week's lab will cover the following:
 - Implementing an elastic IP in AWS.
 - Accessing your Web Server using a browser.
 
+## Creating a new instance (www)
+
+Create a new instance in AWS (like you did in [Lab 5](lab5.md)), with the following configuration:
+
+1. **Name:** www
+1. **OS:** Ubuntu
+1. **Amazon Machine Image (AMI):** Make sure Ubuntu Server 24.04 is selected
+1. **VPC:** Select the **Wordpress VPC** you created in Lab 6.
+1. **Security Group*:* Select the **Wordpress Website Security Group\*\* you created in Lab 6.
+1. Use your existing key pair (from Lab 5). If you lost your key, then generate a new one. Don't lose this one.
+
 ## Managing Linux packages and updating the system
 
 Installing software in Linux requires both an active Internet connection and knowledge of which package management tool to use for your distribution (or distro). Linux software and updates come from special sources hosted on other servers, known as repositories (or repos). All the major Linux distros host their own repos, though anyone can host a repository for a distribution - and many organizations do. Due to the Open Source nature of Linux, certain repos may contain specialized software that is not available in the main repository (such as EPEL - Extra Packages for Enterprise Linux); or they may contain a mirror of the main repo.
@@ -107,6 +118,6 @@ Take screenshots of your elastic IP (in EC2) and accessing your Apache2 Ubuntu D
 
 ## Exploration Questions
 
-- What package manager does Ubuntu use?
-- How do you find the current status of the apache2 service?
-- What is an Elastic IP?
+1. What package manager does Ubuntu use?
+1. How do you find the current status of the apache2 service?
+1. What is an Elastic IP?
