@@ -34,7 +34,7 @@ Since you are using Ubuntu, you will be using **APT** to install software and up
 Start your **www** instance in the AWS Learner Lab, and connect to it using SSH. Once you have logged in, issue the following command to update your system.
 
 ```bash
-sudo apt update
+sudo apt update && sudo apt upgrade
 ```
 
 Now that your system is up to date it's time to install Apache, which is the software that will be powering your web server. In Ubuntu, the Apache package is called **apache2**. Additionally, you can use **apt** with the **-y** option to auto assume yes. This can save a little time when you know you want to install the software or updates.
@@ -63,28 +63,19 @@ sudo systemctl status apache2
 You should see the following output:
 ![Apache Running](/img/apache-running.png)
 
-## Accessing your Apache server through a web browser
-
-In EC2, Navigate to Instances and click on the Instance ID for your www instance. In the right side, under **Public IPv4 DNS** click on the open address link. This will send an HTTP request to your Apache server. This will fail, because we haven't allowed inbound HTTP (port 80) traffic in the Security Group settings. Security Groups will deny all traffic that isn't implicitly allowed.
-
-## Modifying VPC Security Groups
-
-Browse to Security Groups (in EC2 under Network & Security), and click on the Security Group ID for the default security group. Under InBound rules, click on **Edit inbound rules**, and select HTTP from the drop down with a source of 0.0.0.0/0, and click **Save rules**. Your screen should look like the following:
-![Adding inbound HTTP to the security group](/img/sg-inbound-http.png)
-
 ## Accessing your Apache server through web browser
 
 It's time to test to see if everything's working properly. Browse to your instance details in EC2 by clicking on Instances, then the Instance ID next to your www instance (screenshot below).
 
 ![AWS Instance ID](/img/aws-instance-id.png)
 
-Click open address beside your Public IPv4 address. You should see the default Apache test page (screenshot below). If you do not, edit your url and change **https://** to **http://**. You will learn how to configure **https** in lab 4. Accessing your server through **http** will be fine until then.
+Click open address beside your Public IPv4 address. You should see the default Apache test page (screenshot below). If you do not, edit your url and change **https://** to **http://**. You will learn how to configure **https** in lab 8. Accessing your server through **http** will be fine until then.
 
 ![Apache Test Page](/img/apache-default.png)
 
 ## Implementing an elastic IP in AWS
 
-When you are configuring network resources such as (routers, network printers or servers) you want them to have a static IP, which doesn't change. Currently our AWS instance pulls a new IP from Amazon's DHCP server every time it boots up. Fortunately, you can configure a static IP through what AWS calls an **Elastic IP**. These cost money when they're not in use, and will be the biggest expense item from our free $100 credits this semester (since your instance will be offline unless you are working on things for this course). To obtain an Elastic IP in EC2, click on **Elastic IPs** under **Network & Security**:
+When you are configuring network resources such as (routers, network printers or servers) you want them to have a static IP, which doesn't change. Currently our AWS instance pulls a new IP from Amazon's DHCP server every time it boots up. Fortunately, you can configure a static IP through what AWS calls an **Elastic IP**. These cost money when they're not in use, and will be the biggest expense item from our free $50 credits this semester (since your instance will be offline unless you are working on things for this course). To obtain an Elastic IP in EC2, click on **Elastic IPs** under **Network & Security**:
 ![Accessing the Elastic IP settings](/img/elastic-ip.png)
 
 Then click **Allocate Elastic IP address** in the top right corner. On the bottom of the new screen, leave the rest of the defaults and click **Allocate** (screenshot below).
@@ -95,15 +86,18 @@ Now you've reserved your Elastic IP. It is yours for as long as you want (which 
 Next, click on the **Instance** box and select the instance with **(www)** in the name (screenshot below), and click **Associate** in the bottom right corner.
 ![Associating an Elastic IP](/img/associate-elastic-ip.png)
 
-Now you can access your www instance from anywhere by using the same IP address. You should write this IP down somewhere for future use. You will be mapping a domain name to it in lab 4.
+Now you can access your www instance from anywhere by using the same IP address. You should write this IP down somewhere for future use. You will be mapping a domain name to it in lab 8.
 
 ## Accessing your Apache server from a web browser
 
 Open a web browser and either copy/paste, or type out your elastic IP in the address bar (make sure the url is being requested using **http** and not **https**) to confirm you can still access your Apache test page.
 
-## Completing the lab
+## Lab 6 Sign-Off (Show Instructor)
 
-Take screenshots of your elastic IP (in EC2) and accessing your Apache2 Ubuntu Default Page through a web browser using http. Submit them to the the folder on blackboard for proof of completion OR show your professor. The following Exploration Questions are for furthering your knowledge only, and may appear on quizzes or tests at any time later in this course.
+Show your professor the following:
+
+- Your Elastic IP
+- Accessing your Apache2 Ubuntu Default Page through a web browser using http
 
 ## Exploration Questions
 
