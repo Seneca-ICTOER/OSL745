@@ -185,14 +185,11 @@ Upload the following to the Assignment 2 folder on blackboard:
 
 | Task                                          | Mark   |
 | :-------------------------------------------- | :----- |
-| System set to boot in multi-user.target (CLI) | 1      |
-| Static IP applied                             | 2      |
-| nftables installed and configured correctly   | 2      |
-| Apache configured and running                 | 3      |
-| MariaDB configured and running                | 3      |
+| nftables installed and configured correctly   | 4      |
+| Apache configured and running                 | 4      |
+| MariaDB configured and running                | 4      |
 | Wordpress configured correctly                | 3      |
 | Wordpress showing in Firefox                  | 1      |
-| Blog accessed using local hostname resolution | 1      |
 | First blog post                               | 1      |
 | Second blog post                              | 1      |
 | Submitted correctly                           | 2      |
