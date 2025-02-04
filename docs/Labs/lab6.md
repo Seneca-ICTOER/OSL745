@@ -233,6 +233,17 @@ Verify your inbound rules with the following screenshot.
 
 Repeat the steps for **Public Subnet 2**
 
+## Creating a new instance (www)
+
+Create a new instance in AWS (like you did in [Lab 5](lab5.md)), with the following configuration:
+
+1. **Name:** www
+1. **OS:** Ubuntu
+1. **Amazon Machine Image (AMI):** Make sure Ubuntu Server 24.04 is selected
+1. **VPC:** Select the **Wordpress VPC** you created.
+1. **Security Group**: Select the **Wordpress Website Security Group** you created.
+1. Use your existing key pair (from Lab 5). If you lost your key, then generate a new one. Don't lose this one.
+
 ## Lab 6 Sign-Off (Show Instructor)
 
 Show your professor the following:
