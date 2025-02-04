@@ -43,7 +43,7 @@ Confirm the settings match the following screenshot.
 
 Click **Create VPC** at the bottom right.
 
-Once created, click the **Actions** drop down in the top right corer and select **Edit VPC**. Make sure the following boxes are **Checked**:
+Once created, click the **Actions** drop down in the top right corner and select **Edit VPC Settings**. Make sure the following boxes are **Checked**:
 
 1. Enable DNS resolution: **Checked**
 1. Enable DNS hostnames: **Checked**
@@ -71,12 +71,12 @@ You are going to create 4 subnets in your VPC. Two private subnets, and two publ
 
 Create one private IPv4 subnets in this VPC:
 
-1. Private Subnet 2 - **10.0.2.0/24 - us-east-1b**
+1. **Private Subnet 2** - **10.0.2.0/24** - **us-east-1b**
 
 Create two public IPv4 subnets in this VPC:
 
-1. Public Subnet 1 - **10.0.11.0/24 - us-east-1a**
-1. Public Subnet 2 - **10.0.12.0/24 - us-east-1b**
+1. **Public Subnet 1** - **10.0.11.0/24** - **us-east-1a**
+1. **Public Subnet 2** - **10.0.12.0/24** - **us-east-1b**
 
 Once you have confirmed your settings are correct, scroll down and click **Create Subnet** in the bottom right.
 
@@ -196,9 +196,11 @@ Click on **Create security group** and create a security group with the followin
   - Type: **SSH**
   - Source: **Anywhere – IPv4 (0.0.0.0/0)**
 
+> Warning: Do **not** modify the **outbound** rules.
+
 Verify your inbound rules with the following screenshot.
 
-![Inbound Rules](/img/inbound-rules.png)
+![Wordpress Website Inbound Rules](/img/inbound-rules.png)
 
 Click **Create security group** (bottom right).
 
@@ -210,6 +212,12 @@ Repeat the above steps to create another security group with the following setti
 1. Inbound Rule:
   - Type: **MYSQL/Aurora**
   - Source: **Custom** (Select _Wordpress Website SG_ in the search field)
+
+> Warning: Do **not** modify the **outbound** rules.
+
+Verify your inbound rules with the following screenshot.
+
+![Wordpress Database Inbound Rules](/img/wordpress-database-sg.png)
 
 ### Editing Public Subnet route table associations
 
