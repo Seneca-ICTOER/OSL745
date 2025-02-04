@@ -266,4 +266,5 @@ Show your professor the following:
 1. What is a VPC?
 1. What are the steps to create a VPC?
 1. What are subnets and route tables?
+1. What is an Internet Gateway?
 1. What comparisons can you make between this lab and the virtual network you created in **Lab 3**?
