@@ -124,7 +124,7 @@ You will be accessing our new Linux VM remotely using SSH, which is a command-li
 - The SSH command will ask you to confirm connecting. Type yes and press Enter.
 - If login is successful, you should see a prompt like this: ubuntu@ip-172-31-91-76:~$
 
-## Creating a dotfiles repository in GitHub and Adding your SSH key as a repository secret
+## Creating a dotfiles repository in GitHub
 
 A GitHub dotfiles repository is used to store and manage your configuration files (often called "dotfiles" because their filenames start with a dot, e.g., **.bashrc**, **.vimrc**, **.gitconfig**). These files are used to customize your development environment. By keeping them in a GitHub repository, you can easily share your configurations across different machines and with other developers. This practice helps in maintaining consistency in your development setup and makes it easier to set up new environments quickly. A dotfiles repo can also be used to host scripts you wish run upon the creation of any Codespace you create using your GitHub account (ie account wide).
 
@@ -173,7 +173,7 @@ Note: Keys added via your dotfiles repo will be installed over top of per-repo k
 Launch Codespaces from any of your previous GitHub Classroom assignments (or even for your dotfiles repo). In the terminal (in the bottom) copy paste the SSH command from **EC2 Instance Connect** and remove the path to the key. Since the script wrote your private key to the default location, you do not need to specify the path to the key. It should look similar to following.
 
 ```bash
-ssh -i "osl745.pem" ubuntu@ec2-23-20-90-70.compute-1.amazonaws.com
+ssh ubuntu@ec2-23-20-90-70.compute-1.amazonaws.com
 ```
 
 Once you have confirmed this works, you can logout from your Codespaces terminal and shut everything down (Codespaces and the AWS Learner Lab). For proof, show your professor a successful connection to your instance (either via ec2 instance connect, SSH from Codespaces or both).
