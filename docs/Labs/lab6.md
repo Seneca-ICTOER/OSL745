@@ -240,9 +240,17 @@ Create a new instance in AWS (like you did in [Lab 5](lab5.md)), with the follow
 1. **Name:** www
 1. **OS:** Ubuntu
 1. **Amazon Machine Image (AMI):** Make sure Ubuntu Server 24.04 is selected
-1. **VPC:** Select the **Wordpress VPC** you created.
-1. **Security Group**: Select the **Wordpress Website Security Group** you created.
 1. Use your existing key pair (from Lab 5). If you lost your key, then generate a new one. Don't lose this one.
+1. **Network Settings:** Click **edit**
+  - **VPC:** Select the **Wordpress VPC** you created.
+  - **Security Group**: Select the **Wordpress Website Security Group** you created.
+  - **Subnet**: Select **Public Subnet 1**
+
+Verify your settings are correct and click **Launch Instance**.
+
+Once the instance has created, confirm you can connect to it using:
+- EC2 Instance Connect
+- From the terminal in Codespaces. (If you had to generate a new key, you will need to update the Repository secret for your Dotfiles repo containing the key)
 
 ## Lab 6 Sign-Off (Show Instructor)
 
@@ -251,6 +259,7 @@ Show your professor the following:
 - 4 new subnets (Public Subnet 1, Public Subnet 2, Private Subnet 1 & Private Subnet 2)
 - Route Table
 - Internet Gateway
+- Access to **www** from EC2 Instance Connect and Codespaces
 
 ## Exploration Questions
 
