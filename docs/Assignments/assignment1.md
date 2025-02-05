@@ -178,8 +178,7 @@ Give the **marka1.bash** script execute permission and run it.
 Upload the following to the Assignment 2 folder on blackboard:
 
 - Output from the Assignment 2 check script (a2output.txt)
-- A screenshot showing your first blog post on wordpress
-- A screenshot showing your second blog post on wordpress
+- A screenshot showing your blog post on wordpress
 
 ## Rubric
 
@@ -190,7 +189,6 @@ Upload the following to the Assignment 2 folder on blackboard:
 | MariaDB configured and running                | 4      |
 | Wordpress configured correctly                | 3      |
 | Wordpress showing in Firefox                  | 1      |
-| First blog post                               | 1      |
-| Second blog post                              | 1      |
+| Blog post                                     | 2      |
 | Submitted correctly                           | 2      |
 | **Total**                                     | **20** |
