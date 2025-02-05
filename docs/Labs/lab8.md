@@ -13,6 +13,7 @@ This week's lab will cover the following:
 
 - Using a service to register a domain name
 - Generating TLS/SSL certificates with Let's Encrypt & Certbot
+- Configuring https on your Apache web server
 
 ## Registering a domain name
 
