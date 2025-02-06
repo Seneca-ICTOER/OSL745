@@ -7,6 +7,11 @@ description: Weekly Schedule Page for OSL745
 
 # Weekly Schedule
 
+## Important Quick Links
+
+| [Weekly Schedule](./weekly-schedule.md) | [Course Outline](https://apps.senecapolytechnic.ca/ssos/findOutline.do?isLoggedIn=&subjectOrAndTitle=%5BOSL740%5D+Administration+of+Open+Source+Systems&schoolCode=0s867160) | [Lab Logbook](/files/OSL745-Logbook-Online.docx)| [Assignment 1](/Assignments/assignment1.md) | [Assignment 2](/Assignments/assignment2.md) |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+
 ## Week 1
 
 | Learning Objectives and Tasks   | Lecture Notes                                                                                                                                                                            | Evaluation                                   |
