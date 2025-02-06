@@ -14,12 +14,12 @@ This week's lab will cover the following:
 - Creating a Virtual Private Cloud (VPC).
 - Creating and Modifying Virtual Private Cloud (VPC) Security Groups.
 - VPC components:
-  - Gateway
+  - Gateways
     - NAT gateways
-    - Internet Gateways
+    - Internet gateways
     - Egress-only internet gateways
     - Carrier gateways
-  - Route table
+  - Route tables
   - Subnets
 
 In this lab, you will create all the networking infrastructure required to host a web application. You will be creating the server, database and configuring the application in future labs.
