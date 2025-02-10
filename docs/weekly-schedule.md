@@ -94,7 +94,7 @@ description: Weekly Schedule Page for OSL745
 
 | Learning Objectives and Tasks                        | **Lecture Notes:**                                                                                                                                                                       | Evaluation                     |
 | :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------- |
-| **Web Servers and Elastic IPs**                      | [Week 9 Slides](https://docs.google.com/presentation/d/e/2PACX-1vTW9w04ugkrSSqRxvFkT7SRN-XrW_6c8CdPTkXVpN8aoKLXPZP_lOZ-9DPV_aYYuiEEfRsQ9i-1y44m/pub?start=false&loop=false&delayms=3000) | [Lab 7: Apache](/Labs/lab7.md) |
+| **Web Servers and Elastic IPs**                      | - No Slides (see Week 5 for review) | [Lab 7: Apache](/Labs/lab7.md) |
 | - Configure Apache                                   |                                                                                                                                                                                          |                                |
 | - Implement Elastic IPs in Amazon Web Services (AWS) |                                                                                                                                                                                          |                                |
 
