@@ -222,6 +222,3 @@ Plus screenshots showing:
 1. Attach a single full-browser screenshot showing Blog Post 2.
 
 Once submitted, you can leave your Elastic Beanstalk application running, but **shutdown your Learner Lab environment**.
-
-
-# Lab 10 - Auto Scaling and Elastic Load Balancing
