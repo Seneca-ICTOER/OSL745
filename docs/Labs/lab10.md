@@ -144,10 +144,10 @@ Before beginning this section, you will need two things:
 1. Proxy server: **Apache**
 1. Document root: **/wordpress**
 1. Environment properties
-   1. DB_HOST: \*\*\_your RDS database URL\*\*\*
-   1. DB_NAME: \*\*\_initial database name\*\*\*
+   1. DB_HOST: **_your RDS database URL_**
+   1. DB_NAME: **wordpress**
    1. DB_USER: **admin**
-   1. DB_PASSWORD: \*\*\_your auto-generated database password\*\*\*
+   1. DB_PASSWORD: **_your auto-generated database password_**
    1. AUTH_KEY: **(use gathered info from salt page)**
    1. SECURE_AUTH_KEY: **(use gathered info from salt page)**
    1. LOGGED_IN_KEY: **(use gathered info from salt page)**
