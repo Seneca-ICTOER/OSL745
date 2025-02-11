@@ -5,13 +5,19 @@ sidebar_position: 10
 description: Hosting Wordpress using AWS Elastic Beanstalk
 ---
 
-## Task 3: Wordpress Source Code Modification
+# Lab 10 - Elastic Beanstalk
+## Overview
+
+This week's lab will cover the following:
+
+- Configuring Elastic Beanstalk
+- Installing and configuring Wordpress
+
+## Investigation 1: Wordpress Source Code Modification
 
 ### Explanation
 
-When you install Wordpress, you can simply upload the source code and the first time you load the webpage, you'll be asked for database connector information.
-
-However, Elastic Beanstalk applications are meant to be disposable.
+When you have installed Wordpress previously, you simply uploaded the source code and the first time you load the webpage, provided the database connector information. However, Elastic Beanstalk applications are meant to be disposable.
 
 Normally, when you add that database connector info, it is saved in a file called _wp-config.php_ on the webserver VM. This is fine for a traditional setup. However, **_in Elastic Beanstalk, changes made to static HTML or PHP are not saved if the Beanstalk application restarts_**, which it will do often. Whenever the application restarts, it will reload from the source zip file and the original, empty connector file. If you did this the traditional way, you'd have to constantly re-enter your DB connector info every time you started up your Learner Lab environment.
 
@@ -32,7 +38,7 @@ We use **environment variables** to allow us to put all the info in the Elastic 
 
 1. In the local _wordpress_ folder, find a file called: **wp-config-sample.php**
 1. Duplicate this file, and call it: **wp-config.php**
-1. Open **wp-config.php** in a plain text editor. You can use the default (graphical) text editor in Linux Mint (Text Editor), or something fancier like Visual Studio Code.
+1. Open **wp-config.php** in a text editor. You will want something that supports syntax highlighting., such as the default (graphical) text editor in Ubuntu, or something fancier like Visual Studio Code.
 
 #### Adding Database Connector Info as Environment Variables
 
@@ -63,15 +69,21 @@ Find the following lines and add the bolded values:
 ![Image: Adding database connector information to wp-config.php.](/img/a2_wp-config-example.png)
 _Figure 1: Adding database connector information to wp-config.php._
 
+**Save** the file.
+
 ### Zip As New File and Rename - Local Computer
 
 1. Find the **wordpress** folder on your local computer.
 1. _Zip the entire wordpress directory_, not just the files inside. (Use the zip compression protocol. Don't use something else like .rar.)
-1. Rename your new zip file: **wordpress-6.5.3-_modded_.zip** (Use whatever version the source zip file has.)
+1. Rename your new zip file: **wordpress-6.7.2-_modded_.zip** (Use whatever version the source zip file has.)
 
-## Task 4: Elastic Beanstalk
+## Investigation 2: Elastic Beanstalk
 
-Create a new Elastic Beanstalk (search "elastic beanstalk" in services) application with the following settings:
+Navigate to **Compute** > **Elastic Beanstalk**. See the following screenshot for reference.
+
+![Elastic Beanstalk](/img/elasticbeanstalk.png)
+
+Click **Create application**, and use the following settings:
 
 ### Environment Tier
 
@@ -82,10 +94,10 @@ Select: **Web server environment**
 1. Application name: **wordpress**
 1. Environment name: **Wordpress-env**
 1. Platform: **PHP**
-1. Platform branch: **PHP 8.2** (or current latest)
+1. Platform branch: **PHP 8.4** (or current latest)
 1. Application code: **Upload your code**
-1. Version label: **wordpress-6.5.3** (Use the version from your zip filename)
-1. Choose file: **wordpress-6.5.3-_modded_.zip** (From your local computer)
+1. Version label: **wordpress-6.7.2** (Use the version from your zip filename)
+1. Local file: **wordpress-6.7.2-_modded_.zip** (From your local computer)
 1. Presets: **Single instance (free tier eligible)**
 
 Click next
@@ -100,23 +112,29 @@ Select: Use an existing service role
 
 Click next
 
-### Network
+### Set up networking, database and tags
 
 1. VPC: **Wordpress VPC**
+
+#### Instance Settings
+
 1. Public IP address: **Checked**
-1. Instance subnets: **Public Subnet 1, Public Subnet 2** (both checked)
-1. Database subnets: **Private Subnet 1, Private Subnet 2** (both checked)
+1. **Instance** subnets: **Public Subnet 1, Public Subnet 2** (both checked)
 
 Click next
 
-### Database settings
+#### Database settings
+
+1. **Database** subnets: **Private Subnet 1, Private Subnet 2** (both checked)
+
+Click **Enable database**
 
 1. Username: admin
 1. Password: _The password you copied and wrote down earlier_
 
 Click next
 
-### Instances
+### Configure instance traffic and scaling
 
 1. EC2 Security Groups: **Wordpress Website SG** & **Wordpress Database SG** (both checked)
 1. Leave the rest default
@@ -128,9 +146,12 @@ Click next
 #### Monitoring
 
 1. System: **Basic**
+
+#### Managed platform updates
 1. Managed updates: **Unchecked**
+
+#### Email notifications
 1. Email notification: **Add your Seneca email**
-   Click next
 
 #### Platform Software
 
@@ -143,7 +164,7 @@ Before beginning this section, you will need two things:
 
 1. Proxy server: **Apache**
 1. Document root: **/wordpress**
-1. Environment properties
+1. Click **Add environment property** and add the following **Environment properties**
    1. DB_HOST: **_your RDS database URL_**
    1. DB_NAME: **wordpress**
    1. DB_USER: **admin**
@@ -166,59 +187,37 @@ Click next.
 
 #### Review options
 
-Scroll down and click Launch.
+Review all settings and ensure they match the instructions above. Once you hit **Submit**, the application will take several minutes to create.
 
 ### Create the application.
 
+click **Submit** when ready.
+
 While you wait for the creation to complete, check your e-mail to confirm your notification subscription.
 
-## Task 5: Site Configuration
+## Investigation 3: Accessing Wordpress
 
-Open the URL presented in the Wordpress EBS instance and begin the site setup.
+Open the URL presented in the Wordpress EBS instance. You should see your blog post from Lab 9! Why?
 
-### Site Information
+> If you get a message indicating a failure to connect, make sure you zipped the **wordpress** folder and it's contents only. You can rezip the file and click **Upload and deploy** if necessary.
 
-Set the following site information:
+### Blog Post:
+Add a blog post detailing the following:
 
-1. Site Title: **OPS345 - A2 your name**
-1. Username: **_yourSenecaUsername_**
-1. Password: **Choose a strong password** (do not reuse the DB password!)
-1. Your Email: **_yourSenecaEmailAddress_**
-1. Search engine visibility: **Unchecked**
+- How did you find this lab?
+- What was the most difficult part for you?
+- What was the easiest part for you?
+- How did you find this course?
 
-## Task 6: Blog Posts
+Leave your Elastic Beanstalk instance running, but shut down your learner lab. Try accessing your wordpress install. It should still be accessible.
 
-_Delete the first template post._ In your own words, answer the following questions in individual blog posts:
+## Lab 9 Sign-Off (Show Instructor)
 
-### Blog Post: 1
+Show your professor the following:
 
-How did you find this assignment? What was the most difficult part of this assignment for you? What was the easiest part for you?
+- Your blog post.
 
-### Blog Post: 2
+## Exploration Questions
 
-In the context of this assignment, briefly describe the function of the following:
-
-1. VPCs
-1. Subnets
-1. Security groups
-1. Route tables
-1. Internet gateways
-
-## Assignment Submission
-
-As with your previous assignment, your work will be evaluated by accessing your site directly.
-
-To formally submit, you must include the following in a word document:
-
-1. The URL of your new site. (The main public landing page, not the admin view.)
-
-Plus screenshots showing:
-
-1. 4 new subnets (Public Subnet 1, Public Subnet 2, Private Subnet 1 & Private Subnet 2)
-1. Route Table
-1. Internet Gateway have been created.
-1. A single full-browser screenshot showing your active and complete Wordpress blog.
-1. Attach a single full-browser screenshot showing Blog Post 1.
-1. Attach a single full-browser screenshot showing Blog Post 2.
-
-Once submitted, you can leave your Elastic Beanstalk application running, but **shutdown your Learner Lab environment**.
+1. What is Elastic Beanstalk
+1. How is this lab similar to the wordpress install in **Lab 9** and **Assignment 1**? How is it different?
