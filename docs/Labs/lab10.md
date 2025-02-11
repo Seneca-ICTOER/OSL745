@@ -211,7 +211,7 @@ Add a blog post detailing the following:
 
 Leave your Elastic Beanstalk instance running, but shut down your learner lab. Try accessing your wordpress install. It should still be accessible.
 
-## Lab 9 Sign-Off (Show Instructor)
+## Lab 10 Sign-Off (Show Instructor)
 
 Show your professor the following:
 
