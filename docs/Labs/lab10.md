@@ -13,10 +13,6 @@ This week's lab will cover the following:
 - Configuring Elastic Beanstalk
 - Installing and configuring Wordpress
 
-## Investigation 1: Wordpress Source Code Modification
-
-### Explanation
-
 When you have installed Wordpress previously, you simply uploaded the source code and the first time you load the webpage, provided the database connector information. However, Elastic Beanstalk applications are meant to be disposable.
 
 Normally, when you add that database connector info, it is saved in a file called _wp-config.php_ on the webserver VM. This is fine for a traditional setup. However, **_in Elastic Beanstalk, changes made to static HTML or PHP are not saved if the Beanstalk application restarts_**, which it will do often. Whenever the application restarts, it will reload from the source zip file and the original, empty connector file. If you did this the traditional way, you'd have to constantly re-enter your DB connector info every time you started up your Learner Lab environment.
@@ -26,6 +22,8 @@ We _could_ add the DB connector info to _wp-config.php_ manually before we uploa
 We use **environment variables** to allow us to put all the info in the Elastic Beanstalk application wizard directly. That way, every time the application restarts and reloads from the source code zip, it'll then read our saved connector information from AWS itself. Read below for details and steps.
 
 **Note:** All other information, like the Wordpress website name, users, theme settings, blog posts, etc., are saved in the actual database you created in RDS. This database does not get reset when the Elastic Beanstalk application restarts, so your actual blog data will remain intact.
+
+## Investigation 1: Wordpress Source Code Modification
 
 ### Download and Unzip - Local Computer
 
