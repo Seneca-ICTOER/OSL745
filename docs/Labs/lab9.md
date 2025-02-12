@@ -88,13 +88,75 @@ Disconnect from the database.
 quit;
 ```
 
+## Installing and Configuring Wordpress
+
+Install Wordpress using apt.
+```bash
+sudo apt install wordpress
+```
+
+Create a virtual host file in **/etc/apache2/sites-available/wordpress.conf** with the following contents:
+
+```bash
+Alias /blog /usr/share/wordpress
+<Directory /usr/share/wordpress>
+    Options FollowSymLinks
+    AllowOverride Limit Options FileInfo
+    DirectoryIndex index.php
+    Order allow,deny
+    Allow from all
+</Directory>
+<Directory /usr/share/wordpress/wp-content>
+    Options FollowSymLinks
+    Order allow,deny
+    Allow from all
+</Directory>
+```
+
+Enable the new WordPress site
+
+```bash
+sudo a2ensite wordpress
+```
+
+- Use systemctl to restart the apache service.
+
+Edit the file **/etc/wordpress/config-www.username.mystduentproject.ca.php** where username is your Seneca username. Add the following contents (changing values where appropriate).
+
+```php
+<?php
+define('DB_NAME', 'wordpress');
+define('DB_USER', 'admin');
+define('DB_PASSWORD', 'yourdbpassword');
+define('DB_HOST', 'yourdbendpoint');
+define('WP_CONTENT_DIR', '/usr/share/wordpress/wp-content');
+?>
+```
+
+- Open a web browser and enter the following url: http://www.username.mystudentproject.ca/blog/wp-admin/install.php
+- You should see a Wordpress Welcome/Setup page. Follow the prompts on screen and enter the appropriate information.
+  - Use the **Database Name**, **Username** and **Password** you configured above.
+  - Set the title to Your Name's Blog. For example for me it would be "Jason Carman's Blog"
+  - Set the username to your Seneca ID.
+  - Set the password to your Seneca ID. You may need to check the box to **Confirm use of weak password**
+  - Set the email to your Seneca email address.
+  - Click "Install Wordpress", you should see a "Success!" message.
+
+### Blog Post:
+Add a blog post detailing the following:
+
+- How did you find this lab?
+- What was the most difficult part for you?
+- What was the easiest part for you?
+
 ## Lab 9 Sign-Off (Show Instructor)
 
 Show your professor the following:
 
 - A successful connection to the database from your www instance.
+- Your blog post
 
 ## Exploration Questions
 
 1. What is an RDS?
-1. How is this lab similar to the database you created in **Assignment 1**?
+1. How is this lab similar to **Assignment 1**?
