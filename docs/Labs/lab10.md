@@ -4,8 +4,11 @@ title: Lab 10 - Elastic Beanstalk
 sidebar_position: 10
 description: Hosting Wordpress using AWS Elastic Beanstalk
 ---
+
 # Under Development
+
 # Lab 10 - Elastic Beanstalk
+
 ## Overview
 
 This week's lab will cover the following:
@@ -25,6 +28,7 @@ We use **environment variables** to allow us to put all the info in the Elastic 
 **Note:** All other information, like the Wordpress website name, users, theme settings, blog posts, etc., are saved in the actual database you created in RDS. This database does not get reset when the Elastic Beanstalk application restarts, so your actual blog data will remain intact.
 
 ## Investigation 1: Creating a RDS instance
+
 Start your session in the Learner Lab by clicking on the **Start Lab** button. Once the red dot has turned green, click on it to enter the Learner Lab and access the AWS Console interface. You are going to create a new RDS instance.
 
 From the **Console Home** navigate to **Database** > **RDS**. See the following screenshot for reference.
@@ -69,6 +73,7 @@ Store the following connection information about your RDS instance in your lab l
 1. **Master password**
 
 ## Connecting to your database from www
+
 Login to your **www** instance, and issue the following command to connect to your database. Be sure to substitute the credentials you wrote down earlier.
 
 ```bash
@@ -214,9 +219,11 @@ Click next
 1. System: **Basic**
 
 #### Managed platform updates
+
 1. Managed updates: **Unchecked**
 
 #### Email notifications
+
 1. Email notification: **Add your Seneca email**
 
 #### Platform Software
@@ -234,7 +241,7 @@ Before beginning this section, you will need two things:
    1. DB\_HOST: **_your RDS database URL_**
    1. DB_NAME: **wordress**
    1. DB_USER: **admin**
-   1. DB_PASSWORD: **_your auto-generated database password_**
+   1. DB*PASSWORD: \*\*\_your auto-generated database password*\*\*
    1. AUTH_KEY: **(use gathered info from salt page)**
    1. SECURE_AUTH_KEY: **(use gathered info from salt page)**
    1. LOGGED_IN_KEY: **(use gathered info from salt page)**
@@ -263,11 +270,22 @@ While you wait for the creation to complete, check your e-mail to confirm your n
 
 ## Investigation 4: Accessing Wordpress
 
-Open the URL presented in the Wordpress EBS instance. You should see your blog post from Lab 9! Why?
+Open the URL presented in the Wordpress EBS instance and begin the site setup.
+
+### Site Information
+
+Set the following site information:
+
+1. Site Title: **Your name's blog**
+1. Username: **_yourSenecaUsername_**
+1. Password: **Choose a strong password** (do not reuse the DB password!)
+1. Your Email: **_yourSenecaEmailAddress_**
+1. Search engine visibility: **Unchecked**
 
 > If you get a message indicating a failure to connect, make sure you zipped the **wordpress** folder and it's contents only. You can rezip the file and click **Upload and deploy** if necessary.
 
 ### Blog Post:
+
 Add a blog post detailing the following:
 
 - How did you find this lab?
