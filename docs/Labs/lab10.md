@@ -238,10 +238,10 @@ Before beginning this section, you will need two things:
 1. Proxy server: **Apache**
 1. Document root: **/wordpress**
 1. Click **Add environment property** and add the following **Environment properties**
-   1. DB\_HOST: **_your RDS database URL_**
-   1. DB_NAME: **wordress**
+   1. DB_HOST: **your RDS database URL**
+   1. DB_NAME: **wordpress**
    1. DB_USER: **admin**
-   1. DB_PASSWORD: **_your auto-generated database password_**
+   1. DB_PASSWORD: **your auto-generated database password**
    1. AUTH_KEY: **(use gathered info from salt page)**
    1. SECURE_AUTH_KEY: **(use gathered info from salt page)**
    1. LOGGED_IN_KEY: **(use gathered info from salt page)**
@@ -293,7 +293,7 @@ Add a blog post detailing the following:
 - What was the easiest part for you?
 - How did you find this course?
 
-Leave your Elastic Beanstalk instance running, but shut down your learner lab. Try accessing your wordpress install. It should still be accessible.
+Leave your Elastic Beanstalk instance running, but shut down your learner lab. Try accessing your wordpress site. It should still be accessible.
 
 ## Lab 10 Sign-Off (Show Instructor)
 
