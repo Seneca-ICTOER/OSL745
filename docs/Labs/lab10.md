@@ -241,7 +241,7 @@ Before beginning this section, you will need two things:
    1. DB\_HOST: **_your RDS database URL_**
    1. DB_NAME: **wordress**
    1. DB_USER: **admin**
-   1. DB*PASSWORD: \*\*\_your auto-generated database password*\*\*
+   1. DB_PASSWORD: **_your auto-generated database password_**
    1. AUTH_KEY: **(use gathered info from salt page)**
    1. SECURE_AUTH_KEY: **(use gathered info from salt page)**
    1. LOGGED_IN_KEY: **(use gathered info from salt page)**
