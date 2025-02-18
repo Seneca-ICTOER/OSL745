@@ -72,7 +72,7 @@ Store the following connection information about your RDS instance in your lab l
 1. **Master username**
 1. **Master password**
 
-## Connecting to your database from www
+### Connecting to your database from www
 
 Login to your **www** instance, and issue the following command to connect to your database. Be sure to substitute the credentials you wrote down earlier.
 
