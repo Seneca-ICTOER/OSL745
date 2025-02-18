@@ -293,8 +293,6 @@ Add a blog post detailing the following:
 - What was the easiest part for you?
 - How did you find this course?
 
-Leave your Elastic Beanstalk instance running, but shut down your learner lab. Try accessing your wordpress site. It should still be accessible.
-
 ## Lab 10 Sign-Off (Show Instructor)
 
 Show your professor the following:
