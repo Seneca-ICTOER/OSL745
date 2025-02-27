@@ -9,7 +9,7 @@ description: OSL745 Assignment 2
 
 ## Objectives of Assignment 2
 
-In this assignment, you will configure Elastic Load Balancing and Auto Scaling using the Wordpress deployment _Elastic Beanstalk_ from Lab 10. This will transform that application into a high availability service.
+In this assignment, you will create a highly available environment for your Wordpress application using Elastic Load Balancing and Auto Scaling. This will build on the Wordpress deployment using _Elastic Beanstalk_ from Lab 10.
 
 ## Investigation 5: Configuring Auto Scaling and Elastic Load Balancing
 
