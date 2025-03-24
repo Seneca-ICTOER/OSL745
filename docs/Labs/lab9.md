@@ -6,6 +6,7 @@ description: Configure the RDS.
 ---
 
 # Lab 9 - RDS
+
 ## Overview
 
 This week's lab will cover the following:
@@ -16,6 +17,7 @@ This week's lab will cover the following:
 In this lab, you will create a database using the Relational Database Service. You will then test connecting to it from your **www** instance. You will use this database in **lab 10** to install and deploy Wordpress using Elastic Beanstalk.
 
 ## Creating a RDS instance
+
 Start your session in the Learner Lab by clicking on the **Start Lab** button. Once the red dot has turned green, click on it to enter the Learner Lab and access the AWS Console interface. You are going to create a new RDS instance.
 
 From the **Console Home** navigate to **Database** > **RDS**. See the following screenshot for reference.
@@ -60,6 +62,7 @@ Store the following connection information about your RDS instance in your lab l
 1. **Master password**
 
 ## Connecting to your database from www
+
 Login to your **www** instance, and install the mariadb client.
 
 ```bash
@@ -91,6 +94,7 @@ quit;
 ## Installing and Configuring Wordpress
 
 Install Wordpress using apt.
+
 ```bash
 sudo apt install wordpress
 ```
@@ -121,7 +125,7 @@ sudo a2ensite wordpress
 
 - Use systemctl to restart the apache service.
 
-Edit the file **/etc/wordpress/config-www.username.mystduentproject.ca.php** where username is your Seneca username. Add the following contents (changing values where appropriate).
+Edit the file **/etc/wordpress/config-www.username.mystudentproject.ca.php** where username is your Seneca username. Add the following contents (changing values where appropriate).
 
 ```php
 <?php
@@ -143,6 +147,7 @@ define('WP_CONTENT_DIR', '/usr/share/wordpress/wp-content');
   - Click "Install Wordpress", you should see a "Success!" message.
 
 ### Blog Post:
+
 Add a blog post detailing the following:
 
 - How did you find this lab?
