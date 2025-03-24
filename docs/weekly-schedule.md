@@ -110,7 +110,7 @@ description: Weekly Schedule Page for OSL745
 
 | Learning Objectives and Tasks                | **Lecture Notes:** | Evaluation                  |
 | :------------------------------------------- | :----------------- | :-------------------------- |
-| **Amazon Relational Database Service (RDS)** |                    | [Lab 9: RDS](/Labs/lab9.md) |
+| **Amazon Relational Database Service (RDS)** | [Week 11 Slides](https://docs.google.com/presentation/d/e/2PACX-1vSzdC8VzF9VaG1S7s2_4YNXCKKaFbpWgUycVklLcdh6bfmkRdhDSeyHX0l20ZbDWjBxV-dPAfa9ZhZC/pub?start=false&loop=false&delayms=3000)                   | [Lab 9: RDS](/Labs/lab9.md) |
 
 ## Week 12
 
