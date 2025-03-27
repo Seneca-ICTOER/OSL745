@@ -116,7 +116,7 @@ description: Weekly Schedule Page for OSL745
 
 | Learning Objectives and Tasks               | **Lecture Notes:** | Evaluation                                                        |
 | :------------------------------------------ | :----------------- | :---------------------------------------------------------------- |
-| **Elastic Beanstalk** | [Week 12 Slides](https://docs.google.com/presentation/d/e/2PACX-1vROzr_Yxc67bxTyati_qmGnCgt5x9FivBkQ5Hmn3RECV8MqB0ZWXK5vKUm42c3Z01LGkvC3atjyw-I_/pub?start=false&loop=false&delayms=3000_)                   | [Lab 10: Elastic Beanstalk](/Labs/lab10.md) |
+| **Elastic Beanstalk** | [Week 12 Slides](https://docs.google.com/presentation/d/e/2PACX-1vROzr_Yxc67bxTyati_qmGnCgt5x9FivBkQ5Hmn3RECV8MqB0ZWXK5vKUm42c3Z01LGkvC3atjyw-I_/pub?start=false&loop=false&delayms=3000)                   | [Lab 10: Elastic Beanstalk](/Labs/lab10.md) |
 
 ## Week 13
 
