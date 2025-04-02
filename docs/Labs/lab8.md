@@ -54,7 +54,7 @@ and
 dig www.yourusername.mystudentproject.ca
 ```
 
-3. Access dig via the [https://toolbox.googleapps.com/apps/dig/#A/](Google Admin ToolBox) and enter the value **www.yourusername.mystudentproject.ca** into the Name field (make sure the record type is set to **A**). You should see output similar to the following:
+3. Access dig via the [Google Admin ToolBox](https://toolbox.googleapps.com/apps/dig/#A/) and enter the value **www.yourusername.mystudentproject.ca** into the Name field (make sure the record type is set to **A**). You should see output similar to the following:
 
 ![Google Admin ToolBox](/img/google-admin-toolbox.png)
 
