@@ -60,7 +60,7 @@ You are going to create 4 subnets in your VPC. Two private subnets, and two publ
 1. Select **Wordpress VPC** from the VPC ID dropdown.
 1. Create a subnet with the following information:
 
-- Subnet Name: **Private subnet 1**
+- Subnet Name: **Private Subnet 1**
 - Availability Zone: **us-east-1a**
 - IPv4 VPC CIDR block: **10.0.0/16**
 - IPv4 subnet CIDR block: **10.0.1.0/24**
