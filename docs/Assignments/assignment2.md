@@ -104,3 +104,4 @@ Accept the defaults and click **Next**.
 Scroll through and confirm everything matches the instructions. If everything looks correct, click **Create Auto Scaling group**.
 
 ## Submission
+Submit a screenshot of the two instances created via Auto Scaling in EC2.
