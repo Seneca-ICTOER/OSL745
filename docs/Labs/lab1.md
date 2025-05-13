@@ -36,7 +36,7 @@ It is ESSENTIAL to have a **Solid State Drive (SSD) with a minimum storage capac
 1. **Solid State Drive** Minimum Size: 240GB
 1. **SATA-to-USB Connector** to connect your SSD to the Seneca Lab computer
 1. **USB Flash drive** to install Ubuntu installation image
-1. [Ubuntu ISO](https://ubuntu.com/download/desktop/thank-you?version=24.04.1&architecture=amd64&lts=true)
+1. [Ubuntu ISO](https://ubuntu.com/download/desktop)
 1. **Lab Logbook** [(Click Here to Download)](/files/OSL745-Logbook-Online.docx)
 
 ### Linux Command Reference
@@ -553,7 +553,7 @@ ssh -T git@github.com
 
 ### Accept the Lab 1 GitHub Classroom assignment.
 
-Use the following [link](https://classroom.github.com/a/57eD77NF) to set up your lab 1 repository. You will be using this for this investigation.
+Use the following [link](https://classroom.github.com/a/bKjnUSIp) to set up your lab 1 repository. You will be using this for this investigation.
 
 Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
 
