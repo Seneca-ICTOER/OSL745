@@ -154,6 +154,13 @@ Add a blog post detailing the following:
 - What was the most difficult part for you?
 - What was the easiest part for you?
 
+### Temporarily shutting down your database:
+- Navigate to **Aurora and RDS** > **Databses**.
+- Select the radio button beside **wordpress-db**
+- Click on **Actions** > **Stop temporarily**
+
+This will shutdown your database for 7 days and pause billing. You may need to repeat this.
+
 ## Lab 9 Sign-Off (Show Instructor)
 
 Show your professor the following:
