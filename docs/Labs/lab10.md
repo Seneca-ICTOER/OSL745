@@ -38,7 +38,7 @@ Click **Create database** (part way down the screen). Use the following options.
 1. Standard create
 1. Engine type: **MariaDB**
 1. Engine Version: **MariaDB 11.4.4** (or current latest version available)
-1. Templates: **Free tier**
+1. Templates: **Dev/Test**
 1. DB instance identifier: **wordpress-elasticbeanstalk**
 1. Master username: **admin**
 1. Credentials management: **Self Managed**
