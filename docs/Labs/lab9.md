@@ -29,7 +29,7 @@ Click **Create database** (part way down the screen). Use the following options.
 1. Standard create
 1. Engine type: **MariaDB**
 1. Engine Version: **MariaDB 11.4.4** (or current latest version available)
-1. Templates: **Free tier**
+1. Templates: **Dev/Test**
 1. DB instance identifier: **wordpress-db**
 1. Master username: **admin**
 1. Credentials management: **Self Managed**
@@ -153,6 +153,16 @@ Add a blog post detailing the following:
 - How did you find this lab?
 - What was the most difficult part for you?
 - What was the easiest part for you?
+
+### Temporarily shutting down your database:
+
+- Navigate to **Aurora and RDS** > **Databses**.
+- Select the radio button beside **wordpress-db**
+- Click on **Actions** > **Stop temporarily**
+
+This will shutdown your database for 7 days and pause billing. You may need to repeat this.
+
+> Note: You will need to have your database running to access your Wordpress site.
 
 ## Lab 9 Sign-Off (Show Instructor)
 
