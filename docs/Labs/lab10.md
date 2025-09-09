@@ -12,6 +12,9 @@ description: Hosting Wordpress using AWS Elastic Beanstalk
 This week's lab will cover the following:
 
 - Creating a new RDS
+- Modifying the wordpress source code in preparation for deployment using Elastic Beanstalk
+- Creating a public Simple Storage Service (S3) bucket
+- Uploading your wordpress source code to a Simple Storage Service (S3) bucket
 - Configuring Elastic Beanstalk
 - Installing and configuring Wordpress
 
@@ -146,7 +149,47 @@ _Figure 1: Adding database connector information to wp-config.php._
 1. _Zip the entire wordpress directory_, not just the files inside. (Use the zip compression protocol. Don't use something else like .rar.)
 1. Rename your new zip file: **wordpress-6.7.2-_modded_.zip** (Use whatever version the source zip file has.)
 
-## Investigation 3: Elastic Beanstalk
+## Investigation 3: Creating an Simple Storage Service (S3) Bucket
+
+In this investigation, you are going to create an S3 bucket and upload your wordpress configuration files.
+
+From the Console Home navigate to **Storage** > **S3**.
+
+- Navigate to Amazon S3
+- Click **Create bucket**
+
+### General configuration
+- General purpose: **selected**
+- Bucket name: **senecausername-wordpress**
+
+### Object Ownership
+- ACLs disabled (recommended): **selected**
+
+### Block Public Access settings for this bucket
+- Block _all_ public access: **unchecked**
+- I acknowledge that the current settings might result in this bucket and the objects within becoming public: **checked**
+
+### Bucket versioning
+- Enable
+
+### Default encryption
+- Accept the defaults
+
+### Bucket key
+- Enable
+
+Scroll down and click **Create bucket**
+
+Once your bucket has created, click on your **bucket's name** (ie: **jmcarman-wordpress**).
+- Click **Upload**
+- Click **Add files**
+- Select your wordpress-modded zip file
+
+> Make note of the Destination location: ie: **s3://jmcarman-wordpress**. You will need this for the next investigation.
+
+- Click **Upload**
+
+## Investigation 4: Elastic Beanstalk
 
 Navigate to **Compute** > **Elastic Beanstalk**. See the following screenshot for reference.
 
@@ -266,7 +309,7 @@ click **Submit** when ready.
 
 While you wait for the creation to complete, check your e-mail to confirm your notification subscription.
 
-## Investigation 4: Accessing Wordpress
+## Investigation 5: Accessing Wordpress
 
 Open the URL presented in the Wordpress EBS instance and begin the site setup.
 
