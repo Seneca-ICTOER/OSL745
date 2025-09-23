@@ -553,7 +553,7 @@ ssh -T git@github.com
 
 ### Accept the Lab 1 GitHub Classroom assignment.
 
-Use the following [link](https://classroom.github.com/a/57eD77NF) to set up your lab 1 repository. You will be using this for this investigation.
+Use the following [link](https://classroom.github.com/a/hcO2fpuM) to set up your lab 1 repository. You will be using this for this investigation.
 
 Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
 

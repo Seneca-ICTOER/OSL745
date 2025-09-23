@@ -557,7 +557,7 @@ If the Virtual machine fails to shutdown from the `virsh shutdown` command, then
 
 ### Accept the Lab 2 GitHub Classroom assignment.
 
-Use the following [link](https://classroom.github.com/a/xFtCiKtJ) to set up your lab 2 repository. You will be using this for this investigation.
+Use the following [link](https://classroom.github.com/a/8kLmzB2n) to set up your lab 2 repository. You will be using this for this investigation.
 
 Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
 
