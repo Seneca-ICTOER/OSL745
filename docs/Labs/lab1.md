@@ -557,7 +557,7 @@ ssh -T git@github.com
 - Click **Use this template** in the right corner.
 - Select **Create a new repository** from the dropdown menu.
 - Select **Your GitHub username** from the **Owner** dropdown menu.
-- In the **Repository name** field enter **lab5**.
+- In the **Repository name** field enter **lab1**.
 - Set the visibility to **Private**.
 - Scroll to the bottom and click **Create repository**.
 - Follow the steps found in the README file to clone your repository locally.
