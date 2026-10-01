@@ -555,9 +555,16 @@ virsh start ubu1
 
 If the Virtual machine fails to shutdown from the `virsh shutdown` command, then you can go to the **Virtual Machine manager** and **halt** or **shutdown** within the VM itself, then you can click the **PowerOff** button in the VM window. You'll want to avoid a forced shutdown since those are equivalent to yanking the power cord out of the wall on a physical machine!
 
-### Accept the Lab 2 GitHub Classroom assignment.
+### Creating your Github Repo for Lab 2
 
-Use the following [link](https://classroom.github.com/a/8kLmzB2n) to set up your lab 2 repository. You will be using this for this investigation.
+- Browse to the [Lab 2 repository template](https://github.com/OSL745/virtual-safety) on GitHub. You will be using this for Bash scripting in this lab.
+- Click **Use this template** in the right corner.
+- Select **Create a new repository** from the dropdown menu.
+- Select **Your GitHub username** from the **Owner** dropdown menu.
+- In the **Repository name** field enter **lab5**.
+- Set the visibility to **Private**.
+- Scroll to the bottom and click **Create repository**.
+- Follow the steps found in the README file to clone your repository locally.
 
 Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
 

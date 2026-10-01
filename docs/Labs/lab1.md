@@ -551,9 +551,16 @@ Try issuing the following command again. It should work now.
 ssh -T git@github.com
 ```
 
-### Accept the Lab 1 GitHub Classroom assignment.
+### Creating your Github Repo for Lab 1
 
-Use the following [link](https://classroom.github.com/a/hcO2fpuM) to set up your lab 1 repository. You will be using this for this investigation.
+- Browse to the [Lab 1 repository template](https://github.com/OSL745/lab1) on GitHub. You will be using this for Bash scripting in this lab.
+- Click **Use this template** in the right corner.
+- Select **Create a new repository** from the dropdown menu.
+- Select **Your GitHub username** from the **Owner** dropdown menu.
+- In the **Repository name** field enter **lab5**.
+- Set the visibility to **Private**.
+- Scroll to the bottom and click **Create repository**.
+- Follow the steps found in the README file to clone your repository locally.
 
 Next, follow the sections for setup on a Shared Computer by Accessing GitHub Codespaces or on your Personal Computer. While you can install Visual Studio Code (VSCode) locally, I recommend using Codespaces for this course.
 
