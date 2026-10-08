@@ -9,7 +9,7 @@ description: OSL745 Assignment 1
 
 ## Overview
 
-In Assignment 1 you will install configure a LAMP stack, which is an acronym that originally stood for Linux, Apache, MySQL and PHP. LAMP is a commonly used acronym and combination of technologies for hosting web based applications. In fact, newer technologies that have come along to replace elements of the LAMP stack tend to pick their name based on the letter in the acronym that they are providing services for (ie MariaDB or MongoDB, Perl or Python). You will then use this platform to install and host Wordpress (a popular free and open source content management system or CMS). You will also configure your firewall to further enhance the security of your network.
+In Assignment 1 you will install configure a LAMP stack, which is an acronym that originally stood for Linux, Apache, MySQL and PHP. LAMP is a commonly used acronym describing a combination of technologies for hosting web based applications. In fact, newer technologies that have come along to replace elements of the LAMP stack tend to pick their name based on the letter in the acronym that they are providing services for (ie MariaDB or MongoDB, Perl or Python). You will then use this platform to install and host Wordpress (a popular free and open source content management system or CMS). You will also configure your firewall to further enhance the security of your network.
 
 This assignment will be completed inside your **ubu2** VM.
 
@@ -19,7 +19,7 @@ This assignment will be completed inside your **ubu2** VM.
 
 **Due Date**: Refer to your section's Blackboard announcements.
 
-**Submission**: You will be submitting your completed work through a series of screenshots on Blackboard. (See below.)
+**Submission**: You will be submitting your completed work through a screenshot and script generated text file. (See below.)
 
 **NOTE:** Do this assignment inside the **ubu2** virtual machine.
 
@@ -39,7 +39,7 @@ Before proceeding make sure you have updated your system using apt.
 
 ### Configuring Your Firewall (nftables)
 
-- Configure your firewall a rule allowing incoming http traffic.
+- Configure your firewall with a rule allowing incoming http traffic.
 
   - **HINT**: to figure out which port is required issue the command **grep http /etc/services**. You may need to pipe the output to head to see the top of the list. The required port is the first one listed.
 
