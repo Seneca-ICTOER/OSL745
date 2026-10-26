@@ -81,7 +81,7 @@ Click on Launch instance just below the Resources pane. From the Launch an insta
 
 ## Creating SSH key pairs & using public key cryptography
 
-Under **Key pair (login)** click Create new key pair. Give it the name ops345, accept the rest of the defaults and click "Create key pair".
+Under **Key pair (login)** click Create new key pair. Give it the name osl745, accept the rest of the defaults and click "Create key pair".
 
 Important: Do not lose your key pair or you will be unable to connect to your instance using SSH.
 
